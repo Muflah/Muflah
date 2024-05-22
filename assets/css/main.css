@@ -1,0 +1,43 @@
+body
+{
+    padding: 32px;
+
+    background: #222;
+    color: #eee;
+
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+header, main, footer
+{
+    padding: 16px;
+    border-radius: 16px;
+	background-color: #555;
+
+	contain: content;
+}
+
+header
+{
+	padding-top: 4px;
+	padding-bottom: 4px;
+
+	margin-bottom: 16px;
+	background: rgba(255, 255, 255, 0.1);
+}
+
+main
+{
+	padding-top: 4px;
+	padding-bottom: 32px;
+
+	margin-bottom: 16px;
+	background: rgba(255, 255, 255, 0.9);
+	color: #111;
+}
+
+footer
+{
+	background: rgba(255, 255, 255, 0.1);
+}

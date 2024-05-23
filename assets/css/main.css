@@ -12,24 +12,18 @@ body
 
 header, main, footer
 {
-    padding: 16px;
     border-radius: 16px;
-	background-color: #555;
-
 	contain: content;
 }
 
 header
 {
-	padding-top: 4px;
-	padding-bottom: 4px;
-
 	margin-bottom: 16px;
-	background: rgba(255, 255, 255, 0.1);
 }
 
 main
 {
+	padding: 16px;
 	padding-top: 4px;
 	padding-bottom: 18px;
 
@@ -40,6 +34,7 @@ main
 
 footer
 {
+	padding: 16px;
 	background: rgba(255, 255, 255, 0.1);
 	font-size: 10px;
 }

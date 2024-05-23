@@ -1,8 +1,12 @@
 body
 {
-    padding: 32px;
+    padding: 16px;
 
     background: #222;
+	background: #aa88cc;
+
+	background: linear-gradient(45deg, rgb(101, 199, 252), rgb(197, 88, 251));
+
     color: #eee;
 
 	font-family: sans-serif;
@@ -21,6 +25,8 @@ header
 	margin-bottom: 16px;
 
 	background: rgba(255, 255, 255, 0.1);
+
+	color: #fff;
 }
 
 main

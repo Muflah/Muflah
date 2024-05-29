@@ -2,15 +2,7 @@ body
 {
     padding: 16px;
 
-	background: #aa88cc;
-
-	background: linear-gradient(45deg, rgb(101, 199, 252), rgb(197, 88, 251));
-
-	background: linear-gradient(45deg, rgb(179, 47, 245), rgb(73, 186, 246), rgb(240, 253, 201));
-
-	background: linear-gradient(135deg, rgb(73, 186, 246), rgb(56, 121, 250));
-
-	background: #333;
+	background: linear-gradient(135deg, rgb(172, 107, 1), rgb(251, 208, 19));
 
     color: #eee;
 
@@ -18,12 +10,12 @@ body
 	font-family: "Nunito", sans-serif;
 	font-size: 16px;
 
-	/*
-	background: no-repeat url("../../assets/media/bckgr.jpg");
+	background: #aa88cc;
+
+	background: no-repeat url("../../assets/media/background.svg");
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
-	*/
 }
 
 header, main, footer
@@ -36,9 +28,7 @@ header
 {
 	margin-bottom: 16px;
 
-	background: rgba(0, 0, 0, 0.3);
-
-	color: #fff;
+	background: rgba(0, 0, 0, 0.1);
 }
 
 main
@@ -48,15 +38,13 @@ main
 	padding-bottom: 32px;
 
 	margin-bottom: 16px;
-	background: rgba(255, 255, 255, 0.8);
-	color: #111;
+	background: rgba(0, 0, 0, 0.1);
 }
 
 footer
 {
 	padding: 16px;
-	background: rgba(0, 0, 0, 0.3);
+	background: rgba(0, 0, 0, 0.1);
 	font-size: 12px;
 	text-align: center;
-	color: #eee;
 }

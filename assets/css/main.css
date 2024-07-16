@@ -1,50 +1,35 @@
 body
 {
-    padding: 16px;
-
-	background: linear-gradient(135deg, rgb(172, 107, 1), rgb(251, 208, 19));
-
-    color: #eee;
-
-	font-family: sans-serif;
-	font-family: "Nunito", sans-serif;
-	font-size: 16px;
-
-	background: #aa88cc;
-
-	background: no-repeat url("../../assets/media/background.svg");
+    background: no-repeat url("../../assets/media/background.svg");
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
+
+	font-family: Arial, Helvetica, sans-serif;
+	color: #fff;
 }
 
-header, main, footer
+a
 {
-    border-radius: 16px;
-	contain: content;
+	color: #fff;
 }
 
-header
+a:link
 {
-	margin-bottom: 16px;
-
-	background: rgba(0, 0, 0, 0.1);
+	color: #fff;
+}
+  
+a:visited
+{
+	color: #fff;
 }
 
-main
+a:hover
 {
-	padding: 16px;
-	padding-top: 8px;
-	padding-bottom: 32px;
-
-	margin-bottom: 16px;
-	background: rgba(0, 0, 0, 0.1);
+	color: #0000ff;
 }
 
-footer
+a:active
 {
-	padding: 16px;
-	background: rgba(0, 0, 0, 0.1);
-	font-size: 12px;
-	text-align: center;
+	color: #0000ff;
 }

@@ -16,7 +16,7 @@ p
 body
 {
     background: no-repeat url("../../assets/media/background.svg");
-	background: #111111;
+    background: #00000a;
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
@@ -60,7 +60,7 @@ footer
 
 .mainText {
     font-size: 64px;
-	font-size: 80px;
+	font-size: 72px;
 }
 .subText
 {
@@ -89,24 +89,25 @@ footer
 .accentCTA
 {
     background: var(--accentColor);
-    color: #ffffff;
+    color: #EEEEEE;
 }
 
 .accentCTA:active, .accentCTA:hover
 {
-    background: #555555;
+    background: #eeeeee;
+    color: #111111;
 }
 
 .stdCTA
 {
-    background: #222222;
+    background: rgba(25, 25, 25, 0.3);
     color: #eeeeee;
 }
 
 .stdCTA:active, .stdCTA:hover
 {
     background: var(--accentColor);
-	background: #555555;
+	background: rgba(25, 25, 25, 0.5);
     color: #ffffff;
 }
 

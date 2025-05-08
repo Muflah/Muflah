@@ -60,7 +60,11 @@ footer
 
 .mainText {
     font-size: 64px;
-	font-size: 128px;
+	font-size: 96px;
+}
+.subText
+{
+	font-size: 20px;
 }
 
 .footerText {

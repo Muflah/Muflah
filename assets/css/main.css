@@ -1,35 +1,141 @@
+:root
+{
+	--accentColor: #0055bb;
+}
+
+a, a:link, a:visited, a:hover, a:active
+{
+	text-decoration: none;
+}
+
+p
+{
+    margin: 0;
+}
+
 body
 {
     background: no-repeat url("../../assets/media/background.svg");
+	background: #111111;
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
 
 	font-family: Arial, Helvetica, sans-serif;
-	color: #fff;
+	color: #eeeeee;
+
+    padding: 32px;
+
+    margin: 0;
+
+    font-size: 16px;
 }
 
-a
+header, footer, main
 {
-	color: #fff;
+    margin: 0;
+    padding: 8px;
 }
 
-a:link
+header
 {
-	color: #fff;
-}
-  
-a:visited
-{
-	color: #fff;
+    display: block;
 }
 
-a:hover
+main
 {
-	color: #0000ff;
+    display: block;
 }
 
-a:active
+footer
 {
-	color: #0000ff;
+    display: block;
+
+    text-align: center;
+}
+
+.headerText {
+    font-size: 12px;
+}
+
+.mainText {
+    font-size: 64px;
+	font-size: 128px;
+}
+
+.footerText {
+    font-size: 12px;
+}
+
+.mainLogoMid {
+    height: 25vw;
+}
+
+.defaultCTA {
+    font-size: 16px;
+
+    padding: 12px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border-radius: 8px;
+
+    font-weight:normal;
+}
+
+.accentCTA
+{
+    background: var(--accentColor);
+    color: #ffffff;
+}
+
+.accentCTA:active, .accentCTA:hover
+{
+    background: #555555;
+}
+
+.stdCTA
+{
+    background: #222222;
+    color: #eeeeee;
+}
+
+.stdCTA:active, .stdCTA:hover
+{
+    background: var(--accentColor);
+	background: #555555;
+    color: #ffffff;
+}
+
+.logoMinimal {
+    height: 32px;
+}
+
+.logoFull {
+    height: 22px;
+    padding: 5px;
+}
+
+.iconSocial {
+    padding: 8px;
+    border-radius: 8px;
+
+    color: #eeeeee;
+    font-size: 16px;
+
+    display: inline-block;
+    text-align: center;
+}
+
+.iconSocial:active,
+.iconSocial:hover {
+    background: #ffffff;
+    color: var(--accentColor);
+}
+
+.accentText {
+    color: var(--accentColor);
+}
+
+.accentBackground {
+    background: var(--accentColor);
 }

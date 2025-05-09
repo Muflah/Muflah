@@ -3,6 +3,8 @@
 	--accentColor: #0055bb;
 }
 
+/* Default Parameters */
+
 a, a:link, a:visited, a:hover, a:active
 {
 	text-decoration: none;
@@ -12,6 +14,8 @@ p
 {
     margin: 0;
 }
+
+/* Standard Components*/
 
 body
 {
@@ -52,27 +56,24 @@ footer
     display: block;
 
     text-align: center;
-}
-
-.headerText {
     font-size: 12px;
 }
 
-.mainText {
-    font-size: 64px;
-	font-size: 72px;
-}
-.subText
+/* Shared Classes*/
+
+.lFont
 {
-	font-size: 20px;
+    font-size: 64px;
 }
 
-.footerText {
-    font-size: 12px;
+.mFont
+{
+	font-size: 32px;
 }
 
-.mainLogoMid {
-    height: 25vw;
+.sFont
+{
+    font-size: 16px;
 }
 
 .defaultCTA {
@@ -95,12 +96,13 @@ footer
 .accentCTA:active, .accentCTA:hover
 {
     background: #eeeeee;
-    color: #111111;
+    color: #ffffff;
+    background: rgba(25, 25, 25, 0.5);
 }
 
 .stdCTA
 {
-    background: rgba(25, 25, 25, 0.3);
+    background: rgba(25, 25, 25, 0.9);
     color: #eeeeee;
 }
 
@@ -111,16 +113,34 @@ footer
     color: #ffffff;
 }
 
-.logoMinimal {
+.accentText {
+    color: var(--accentColor);
+}
+
+.accentBackground {
+    background: var(--accentColor);
+}
+
+/* Other Classes*/
+
+.logoMinimal
+{
     height: 32px;
 }
 
-.logoFull {
+.logoFull
+{
     height: 22px;
     padding: 5px;
 }
 
-.iconSocial {
+.mainLogoMid
+{
+    height: 25vw;
+}
+
+.iconSocial
+{
     padding: 8px;
     border-radius: 8px;
 
@@ -131,16 +151,10 @@ footer
     text-align: center;
 }
 
-.iconSocial:active,
-.iconSocial:hover {
+.iconSocial:active, .iconSocial:hover
+{
     background: #ffffff;
     color: var(--accentColor);
-}
-
-.accentText {
-    color: var(--accentColor);
-}
-
-.accentBackground {
-    background: var(--accentColor);
+    background: rgba(25, 25, 25, 0.5);
+    color: #ffffff;
 }

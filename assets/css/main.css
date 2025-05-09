@@ -49,6 +49,8 @@ header
 main
 {
     display: block;
+
+    text-align: justify;
 }
 
 footer

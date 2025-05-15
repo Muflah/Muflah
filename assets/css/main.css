@@ -9,7 +9,7 @@
 a, a:link, a:visited, a:hover, a:active
 {
 	text-decoration: none;
-    font-color: #eeeeee;
+color: #eeeeee;
 }
 
 header, footer, main, div, section, h1, h2, h3, h4, h5, h6, p

@@ -1,6 +1,7 @@
 :root
 {
-	--accentColor: #fa0;
+	/*--accentColor: #fa0;*/
+    --accentColor: #0055bb;
 }
 
 /* Default Parameters */
@@ -20,17 +21,18 @@ header, footer, main, div, section, h1, h2, h3, h4, h5, h6, p
 
 body
 {
-    background: no-repeat url("../../assets/media/bg1.png");
+    /*background: no-repeat url("../../assets/media/bg1.png");
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
-	backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);*/
+    background: #000000;
 
 	font-family: Arial, Helvetica, sans-serif;
     
-  font-family: "Nunito", sans-serif;
+  /*font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
   font-weight: unset;
-  font-style: normal;
+  font-style: normal;*/
 
 
 	color: #eeeeee;
@@ -99,7 +101,6 @@ footer
 .accentCTA
 {
     background: var(--accentColor);
-    color: #EEEEEE;
 }
 
 .accentCTA:active, .accentCTA:hover
@@ -112,7 +113,6 @@ footer
 .stdCTA
 {
     background: rgba(25, 25, 25, 0.9);
-    color: #eeeeee;
 }
 
 .stdCTA:active, .stdCTA:hover
@@ -153,7 +153,6 @@ footer
     padding: 8px;
     border-radius: 8px;
 
-    color: #eeeeee;
     font-size: 16px;
 
     display: inline-block;
@@ -162,8 +161,8 @@ footer
 
 .iconSocial:active, .iconSocial:hover
 {
-    background: #ffffff;
-    color: var(--accentColor);
+    /*background: #ffffff;
+    color: var(--accentColor);*/
     background: rgba(25, 25, 25, 0.5);
     color: #ffffff;
 }

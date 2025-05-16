@@ -138,6 +138,7 @@ footer
 {
     background: #ffffff;
     border-radius: 64px;
+    display: block;
 }
 
 .logoMinimal

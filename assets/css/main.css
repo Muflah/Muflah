@@ -101,6 +101,8 @@ footer
 
     font-family: "Nunito", sans-serif;
     font-weight: bold;
+
+    border-radius: 2px;
 }
 
 .accentCTA
@@ -167,7 +169,7 @@ footer
     height: 20px;
     padding: 10px;
     background: var(--accentColor);
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .headerIconLinks img:hover, .headerIconLinks img:active

@@ -9,7 +9,6 @@
 a, a:link, a:visited, a:hover, a:active
 {
 	text-decoration: none;
-    color: #eeeeee;
 }
 
 header, footer, main, div, section, h1, h2, h3, h4, h5, h6, p
@@ -26,7 +25,7 @@ body
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);*/
-    background: #000000;
+    background: #111111;
 
 	font-family: Arial, Helvetica, sans-serif;
     
@@ -52,6 +51,7 @@ header, footer, main
 header
 {
     display: block;
+    background: #111111;
 }
 
 main
@@ -59,6 +59,7 @@ main
     display: block;
     text-align: justify;
     padding-top: 80px;
+    padding-bottom: 64px;
 }
 
 footer
@@ -66,6 +67,8 @@ footer
     display: block;
     text-align: center;
     font-size: 12px;
+    background: #111111;
+    color: #eeeeee;
 }
 
 /* Shared Classes*/
@@ -98,25 +101,20 @@ footer
 .accentCTA
 {
     background: var(--accentColor);
-}
-
-.accentCTA:active, .accentCTA:hover
-{
-    background: #eeeeee;
-    color: #ffffff;
-    background: rgba(25, 25, 25, 0.5);
+    color: #eeeeee;
 }
 
 .stdCTA
 {
-    background: rgba(25, 25, 25, 0.9);
+    background: #eeeeee;
+    color: #111111;
 }
 
-.stdCTA:active, .stdCTA:hover
+.stdCTA:active, .stdCTA:hover, .accentCTA:active, .accentCTA:hover
 {
     background: var(--accentColor);
-	background: rgba(25, 25, 25, 0.5);
-    color: #ffffff;
+	background: #333333;
+    color: #eeeeee;
 }
 
 .accentText
@@ -158,12 +156,13 @@ footer
 
     display: inline-block;
     text-align: center;
+    color: #eeeeee;
 }
 
 .iconSocial:active, .iconSocial:hover
 {
     /*background: #ffffff;
     color: var(--accentColor);*/
-    background: rgba(25, 25, 25, 0.5);
+    background: #333333;
     color: #ffffff;
 }

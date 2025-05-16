@@ -11,10 +11,15 @@ a, a:link, a:visited, a:hover, a:active
 	text-decoration: none;
 }
 
-header, footer, main, div, section, h1, h2, h3, h4, h5, h6, p
+header, footer, main, div, section, h1, h2, h3, h4, h5, h6, p, article
 {
     margin: 0;
     padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    font-family: "Nunito", sans-serif;
 }
 
 /* Standard Components*/
@@ -25,7 +30,7 @@ body
 	background-size: cover;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);*/
-    background: #111111;
+    background: #eee;
 
 	font-family: Arial, Helvetica, sans-serif;
     
@@ -35,7 +40,7 @@ body
     font-style: normal;*/
 
 
-	color: #eeeeee;
+	color: #111;
 
     margin: 0;
 
@@ -51,13 +56,11 @@ header, footer, main
 header
 {
     display: block;
-    background: #111111;
 }
 
 main
 {
     display: block;
-    text-align: justify;
     padding-top: 80px;
     padding-bottom: 64px;
 }
@@ -69,6 +72,7 @@ footer
     font-size: 12px;
     background: #111111;
     color: #eeeeee;
+    background: var(--accentColor);
 }
 
 /* Shared Classes*/
@@ -95,6 +99,7 @@ footer
     padding-left: 14px;
     padding-right: 14px;
 
+    font-family: "Nunito", sans-serif;
     font-weight: bold;
 }
 
@@ -106,8 +111,8 @@ footer
 
 .stdCTA
 {
-    background: #eeeeee;
-    color: #111111;
+    color: #eeeeee;
+    background: #111111;
 }
 
 .stdCTA:active, .stdCTA:hover, .accentCTA:active, .accentCTA:hover
@@ -140,6 +145,24 @@ footer
     padding: 8px;
     padding-left: 4px;
     padding-right: 4px;
+}
+
+.headerIconLinks
+{
+    float: right;
+}
+
+.headerIconLinks img
+{
+    height: 20px;
+    padding: 6px;
+    background: var(--accentColor);
+    border-radius: 4px;
+}
+
+.headerIconLinks img:hover, .headerIconLinks img:active
+{
+    background: #333333;
 }
 
 .mainLogoMid

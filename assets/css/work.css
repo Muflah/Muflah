@@ -1,5 +1,84 @@
-body
+.workWrapper
 {
-    background: #eeeeee;
-    color: #111111;
+    overflow: hidden;
+}
+
+.workCardsRow
+{
+    display: flex;
+}
+
+.workCardsRow div
+{
+    margin: 8px;
+
+    border-radius: 16px;
+    overflow: hidden;
+
+    /*
+    background: no-repeat url("../../assets/media/bg1.png");
+    background-size: cover;
+    */
+    background: #ffffff;
+}
+
+.workCardsRow img
+{
+    max-width: 128px;
+    padding: 8px;
+}
+
+.workCardsRow article
+{
+    background: #11111111;
+    padding: 8px;
+}
+
+.workCardsRow a
+{
+    display: inline-block;
+    padding: 8px;
+    font-size: 0.8rem;
+
+    color: var(--accentColor);
+    color: #333333;
+}
+
+.workCardQuarter
+{
+    flex: 1;
+}
+.workCardHalf
+{
+    flex: 2;
+}
+.workCardThreeQuarter
+{
+    flex: 3;
+}
+
+.workCardOneThird
+{
+    flex: 1;
+}
+.workCardTwoThird
+{
+    flex: 2;
+}
+.workCardFull
+{
+    flex: 1;
+}
+
+@media (orientation: portrait)
+{
+    .workCardsRow
+    {
+        flex-direction: column;
+    }
+
+    .workCardQuarter, .workCardHalf, .workCardThreeQuarter, .workCardOneThird, .workCardTwoThird, .workCardFull
+    {
+        display: block;
+    }
 }

@@ -134,6 +134,12 @@ footer
 
 /* Other Classes*/
 
+.headerLogo
+{
+    background: #ffffff;
+    border-radius: 64px;
+}
+
 .logoMinimal
 {
     height: 32px;

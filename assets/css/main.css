@@ -145,13 +145,15 @@ footer
 
 .logoMinimal
 {
-    height: 32px;
+    height: 30px;
+    padding-top: 2px;
 }
 
 .logoFull
 {
     height: 16px;
-    padding: 8px;
+    padding: 6px;
+    padding-top: 10px;
     padding-left: 4px;
     padding-right: 4px;
 }

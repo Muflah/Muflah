@@ -139,8 +139,8 @@ footer
     background: #ffffff;
     border-radius: 64px;
     display: inline-block;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .logoMinimal

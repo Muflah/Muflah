@@ -134,6 +134,25 @@ footer
     background: var(--accentColor);
 }
 
+.defSection{display: block;}
+.defSectionHeader{
+    padding-left: 128px;
+    padding-right: 128px;
+}
+.sectionContainer{
+    padding-left: 128px;
+    padding-right: 128px;
+}
+.sectionInnerContainer{
+    display: block;
+    background: green;
+}
+.paddingWrapper{padding:2px;}
+.squareBox{
+    aspect-ratio: 1/1;
+    background: red;
+}
+
 /* Other Classes*/
 
 .headerLogo

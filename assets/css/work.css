@@ -1,3 +1,33 @@
+/* Featured */
+.featuredWork
+{
+    padding-top: 64px;
+}
+
+.featuredWork .sectionInnerContainer
+{
+    display: flex;
+}
+
+.featuredWork .sectionBox
+{
+    flex: 1;
+    padding: 2px;
+}
+
+.featuredWork .squareBox
+{
+    padding: 32px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.featuredWork .boxContent
+{
+    position: relative;
+    top: 50%
+}
+
 .workWrapper
 {
     overflow: hidden;

@@ -1,0 +1,61 @@
+.flexCardsWrapper
+{
+    display: flex;
+    gap: 16px;
+}
+
+.defFlexCard
+{
+    flex: 1;
+
+    overflow: hidden;
+
+    /*background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);*/ /* Safari support */
+    /*box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);*/
+
+    /*aspect-ratio: 1/1;*/
+}
+
+.defFlexCard:active, .defFlexCard:hover
+{
+    color: var(--accentColor);
+    background-color: #111111;
+}
+.defFlexCard:active p, .defFlexCard:hover p
+{
+    color: #cccccc;
+}
+
+.defFlexCard h3
+{
+    font-size: 1.3rem;
+}
+
+.defFlexCard p
+{
+    font-size: 0.8rem;
+}
+
+.defFlexCard a
+{
+    font-size: 0.7rem;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.flexCardIcon
+{
+    width: 10vh;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+@media (orientation: portrait)
+{
+    .flexCardsWrapper
+    {
+        flex-direction: column;
+    }
+}

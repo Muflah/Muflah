@@ -1,0 +1,48 @@
+@media (orientation: portrait)
+{
+    .headerLogo
+    {
+        display: none;
+    }
+
+    header
+    {
+        text-align: center;
+    }
+    .headerNav
+    {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.aboutMeCard
+{
+    flex: auto;
+}
+.myPicture
+{
+    flex: auto;
+    aspect-ratio: 1/1;
+    min-width: 256px;
+    padding: 0%;
+
+    background: no-repeat url("../../assets/media/p5kmco.jpg");
+	background-size: cover;
+}
+
+@media (orientation: portrait)
+{
+    .flexCardsWrapper
+    {
+        flex-direction: reverse;
+    }
+    .myPicture
+    {
+        order: 1;
+    }
+    .aboutMeCard
+    {
+        order: 2;
+    }
+}

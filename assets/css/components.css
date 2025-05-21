@@ -20,7 +20,7 @@
 
 .defFlexCard:active, .defFlexCard:hover
 {
-    color: var(--accentColor);
+    color: #ffffff;
     background-color: #111111;
 }
 .defFlexCard:active p, .defFlexCard:hover p
@@ -43,6 +43,11 @@
     font-size: 0.7rem;
     display: inline-block;
     margin-top: 8px;
+    color: #cccccc;
+}
+.defFlexCard:active a, .defFlexCard:hover a
+{
+    color: var(--accentColor);
 }
 
 .flexCardIcon

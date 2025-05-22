@@ -14,6 +14,7 @@ a, a:visited, a:hover, a:active
 {
     text-decoration: none;
     color: inherit;
+    font-weight: bolder;
 }
 
 html
@@ -185,11 +186,6 @@ header
     border-radius: 64px;
 }
 
-.headerLogo:active, .headerLogo:visited
-{
-    background: var(--accentColor);
-}
-
 .headerLogo .logoIcon
 {
     height: 34px;
@@ -209,6 +205,16 @@ header
     .headerLogo .logoFull
     {
         display: none;
+    }
+
+    header
+    {
+        text-align: center;
+    }
+    .headerNav
+    {
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -235,6 +241,18 @@ header
     border-radius: 128px;
 }
 
+.headerNav a:active, .headerNav a:hover
+{
+    background-color: var(--accentColor);
+
+}
+
+.activeHeaderNavLink
+{
+    background-color: #eeeeee;
+    color: #111111;
+}
+
 @media (orientation: portrait)
 {
     .headerNav a
@@ -247,12 +265,6 @@ header
     }
 }
 
-.activeHeaderNavLink
-{
-    background-color: #eeeeee;
-    color: #111111;
-}
-
 @media (orientation: portrait)
 {
     .activeHeaderNavLink
@@ -261,11 +273,6 @@ header
     }
 }
 
-.headerNav a:active, .headerNav a:hover
-{
-    background-color: var(--accentColor);
-
-}
 /* header end */
 
 /* main */
@@ -359,6 +366,7 @@ footer .socialLink
     padding-left: 16px;
     padding-right: 16px;
     border-radius: 32px;
+    font-weight: normal;
 }
 
 footer .socialLink:active, footer .socialLink:hover

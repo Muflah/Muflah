@@ -18,14 +18,11 @@
     /*aspect-ratio: 1/1;*/
 }
 
-.defFlexCard:active, .defFlexCard:hover
+.flexCardIcon
 {
-    color: #ffffff;
-    background-color: #111111;
-}
-.defFlexCard:active p, .defFlexCard:hover p
-{
-    color: #cccccc;
+    width: 10vh;
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 
 .defFlexCard h3
@@ -39,6 +36,7 @@
     display: inline-block;
     padding-top: 16px;
     padding-bottom: 16px;
+    color: #aaaaaa;
 }
 
 .defFlexCard a
@@ -47,17 +45,27 @@
     display: inline-block;
     color: #aaaaaa;
 }
-.defFlexCard:active a, .defFlexCard:hover a
+
+.defFlexCard:active, .defFlexCard:hover
 {
-    color: var(--accentColor);
-    color: #ffffff;
+    color: #111111;
+    background-color: #eeeeee;
 }
 
-.flexCardIcon
+.defFlexCard:active h3, .defFlexCard:hover h3
 {
-    width: 10vh;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    color: #000000;
+}
+
+.defFlexCard:active p, .defFlexCard:hover p
+{
+    color: #111111;
+}
+
+.defFlexCard:active a, .defFlexCard:hover a
+{
+    
+    color: var(--accentColor);
 }
 
 @media (orientation: portrait)

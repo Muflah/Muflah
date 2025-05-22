@@ -315,12 +315,13 @@ footer .socialLink:active, footer .socialLink:hover
     font-size: 0.8rem;
     display: inline-block;
     padding-top: 16px;
-    padding-bottom: 16px;
+    padding-bottom: 8px;
     color: #aaaaaa;
 }
 
 .defFlexCard a
 {
+    margin-top: 8px;
     font-size: 0.7rem;
     display: inline-block;
     color: #aaaaaa;

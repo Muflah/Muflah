@@ -167,6 +167,11 @@ main
     color: #aaaaaa;
 }
 
+.mainSectionHeader article h2
+{
+    color: var(--accentColor);
+}
+
 .mainSectionHeader article p
 {
     margin-top: 24px;
@@ -297,8 +302,7 @@ footer .socialLink:active, footer .socialLink:hover
     overflow: hidden;
     /*aspect-ratio: 1/1;*/
 
-    /*background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    /*backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);*/ /* Safari support */
     /*box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);*/
 }
@@ -310,6 +314,11 @@ footer .socialLink:active, footer .socialLink:hover
     margin-bottom: 16px;
 }
 
+.defFlexCard h2
+{
+    font-size: 1.7rem;
+}
+
 .defFlexCard h3
 {
     font-size: 1.3rem;
@@ -317,7 +326,7 @@ footer .socialLink:active, footer .socialLink:hover
 
 .defFlexCard p
 {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     display: inline-block;
     padding-top: 16px;
     padding-bottom: 8px;
@@ -348,7 +357,7 @@ footer .socialLink:active, footer .socialLink:hover
     filter: invert();
 }
 
-.defFlexCard:active h3, .defFlexCard:hover h3
+.defFlexCard:active h2, .defFlexCard:hover h2, .defFlexCard:active h3, .defFlexCard:hover h3
 {
     color: var(--accentColor);
 }

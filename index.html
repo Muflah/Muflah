@@ -20,6 +20,8 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -31,15 +33,10 @@
         <nav class="headerNav frostedGlass">
             <a href="https://muflah.com/" class="activeHeaderNavLink"><i class="fa-solid fa-house"></i></a>
             <a href="work.html">MY WORK</a>
-            
-            <!-- Calendly link widget begin -->
-            <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-            <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
             <a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/muflahulfurqan/30min'});return false;" class="defaultCTA">CONNECT</a>
-            <!-- Calendly link widget end -->
         </nav>
     </header>
-    <main>
+    <main role="main">
         <div class="mainSectionHeader">
             <h1>
                 Hi, I'm <span class="accentText">Muflah</span>.
@@ -55,35 +52,17 @@
         </div>
 
         <div class="mainLinkWrapper">
-            <!-- Calendly link widget begin -->
-            <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-            <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-            <a class="defCTA frostedGlass accentCTA" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/muflahulfurqan/30min'});return false;" class="defaultCTA accentCTA">BOOK A MEETING</a>
-            <!-- Calendly link widget end -->
-
-            <!--<a class="defCTA frostedGlass" href="#">BOOK A MEETING</a>-->
-
+            <a class="defCTA frostedGlass accentCTA" href="#" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/muflahulfurqan/30min'});return false;" class="defaultCTA accentCTA">BOOK A MEETING</a>
             <a class="defCTA frostedGlass" href="work.html">SEE MY WORK</a>
         </div>
 
         <div class="flexCardsWrapper">
-            <div class="defFlexCard defBorderAndPadding frostedGlass aboutMeCard">
-                <!--<img class="flexCardIcon" src="assets/media/icons/view_kanban_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">-->
-                <!--<i class="fa-solid fa-list-check"></i>
-                <i class="fa-solid fa-terminal"></i>-->
+            <div class="defFlexCard defBorderAndPadding frostedGlass aboutMeCard" id="aboutMe">
                 <article>
                     <h3>ABOUT</h3>
                     <p>
                         I’m Muflah, a problem solver with an engineering background and over five years of experience in product management and team leadership. I help teams build useful products, improve how they work, and adapt to change. My focus is on clarity, collaboration, and delivering outcomes that matter. From product management to workflow optimization and agile transformation, I bring structure and a practical mindset to help teams move forward with confidence.
                     </p>
-
-                    <div class="defFlexCardLinkWrapper">
-                        <!-- Calendly link widget begin -->
-                        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-                        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-                        <a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/muflahulfurqan/30min'});return false;" class="defaultCTA">LET'S TALK</a>
-                        <!-- Calendly link widget end -->
-                    </div>
                 </article>
             </div>
             
@@ -94,12 +73,11 @@
         <div class="flexCardsWrapper">
             <div class="defFlexCard defBorderAndPadding frostedGlass">
                 <img class="flexCardIcon" src="assets/media/icons/view_kanban_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-                <!--<i class="fa-solid fa-list-check"></i>
-                <i class="fa-solid fa-terminal"></i>-->
-                <h3>PRODUCT MANAGEMENT</h3>
+                
                 <article>
-                     <p>
-                    I support teams in building purposeful digital products. From discovery to launch, I bring clarity and structure across strategy, planning, and execution. My focus is on solving the right problems, aligning stakeholders, and delivering outcomes that matter to users and businesses alike, whether you’re starting fresh or scaling an existing product.
+                    <h3>PRODUCT MANAGEMENT</h3>
+                    <p>
+                        I support teams in building purposeful digital products. From discovery to launch, I bring clarity and structure across strategy, planning, and execution. My focus is on solving the right problems, aligning stakeholders, and delivering outcomes that matter to users and businesses alike, whether you’re starting fresh or scaling an existing product.
                     </p>
 
                     <div class="defFlexCardLinkWrapper">
@@ -160,5 +138,7 @@
 		</p>
         <p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
     </footer>
+
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </body>
 </html>

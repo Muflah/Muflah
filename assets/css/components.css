@@ -43,11 +43,12 @@
     font-size: 0.7rem;
     display: inline-block;
     margin-top: 8px;
-    color: #cccccc;
+    color: #aaaaaa;
 }
 .defFlexCard:active a, .defFlexCard:hover a
 {
     color: var(--accentColor);
+    color: #ffffff;
 }
 
 .flexCardIcon

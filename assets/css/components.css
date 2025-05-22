@@ -332,6 +332,11 @@ footer .socialLink:active, footer .socialLink:hover
     background-color: #eeeeee;
 }
 
+.defFlexCard:active .flexCardIcon, .defFlexCard:hover .flexCardIcon
+{
+    filter: invert();
+}
+
 .defFlexCard:active h3, .defFlexCard:hover h3
 {
     color: #000000;

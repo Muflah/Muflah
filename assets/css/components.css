@@ -147,23 +147,24 @@ main
 .mainSectionHeader
 {
     margin-top: 0px;
+    display: flex;
+    flex-direction: column;
 }
 
 .mainSectionHeader h1
 {
+    flex: 1;
 
-    /*flex: 1;*/
+    margin-bottom: 24px;
 
     font-size: 2.8rem;
 }
 
 .mainSectionHeader article
 {
-    /*flex: 2;*/
+    flex: 1;
 
-    color: #999999;
-
-    margin-top: 32px;
+    color: #aaaaaa;
 }
 
 .mainSectionHeader article p
@@ -185,22 +186,20 @@ main
 
 .mainLinkWrapper
 {
-    margin-top: 48px;
-    margin-bottom: 64px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+
+    padding-top: 48px;
+    padding-bottom: 48px;
     display: flex;
     gap: 16px;
-}
-
-.mainLinkWrapper .defCTA
-{
-    display: inline-block;
-    color: #eeeeee;
 }
 
 @media (orientation: portrait)
 {
     .mainLinkWrapper
     {
+        margin: 0;
         gap: 8px;
     }
 }

@@ -39,20 +39,37 @@ header
     float: left;
 
     border-radius: 64px;
+
+    padding-top: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .headerLogo .logoIcon
 {
-    height: 34px;
-    padding: 4px;
+    height: 30px;
+    padding: 2px;
+    padding-left: 1px;
+    padding-right: 1px;
 }
 
 .headerLogo .logoFull
 {
-    height: 16px;
-    padding: 12px;
-    padding-left: 0;
-    padding-right: 0;
+    height: 12px;
+    padding: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.headerLogo:active, .headerLogo:hover
+{
+    background: #eeeeee;
+    color: #111111;
+}
+
+.headerLogo:active img, .headerLogo:hover img
+{
+    filter: invert();
 }
 
 @media (orientation: portrait)
@@ -60,16 +77,6 @@ header
     .headerLogo .logoFull
     {
         display: none;
-    }
-
-    header
-    {
-        text-align: center;
-    }
-    .headerNav
-    {
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 
@@ -81,8 +88,6 @@ header
     padding: 2px;
     border-radius: 128px;
     overflow: hidden;
-
-    font-family: "Nunito", sans-serif;
 }
 
 .headerNav a
@@ -98,18 +103,22 @@ header
 
 .headerNav a:active, .headerNav a:hover
 {
-    background-color: var(--accentColor);
-
-}
-
-.activeHeaderNavLink
-{
     background-color: #eeeeee;
     color: #111111;
 }
 
+.activeHeaderNavLink
+{
+    background-color: var(--accentColor);
+}
+
 @media (orientation: portrait)
 {
+    .headerNav
+    {
+        margin-left: auto;
+        margin-right: auto;
+    }
     .headerNav a
     {
         font-size: 0.8rem;
@@ -154,7 +163,6 @@ main
 
     color: #999999;
 
-    font-family: "Nunito", sans-serif;
     margin-top: 32px;
 }
 
@@ -177,7 +185,6 @@ main
 
 .mainLinkWrapper
 {
-    font-family: "Nunito", sans-serif;
     margin-top: 48px;
     margin-bottom: 64px;
     display: flex;
@@ -226,6 +233,8 @@ footer .socialLink
 footer .socialLink:active, footer .socialLink:hover
 {
     background-color: var(--accentColor);
+    background-color: #eeeeee;
+    color: #111111;
 }
 
 @media (orientation: portrait)
@@ -253,16 +262,13 @@ footer .socialLink:active, footer .socialLink:hover
 .defCTA:active, .defCTA:hover
 {
     background-color: var(--accentColor);
+    background-color: #eeeeee;
+    color: #111111;
 }
 
 .accentCTA
 {
     background-color: var(--accentColor);
-}
-
-.accentCTA:active, .accentCTA:hover
-{
-    background-color: #111111;
 }
 
 @media (orientation: portrait)
@@ -282,20 +288,20 @@ footer .socialLink:active, footer .socialLink:hover
 {
     display: flex;
     gap: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .defFlexCard
 {
     flex: 1;
-
     overflow: hidden;
+    /*aspect-ratio: 1/1;*/
 
     /*background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);*/ /* Safari support */
     /*box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);*/
-
-    /*aspect-ratio: 1/1;*/
 }
 
 .flexCardIcon
@@ -319,12 +325,17 @@ footer .socialLink:active, footer .socialLink:hover
     color: #aaaaaa;
 }
 
-.defFlexCard a
+.defFlexCardLinkWrapper
 {
     margin-top: 8px;
     font-size: 0.7rem;
-    display: inline-block;
-    color: #aaaaaa;
+    display: inline-flex;
+    gap: 8px;
+}
+
+.defFlexCard a
+{
+    color: #eeeeee;
 }
 
 .defFlexCard:active, .defFlexCard:hover
@@ -340,7 +351,7 @@ footer .socialLink:active, footer .socialLink:hover
 
 .defFlexCard:active h3, .defFlexCard:hover h3
 {
-    color: #000000;
+    color: var(--accentColor);
 }
 
 .defFlexCard:active p, .defFlexCard:hover p
@@ -349,9 +360,14 @@ footer .socialLink:active, footer .socialLink:hover
 }
 
 .defFlexCard:active a, .defFlexCard:hover a
-{
-    
+{  
     color: var(--accentColor);
+}
+
+.defFlexCard a:active, .defFlexCard a:hover
+{
+    background-color: #eeeeee;
+    color: #111111;
 }
 
 @media (orientation: portrait)

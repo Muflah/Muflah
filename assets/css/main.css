@@ -1,6 +1,7 @@
 :root
 {
-    --accentColor: #0055bb;
+    /*--accentColor: #0055bb;*/
+    --accentColor: #ff3333;
 }
 
 html, body, header, main, footer, section, div, aside, span, a, p, h1, h2, h3, h4, h5, h6, article, img
@@ -23,6 +24,7 @@ html
     color: #eeeeee;
 
     font-family: Arial, Helvetica, sans-serif;
+	font-family: "Nunito", sans-serif;
 
     background-image: url("../../assets/media/backgrounds/bg3.png");
     background-repeat: no-repeat;

@@ -1,11 +1,3 @@
-@media (orientation: portrait)
-{
-    .headerLogo
-    {
-        display: none;
-    }
-}
-
 .aboutMeCard
 {
     flex: auto;

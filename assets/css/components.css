@@ -1,3 +1,283 @@
+/* Shared Classes */
+.accentBackground
+{
+    background-color: var(--accentColor);
+}
+.accentText
+{
+    color: var(--accentColor);
+}
+
+.defBorderAndPadding
+{
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.frostedGlass
+{
+    background-color: #33333333;
+
+
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+/* Shared Classes End */
+
+/* Header */
+header
+{
+    height: fit-content;
+    overflow: hidden;
+    text-align: center;
+}
+
+.headerLogo
+{
+    display: block;
+    float: left;
+
+    border-radius: 64px;
+}
+
+.headerLogo .logoIcon
+{
+    height: 34px;
+    padding: 4px;
+}
+
+.headerLogo .logoFull
+{
+    height: 16px;
+    padding: 12px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (orientation: portrait)
+{
+    .headerLogo .logoFull
+    {
+        display: none;
+    }
+
+    header
+    {
+        text-align: center;
+    }
+    .headerNav
+    {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.headerNav
+{
+    display: inline-flex;
+    height: fit-content;
+
+    padding: 2px;
+    border-radius: 128px;
+    overflow: hidden;
+
+    font-family: "Nunito", sans-serif;
+}
+
+.headerNav a
+{
+    font-size: 0.8rem;
+    margin: 2px;
+    padding: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    border-radius: 128px;
+}
+
+.headerNav a:active, .headerNav a:hover
+{
+    background-color: var(--accentColor);
+
+}
+
+.activeHeaderNavLink
+{
+    background-color: #eeeeee;
+    color: #111111;
+}
+
+@media (orientation: portrait)
+{
+    .headerNav a
+    {
+        font-size: 0.8rem;
+        margin: 1px;
+        padding: 8px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (orientation: portrait)
+{
+    .activeHeaderNavLink
+    {
+        display: none;
+    }
+}
+/* Header End */
+
+/* main */
+main
+{
+    display: block;
+}
+
+.mainSectionHeader
+{
+    margin-top: 0px;
+}
+
+.mainSectionHeader h1
+{
+
+    /*flex: 1;*/
+
+    font-size: 2.8rem;
+}
+
+.mainSectionHeader article
+{
+    /*flex: 2;*/
+
+    color: #999999;
+
+    font-family: "Nunito", sans-serif;
+    margin-top: 32px;
+}
+
+.mainSectionHeader article p
+{
+    margin-top: 24px;
+}
+
+@media (orientation: portrait)
+{
+    .mainSectionHeader
+    {
+        flex-direction: column;
+    }
+    .mainSectionHeader h1
+    {
+        font-size: 2.5rem;
+    }
+}
+
+.mainLinkWrapper
+{
+    font-family: "Nunito", sans-serif;
+    margin-top: 48px;
+    margin-bottom: 64px;
+    display: flex;
+    gap: 16px;
+}
+
+.mainLinkWrapper .defCTA
+{
+    display: inline-block;
+    color: #eeeeee;
+}
+
+@media (orientation: portrait)
+{
+    .mainLinkWrapper
+    {
+        gap: 8px;
+    }
+}
+/* main end */
+
+/* footer */
+footer
+{
+    padding-top: 32px;
+    padding-bottom: 32px;
+    text-align: center;
+}
+
+.copyrightNotice
+{
+    margin: 16px;
+    margin-top: 32px;
+    font-size: 0.8rem;
+}
+
+footer .socialLink
+{
+    padding: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 32px;
+    font-weight: normal;
+}
+
+footer .socialLink:active, footer .socialLink:hover
+{
+    background-color: var(--accentColor);
+}
+
+@media (orientation: portrait)
+{
+    footer .socialLink
+    {
+        display: block;
+    }
+}
+/* footer end */
+
+/* CTA */
+.defCTA
+{
+    font-size: 0.8rem;
+    font-family: "Nunito", sans-serif;
+
+    padding: 16px;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    border-radius: 32px;
+}
+
+.defCTA:active, .defCTA:hover
+{
+    background-color: var(--accentColor);
+}
+
+.accentCTA
+{
+    background-color: var(--accentColor);
+}
+
+.accentCTA:active, .accentCTA:hover
+{
+    background-color: #111111;
+}
+
+@media (orientation: portrait)
+{
+    .mainLinkWrapper .defCTA
+    {
+        font-size: 0.75rem;
+        padding: 12px;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+/* CTA End */
+
+/* Card Layout */
 .flexCardsWrapper
 {
     display: flex;

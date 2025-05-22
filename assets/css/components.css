@@ -49,7 +49,7 @@ header
 .headerLogo .logoFull
 {
     height: 12px;
-    padding-bottom: 15px;
+    padding-bottom: 16px;
     padding-left: 0;
     padding-right: 6px;
 }
@@ -67,6 +67,10 @@ header
 
 @media (orientation: portrait)
 {
+    .headerLogo
+    {
+        width: 40px;
+    }
     .headerLogo .logoFull
     {
         display: none;
@@ -191,6 +195,8 @@ main
     padding-bottom: 48px;
     display: flex;
     gap: 16px;
+
+    color: #eeeeee;
 }
 
 @media (orientation: portrait)

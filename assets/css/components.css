@@ -31,35 +31,27 @@ header
     height: fit-content;
     overflow: hidden;
     text-align: center;
-
 }
 
 .headerLogo
 {
-    display: block;
     float: left;
-
     border-radius: 64px;
-
-    padding-top: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
+    height: 40px;
 }
 
 .headerLogo .logoIcon
 {
-    height: 30px;
+    height: 32px;
     padding: 4px;
-    padding-left: 1px;
-    padding-right: 1px;
 }
 
 .headerLogo .logoFull
 {
     height: 12px;
-    padding: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-bottom: 15px;
+    padding-left: 0;
+    padding-right: 6px;
 }
 
 .headerLogo:active, .headerLogo:hover

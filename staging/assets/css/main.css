@@ -166,7 +166,7 @@ main header h2
 main header p
 {
     padding-top: 16px;
-    text-align: justify;
+    text-align: left;
 }
 @media (orientation: portrait)
 {

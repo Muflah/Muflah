@@ -26,7 +26,7 @@ body
     background-color: #eeeeee;
     color: #111111;
 }
-
+/*
 @media (prefers-color-scheme: dark)
 {
   body
@@ -34,7 +34,7 @@ body
     background-color: #111111;
     color: #eeeeee;
   }
-}
+}*/
 
 a, a:active, a:hover, a:visited
 {
@@ -191,8 +191,8 @@ main header p
 }
 .headerLogo:active, .headerLogo:hover
 {
-    background-color: #eeeeee;
-    color: #111111;
+    color: #eeeeee;
+    background-color: #111111;
 }
 @media (orientation: portrait)
 {
@@ -229,7 +229,8 @@ main header p
     padding-right: 20px;
     border-radius: 128px;
     background-color: #663388;
-    background-color: #111111;
+    background-color: #eeeeee;
+    color: #111111;
 }
 @media (orientation: portrait)
 {
@@ -249,8 +250,8 @@ main header p
 
 .headerNav a:active, .headerNav a:hover
 {
-    background-color: #eeeeee;
-    color: #111111;
+    background-color: #111111;
+    color: #eeeeee;
 }
 
 /* Cards */
@@ -277,7 +278,7 @@ main header p
 }
 .card
 {
-    background-color: #333333;
+    background-color: #ffffff;
     flex: 1;
     border-radius: 32px;
     padding: 20px;
@@ -313,7 +314,6 @@ main header p
 }
 .card:hover, .card:active
 {
-    background-color: #eeeeee;
     color: #111111;
 }
 .card:hover h2, .card:active h2, .card:hover h3, .card:active h3, .card:hover a, .card:active a

@@ -3,6 +3,13 @@
     /*--accent: #663388;*/
     --accent: #ff3333;
 }
+@media (prefers-color-scheme: dark)
+{
+    :root
+{
+    --accent: #ff3333;
+}
+}
 
 /* Reset CSS */
 html, body, header, main, footer, a, p, h1, h2, h3, h4, h5, h6, span, ul, li, nav, section, div, article

@@ -200,6 +200,14 @@ main header p
     color: #eeeeee;
     background-color: #111111;
 }
+@media (prefers-color-scheme: dark)
+{
+    .headerLogo:active, .headerLogo:hover
+    {
+        background-color: #eeeeee;
+        color: #111111;
+    }
+}
 @media (orientation: portrait)
 {
     .headerLogo span

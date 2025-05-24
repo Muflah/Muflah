@@ -192,8 +192,19 @@ main header p
 .headerLogo p
 {
     padding: 4px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+@media (orientation: portrait)
+{
+    .headerLogo p
+    {
+        padding: 4px;
+    }
+    .headerLogo span
+    {
+        display: none;
+    }
 }
 .headerLogo:active, .headerLogo:hover
 {
@@ -206,13 +217,6 @@ main header p
     {
         background-color: #eeeeee;
         color: #111111;
-    }
-}
-@media (orientation: portrait)
-{
-    .headerLogo span
-    {
-        display: none;
     }
 }
 

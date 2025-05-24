@@ -309,7 +309,9 @@ main header p
 {
     width: 10vh;
     margin-bottom: 8px;
-    filter: invert();
+    background-color: var(--accent);
+    border-radius: 16px;
+    padding: 8px;
 }
 .card h2
 {
@@ -365,20 +367,4 @@ main header p
 .card a:hover, .card a:active
 {
     color: #111111;
-}
-
-.card:hover img, .card:active img
-{
-    filter: invert();
-}
-@media (prefers-color-scheme: dark)
-{
-    .card img, .card img
-    {
-        filter: none;
-    }
-    .card:hover img, .card:active img
-    {
-        filter: invert();
-    }
 }

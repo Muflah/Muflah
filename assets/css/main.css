@@ -170,7 +170,7 @@ header, main, footer
     padding-right: 24px;
     border-radius: 128px;
     background-color: #111111;
-    color: #eeeeee;
+    color: #eeeeee !important;
 }
 .cta:hover, .cta:active
 {
@@ -190,7 +190,7 @@ header, main, footer
 {
     .cta
     {
-        color: #111111;
+        color: #111111 !important;
         background-color: #eeeeee;
     }
     .cta:hover, .cta:active

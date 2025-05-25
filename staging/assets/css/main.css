@@ -467,29 +467,40 @@ main header p
 }
 
 /* Page Specific Classes */
-.services
+/* About */
+.serviceIntro
 {
-    flex: 1;
+    flex: 3;
 }
-.services .card
+.serviceAreas
+{
+    flex: 2;
+}
+.serviceAreas
 {
     display: flex;
+}
+.serviceAreas .card
+{
+    display: flex;
+    overflow: hidden;
     align-items: center;
 }
-.services img
+.serviceAreas img
 {
-    float: left;
+    display: block;
     width: 5vh;
     border-radius: 8px;
-
+    margin: 0;
     background-color: #666666;
 }
-.services .card:hover img, .services .card:active img
+.serviceAreas .card:hover img, .serviceAreas .card:active img
 {
     background-color: var(--accent);
 }
-.services h3
+.serviceAreas h3
 {
+    display: inline-block;
     font-size: 1.3rem;
     padding: 16px;
     padding-top: 0;
@@ -498,16 +509,12 @@ main header p
 }
 @media (orientation: portrait)
 {
-    .services img
+    .serviceAreas img
     {
         width: 4vh;
     }
-    .services h3
+    .serviceAreas h3
     {
         font-size: 1rem;
     }
-}
-.services p
-{
-    display: none;
 }

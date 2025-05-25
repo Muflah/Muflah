@@ -157,7 +157,7 @@ header, main, footer
     display: block;
     margin-top: 32px;
     display: inline-flex;
-    gap: 16px;
+    gap: 8px;
 }
 .ctaWrapper li
 {
@@ -469,7 +469,7 @@ main header p
 /* Page Specific Classes */
 .services
 {
-    flex: 2;
+    flex: 1;
 }
 .services .card
 {
@@ -479,14 +479,22 @@ main header p
 .services img
 {
     float: left;
-    width: 6vh;
+    width: 5vh;
+    border-radius: 8px;
+
+    background-color: #666666;
+}
+.services .card:hover img, .services .card:active img
+{
+    background-color: var(--accent);
 }
 .services h3
 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     padding: 16px;
     padding-top: 0;
     padding-bottom: 0;
+    margin: 0;
 }
 @media (orientation: portrait)
 {

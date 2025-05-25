@@ -9,7 +9,10 @@
 
     <link rel="icon" href="favicon.svg" type="image/png">
 
-    <meta name="theme-color" content="#ff3333">
+    <!-- Light Theme -->
+    <meta name="theme-color" content="#0055bb" media="(prefers-color-scheme: light)">
+    <!-- Dark Theme -->
+    <meta name="theme-color" content="#ff3333" media="(prefers-color-scheme: dark)">
 
     <link rel="stylesheet" href="assets/css/main.css">
 
@@ -37,44 +40,49 @@
             <h1>Hi, I'm <span class="accentText">Muflah</span>.</h1>
             <h2>I help ship products that <span>WOW</span>!</h2>
             <p>I turn cool ideas into real products and making them better by listening to users and analytics. I take products from early develoment to platforms that scale.</p>
+            <ul class="ctaWrapper">
+                <li><a href="#" class="cta accentCTA">LET'S TALK</a></li>
+                <li><a href="#" class="cta">SEE MY WORK</a></li>
+            </ul>
         </header>
         
         <section class="wrapper">
-            <article class="card">
-                <h2>ABOUT ME</h2>
-                <p>A problem solver with an engineering background and over five years of experience in product management and team leadership. I help teams build useful products, improve how they work, and adapt to change. My focus is on delivering outcomes that matter. From product management to workflow optimization, I help teams move forward and scheive success.</p>
-                <a href="#">BOOK A MEETING</a>
-            </article>
+            <div class="innerWrapper">
+                <article class="card">
+                    <h2>TURNING IDEAS INTO AMAZING PRODUCTS</h2>
+                    <p>A problem solver with an engineering background and over five years of experience in product management and team leadership. I help teams build useful products, improve how they work, and adapt to change. My focus is on delivering outcomes that matter. From product management to workflow optimization, I help teams move forward and scheive success.</p>
+                    <a href="#">SEE MY WORK</a>
+                </article>
+            </div>
         </section>
 
         <section class="wrapper">
             <article class="card">
-                <img class="flexCardIcon" src="assets/media/icons/view_kanban_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-                
-                <h3>PRODUCT MANAGEMENT</h3>
-                <p>I support teams in building purposeful digital products. From discovery to launch, I bring clarity and structure across strategy, planning, and execution. My focus is on solving the right problems, aligning stakeholders, and delivering outcomes that matter to users and businesses alike, whether you’re starting fresh or scaling an existing product.</p>
-                <a href="#">SEE MY WORK</a>
+                <h3>I DO</h3>
             </article>
-            <article class="card">
-                <img class="flexCardIcon" src="assets/media/icons/manufacturing_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-                
-                <h3>WORKFLOW OPTIMIZATION</h3>
-                <p>I help teams work smarter by improving how work gets done. Through process analysis and collaboration, I identify friction points and design simpler, more effective workflows. The result is reduced overhead, better alignment, and scalable systems that let your team focus on what actually moves the needle — not just staying busy.</p>
-                <a href="#">SEE MY WORK</a>
-            </article>
-            <article class="card">
-                <img class="flexCardIcon" src="assets/media/icons/monitoring_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-                
-                <h3>AGILE TRANSFORMATION</h3>
-                <p>I guide organizations in adopting agile practices that actually work. This includes coaching teams, supporting leadership, and redesigning delivery models to be more adaptive and outcome-driven. Together, we build a culture of collaboration, continuous learning, and resilience — enabling your teams to deliver value consistently in fast-moving environments.</p>
-                <a href="#">SEE MY WORK</a>
-            </article>
+            <div class="innerWrapper services">
+                <article class="card">
+                    <img class="flexCardIcon" src="assets/media/icons/view_kanban_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
+                    
+                    <h3>PRODUCT MANAGEMENT</h3>
+                </article>
+                <article class="card">
+                    <img class="flexCardIcon" src="assets/media/icons/manufacturing_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
+                    
+                    <h3>WORKFLOW OPTIMIZATION</h3>
+                </article>
+                <article class="card">
+                    <img class="flexCardIcon" src="assets/media/icons/monitoring_24dp_EEEEEE_FILL0_wght400_GRAD0_opsz24.svg" alt="">
+                    
+                    <h3>AGILE TRANSFORMATION</h3>
+                </article>
+            </div>
         </section>
 
         <section class="wrapper">
             <article class="card">
                 <h2>ABOUT</h2>
-                <p>I’m Muflah, a problem solver with an engineering background and over five years of experience in product management and team leadership. I help teams build useful products, improve how they work, and adapt to change. My focus is on clarity, collaboration, and delivering outcomes that matter. From product management to workflow optimization and agile transformation, I bring structure and a practical mindset to help teams move forward with confidence.</p>
+                <p>I started my journey as Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa enim id nostrum? Fuga assumenda iusto animi dicta cupiditate recusandae laudantium cum doloremque natus! Necessitatibus ex ab quaerat nam veritatis quidem.</p>
                 <a href="#">LEARN MORE</a>
             </article>
             <div class="innerWrapper">
@@ -89,6 +97,19 @@
         </section>
     </main>
     <footer>
+        <ul class="footerSocialLinks">
+            <li>
+                <a href="https://facebook.com/muflah" target="_blank">
+				    <i class="fa-brands fa-facebook"></i> facebook.com/muflah
+			    </a>
+            </li>
+
+            <li>
+                <a href="https://linkedin.com/in/muflah" target="_blank">
+                    <i class="fa-brands fa-linkedin-in"></i> linkedin.com/in/muflah
+                </a>
+            </li>
+        </ul>
         <p>&copy 2025 Muflah Ul Furqan</p>
     </footer>
 </body>

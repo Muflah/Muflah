@@ -1,7 +1,7 @@
 :root
 {
     /*--accent: #663388;*/
-    --accent: #ff3333;
+    --accent: #0055bb;
 }
 @media (prefers-color-scheme: dark)
 {
@@ -152,37 +152,60 @@ header, main, footer
     background-color: var(--accent);
 }
 
-/* Components */
-main header
+.ctaWrapper
 {
-    padding: 0;
-    padding-top: 64px;
-    padding-bottom: 128px;
+    display: block;
+    margin-top: 32px;
+    display: inline-flex;
+    gap: 16px;
 }
-main header h1
+.ctaWrapper li
 {
-    padding-bottom: 16px;
+    display: inline;
 }
-main header h2
+.cta
 {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    color: var(--accent);
+    padding: 8px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 128px;
+    background-color: #111111;
+    color: #eeeeee;
 }
-main header p
+.cta:hover, .cta:active
 {
-    padding-top: 16px;
-    text-align: left;
+    background-color: #666666;
+    color: #eeeeee;
 }
-@media (orientation: portrait)
+.accentCTA
 {
-    main header
+    background-color: var(--accent);
+    color: #eeeeee;
+}
+.accentCTA:active, .accentCTA:hover
+{
+    color: #eeeeee;
+}
+@media (prefers-color-scheme: dark)
+{
+    .cta
     {
-        padding-bottom: 72px;
-        text-align: left;
+        color: #111111;
+        background-color: #eeeeee;
+    }
+    .cta:hover, .cta:active
+    {
+        background-color: #333333;        
+        color: #eeeeee;
+    }
+    .accentCTA
+    {
+        background-color: var(--accent);
+        color: #eeeeee;
     }
 }
 
+/* Components */
 .headerLogo
 {
     display: inline;
@@ -279,6 +302,60 @@ main header p
     color: #eeeeee;
 }
 
+main header
+{
+    padding: 0;
+    padding-top: 64px;
+    padding-bottom: 128px;
+}
+main header h1
+{
+    padding-bottom: 16px;
+}
+main header h2
+{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: var(--accent);
+}
+main header p
+{
+    padding-top: 16px;
+    text-align: left;
+}
+
+@media (orientation: portrait)
+{
+    main header
+    {
+        padding-bottom: 72px;
+        text-align: left;
+    }
+}
+
+.footerSocialLinks
+{
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    padding: 32px;
+    padding-top: 0;
+}
+.footerSocialLinks li
+{
+    display: inline-block;
+    padding: 4px;
+}
+.footerSocialLinks a
+{
+    font-weight: normal;
+    padding: 8px;
+}
+.footerSocialLinks a:active, .footerSocialLinks a:hover
+{
+    color: var(--accent);
+}
+
 /* Cards */
 .wrapper
 {
@@ -286,6 +363,13 @@ main header p
     gap: 16px;
     flex-direction: row;
     margin-bottom: 16px;
+    overflow: scroll;
+    scrollbar-width: 0;
+    -ms-overflow-style: none;
+}
+.wrapper::-webkit-scrollbar
+{
+    display: none;
 }
 @media (orientation: portrait)
 {
@@ -352,10 +436,11 @@ main header p
 {
     display: inline-block;
     font-size: 0.8rem;
-    padding-top: 4px;
+    padding-top: 8px;
     padding-bottom: 2px;
     margin: 0;
-    margin-top: 2px;
+    margin-top: 4px;
+    color: inherit;
 }
 .card:hover, .card:active, .card:hover p, .card:active p
 {
@@ -379,4 +464,42 @@ main header p
 .card a:hover, .card a:active
 {
     color: #111111;
+}
+
+/* Page Specific Classes */
+.services
+{
+    flex: 2;
+}
+.services .card
+{
+    display: flex;
+    align-items: center;
+}
+.services img
+{
+    float: left;
+    width: 6vh;
+}
+.services h3
+{
+    font-size: 1.5rem;
+    padding: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+@media (orientation: portrait)
+{
+    .services img
+    {
+        width: 4vh;
+    }
+    .services h3
+    {
+        font-size: 1rem;
+    }
+}
+.services p
+{
+    display: none;
 }

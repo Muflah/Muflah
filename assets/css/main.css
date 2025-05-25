@@ -346,6 +346,7 @@ main header p
     text-align: center;
     padding: 32px;
     padding-top: 0;
+    color: var(--accent);
 }
 .footerSocialLinks li
 {
@@ -354,12 +355,22 @@ main header p
 }
 .footerSocialLinks a
 {
-    font-weight: normal;
     padding: 8px;
 }
 .footerSocialLinks a:active, .footerSocialLinks a:hover
 {
-    color: var(--accent);
+    color: #111111;
+}
+@media (prefers-color-scheme: dark)
+{
+    .footerSocialLinks
+    {
+        color: var(--accent);
+    }
+    .footerSocialLinks a:active, .footerSocialLinks a:hover
+    {
+        color: #eeeeee;
+    }
 }
 
 /* Cards */

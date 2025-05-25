@@ -6,9 +6,9 @@
 @media (prefers-color-scheme: dark)
 {
     :root
-{
-    --accent: #ff3333;
-}
+    {
+        --accent: #ff3333;
+    }
 }
 
 /* Reset CSS */
@@ -23,24 +23,29 @@ html, body, header, main, footer, a, p, h1, h2, h3, h4, h5, h6, span, ul, li, na
 /* Config */
 html
 {
+    background-color: #111111;
+    color: #eeeeee;
     font-family: "Nunito", sans-serif;
 }
 
 body
 {
     background-color: #eeeeee;
+    color: #111111;
 }
 @media (prefers-color-scheme: dark)
 {
   body
   {
     background-color: #111111;
+    color: #eeeeee;
   }
 }
 
 a, a:active, a:hover, a:visited
 {
     text-decoration: none;
+    color: inherit;
 }
 
 /* Standard Classes */
@@ -201,7 +206,7 @@ header, main, footer
 }
 
 /* Components */
-.header
+.headerLogo
 {
     display: inline;
     float: left;

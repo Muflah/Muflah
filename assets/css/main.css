@@ -23,22 +23,18 @@ html, body, header, main, footer, a, p, h1, h2, h3, h4, h5, h6, span, ul, li, na
 /* Config */
 html
 {
-    background-color: #111111;
-    color: #eeeeee;
     font-family: "Nunito", sans-serif;
 }
 
 body
 {
     background-color: #eeeeee;
-    color: #111111;
 }
 @media (prefers-color-scheme: dark)
 {
   body
   {
     background-color: #111111;
-    color: #eeeeee;
   }
 }
 
@@ -205,7 +201,7 @@ header, main, footer
 }
 
 /* Components */
-.headerLogo
+.header
 {
     display: inline;
     float: left;

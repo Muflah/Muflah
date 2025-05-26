@@ -3,7 +3,6 @@
     /*--accent: #663388;*/
     --accent: #0055bb;
     --gray: #999999;
-    --darkGray: #333333;
 }
 
 /* Reset CSS */
@@ -205,7 +204,7 @@ header, main, footer
 .headerLogo:active, .headerLogo:hover
 {
     color: #eeeeee;
-    background-color: #111111;
+    background-color: var(--gray);
 }
 
 .headerNav
@@ -256,7 +255,7 @@ header, main, footer
 
 .headerNav a:active, .headerNav a:hover
 {
-    background-color: #111111;
+    background-color: var(--gray);
     color: #eeeeee;
 }
 
@@ -311,7 +310,7 @@ main header p
 }
 .footerSocialLinks a:active, .footerSocialLinks a:hover
 {
-    color: #111111;
+    color: var(--gray);
 }
 
 /* Cards */

@@ -2,7 +2,7 @@
 {
     /*--accent: #663388;*/
     --accent: #0055bb;
-    --gray: #999999;
+    --gray: #333333;
 }
 
 /* Reset CSS */
@@ -445,6 +445,7 @@ main header p
     :root
     {
         --accent: #ff3333;
+        --gray: #999999;
     }
     body
     {

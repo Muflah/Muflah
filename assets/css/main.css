@@ -2,13 +2,8 @@
 {
     /*--accent: #663388;*/
     --accent: #0055bb;
-}
-@media (prefers-color-scheme: dark)
-{
-    :root
-    {
-        --accent: #ff3333;
-    }
+    --gray: #999999;
+    --darkGray: #333333;
 }
 
 /* Reset CSS */
@@ -23,8 +18,6 @@ html, body, header, main, footer, a, p, h1, h2, h3, h4, h5, h6, span, ul, li, na
 /* Config */
 html
 {
-    background-color: #111111;
-    color: #eeeeee;
     font-family: "Nunito", sans-serif;
 }
 
@@ -32,14 +25,6 @@ body
 {
     background-color: #eeeeee;
     color: #111111;
-}
-@media (prefers-color-scheme: dark)
-{
-  body
-  {
-    background-color: #111111;
-    color: #eeeeee;
-  }
 }
 
 a, a:active, a:hover, a:visited
@@ -143,6 +128,12 @@ header, main, footer
 }
 
 /* Shared Classes */
+.glass
+{
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
 .accentText
 {
     color: var(--accent);
@@ -169,12 +160,10 @@ header, main, footer
     padding-left: 24px;
     padding-right: 24px;
     border-radius: 128px;
-    background-color: #111111;
-    color: #eeeeee;
 }
 .cta:hover, .cta:active
 {
-    background-color: #666666;
+    background-color: var(--gray);
     color: #eeeeee;
 }
 .accentCTA
@@ -185,24 +174,6 @@ header, main, footer
 .accentCTA:active, .accentCTA:hover
 {
     color: #eeeeee;
-}
-@media (prefers-color-scheme: dark)
-{
-    .cta
-    {
-        color: #111111;
-        background-color: #eeeeee;
-    }
-    .cta:hover, .cta:active
-    {
-        background-color: #333333;        
-        color: #eeeeee;
-    }
-    .accentCTA
-    {
-        background-color: var(--accent);
-        color: #eeeeee;
-    }
 }
 
 /* Components */
@@ -236,18 +207,6 @@ header, main, footer
     color: #eeeeee;
     background-color: #111111;
 }
-@media (prefers-color-scheme: dark)
-{
-    .headerLogo, .headerLogo p
-    {
-        color: var(--accent);
-    }
-    .headerLogo:active, .headerLogo:hover
-    {
-        background-color: #eeeeee;
-        color: #111111;
-    }
-}
 
 .headerNav
 {
@@ -260,16 +219,9 @@ header, main, footer
 {
     display: block;
     border-radius: 128px;
-    background-color: #999999;
     padding: 4px;
 }
-@media (prefers-color-scheme: dark)
-{
-    .headerNav ul
-    {
-        background-color: #333333;
-    }
-}
+
 .headerNav li
 {
     text-decoration: none;
@@ -361,17 +313,6 @@ main header p
 {
     color: #111111;
 }
-@media (prefers-color-scheme: dark)
-{
-    .footerSocialLinks
-    {
-        color: var(--accent);
-    }
-    .footerSocialLinks a:active, .footerSocialLinks a:hover
-    {
-        color: #eeeeee;
-    }
-}
 
 /* Cards */
 .wrapper
@@ -404,19 +345,9 @@ main header p
 }
 .card
 {
-    background-color: #ffffff;
-    color: #111111;
     flex: 1;
     border-radius: 32px;
     padding: 20px;
-}
-@media (prefers-color-scheme: dark)
-{
-    .card
-    {
-        background-color: #333333;
-        color: #eeeeee;
-    }
 }
 .card img
 {
@@ -440,14 +371,6 @@ main header p
 {
     display: inline-block;
     font-size: 0.85rem;
-    color: #666666;
-}
-@media (prefers-color-scheme: dark)
-{
-    .card p
-    {
-        color: #cccccc;
-    }
 }
 .card a
 {
@@ -459,28 +382,10 @@ main header p
     margin-top: 4px;
     color: inherit;
 }
-.card:hover, .card:active, .card:hover p, .card:active p
-{
-    color: #111111;
-}
-@media (prefers-color-scheme: dark)
-{
-    .card:hover, .card:active
-    {
-        background-color: #eeeeee;
-    }
-    .card:hover, .card:active, .card:hover p, .card:active p
-    {
-        color: #111111;
-    }
-}
+
 .card:hover h2, .card:active h2, .card:hover h3, .card:active h3, .card:hover a, .card:active a
 {
     color: var(--accent);
-}
-.card a:hover, .card a:active
-{
-    color: #111111;
 }
 
 /* Page Specific Classes */
@@ -509,7 +414,7 @@ main header p
     width: 5vh;
     border-radius: 8px;
     margin: 0;
-    background-color: #666666;
+    background-color: var(--gray);
 }
 .serviceAreas .card:hover img, .serviceAreas .card:active img
 {
@@ -533,5 +438,18 @@ main header p
     .serviceAreas h3
     {
         font-size: 1rem;
+    }
+}
+
+@media (prefers-color-scheme: dark)
+{
+    :root
+    {
+        --accent: #ff3333;
+    }
+    body
+    {
+        background: #111111;
+        color: #eeeeee;
     }
 }

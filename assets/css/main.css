@@ -352,7 +352,7 @@ main header p
 {
     width: 10vh;
     margin-bottom: 8px;
-    background-color: var(--accent);
+    background-color: gray;
     border-radius: 16px;
     padding: 8px;
 }
@@ -381,10 +381,17 @@ main header p
     margin-top: 4px;
     color: inherit;
 }
-
 .card:hover h2, .card:active h2, .card:hover h3, .card:active h3, .card:hover a, .card:active a
 {
     color: var(--accent);
+}
+.card a:hover, .card a:active
+{
+    color: var(--gray);
+}
+.card:hover img, .card:active img
+{
+    background-color: var(--accent);
 }
 
 /* Page Specific Classes */
@@ -414,10 +421,6 @@ main header p
     border-radius: 8px;
     margin: 0;
     background-color: var(--gray);
-}
-.serviceAreas .card:hover img, .serviceAreas .card:active img
-{
-    background-color: var(--accent);
 }
 .serviceAreas h3
 {

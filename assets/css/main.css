@@ -432,6 +432,26 @@ main header p
     padding-bottom: 0;
     margin: 0;
 }
+.cardTags
+{
+    display: block;
+    margin-bottom: 16px;
+}
+.cardTags span
+{
+    background-color: var(--gray);
+    color: #eeeeee;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 128px;
+    font-size: 0.75rem;
+}
+
+.card:active .cardTags span, .card:hover .cardTags span
+{
+    background-color: var(--accent);
+}
 @media (orientation: portrait)
 {
     .serviceAreas img

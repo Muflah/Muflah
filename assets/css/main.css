@@ -473,8 +473,11 @@ main header p
     }
     body
     {
-        background: #111111;
+        background-color: #111111;
         color: #eeeeee;
+        background-image: url("../../assets/media/backgrounds/bg1.png");
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     .glass
     {

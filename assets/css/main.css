@@ -160,7 +160,7 @@ header, main, footer
     padding-left: 24px;
     padding-right: 24px;
     border-radius: 128px;
-    color: #111111;
+    color: inherit;
 }
 .cta:hover, .cta:active
 {
@@ -464,7 +464,7 @@ main header p
         font-size: 1rem;
     }
 }
-/*
+
 @media (prefers-color-scheme: dark)
 {
     :root
@@ -476,12 +476,12 @@ main header p
     {
         background-color: #111111;
         color: #eeeeee;
-        background-image: url("../../assets/media/backgrounds/bg1.png");
+        /*background-image: url("../../assets/media/backgrounds/bg1.png");
         background-size: cover;
-        background-repeat: no-repeat;
+        background-repeat: no-repeat;*/
     }
     .glass
     {
         background: rgba(255, 255, 255, 0.1);
     }
-}*/
+}

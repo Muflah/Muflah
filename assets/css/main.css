@@ -27,10 +27,15 @@ body
     color: #111111;
 }
 
-a, a:active, a:hover, a:visited
+a, a:active, a:hover
 {
     text-decoration: none;
     color: inherit;
+}
+a:visited
+{
+    text-decoration: none;
+    color: initial;
 }
 
 /* Standard Classes */

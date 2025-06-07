@@ -27,15 +27,10 @@ body
     color: #111111;
 }
 
-a, a:active, a:hover
+a, a:active, a:hover, a:visited
 {
     text-decoration: none;
     color: inherit;
-}
-a:visited
-{
-    text-decoration: none;
-    color: initial;
 }
 
 /* Standard Classes */
@@ -121,8 +116,9 @@ a
 header, main, footer
 {
     padding: 64px;
-    padding-left: 256px;
-    padding-right: 256px;
+
+    max-width: 800px;
+    margin: auto;
 }
 @media (orientation: portrait)
 {
@@ -171,12 +167,20 @@ header, main, footer
     background-color: var(--gray);
     color: #eeeeee;
 }
+.cta:visited
+{
+    color: #111111;
+}
 .accentCTA
 {
     background-color: var(--accent);
     color: #eeeeee;
 }
 .accentCTA:active, .accentCTA:hover
+{
+    color: #eeeeee;
+}
+.accentCTA:visited
 {
     color: #eeeeee;
 }
@@ -303,6 +307,10 @@ main header p
     text-align: center;
     padding: 32px;
     padding-top: 0;
+    color: var(--accent);
+}
+.footerSocialLinks:visited
+{
     color: var(--accent);
 }
 .footerSocialLinks li

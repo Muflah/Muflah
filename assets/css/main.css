@@ -1,8 +1,14 @@
 :root
 {
-    /*--accent: #663388;*/
-    --accent: #0055bb;
-    --gray: #333333;
+    /*--accentDark: #663388;*/
+    --accentLight: #0055bb;
+    --accentDark: #ff3333;
+    
+    --grayLight: #333333;
+    --grayDark: #999999;
+
+    --accent: var(--accentLight);
+    --gray: var(--grayLight);
 }
 
 /* Reset CSS */
@@ -115,15 +121,31 @@ a
 /* Page Layout */
 header, main, footer
 {
-    padding: 64px;
-    padding-left: 256px;
-    padding-right: 256px;
+    padding-top: 64px;
+    padding-bottom: 64px;
 }
 @media (orientation: portrait)
 {
     header, main, footer
     {
-        padding: 32px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+.setWidth
+{
+    padding-left: 32px;
+    padding-right: 32px;
+    width: 100vw;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (orientation: portrait)
+{
+    .setWidth
+    {
+        width: auto;
     }
 }
 
@@ -468,16 +490,16 @@ main header p
 {
     :root
     {
-        --accent: #ff3333;
-        --gray: #999999;
+        --accent: var(--accentDark);
+        --gray: var(--grayDark);
     }
     body
     {
         background-color: #111111;
         color: #eeeeee;
-        background-image: url("../../assets/media/backgrounds/bg1.png");
+        /*background-image: url("../../assets/media/backgrounds/bg1.png");
         background-size: cover;
-        background-repeat: no-repeat;
+        background-repeat: no-repeat;*/
     }
     .glass
     {

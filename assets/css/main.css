@@ -30,7 +30,6 @@ body
 a, a:active, a:hover, a:visited
 {
     text-decoration: none;
-    color: inherit;
 }
 
 /* Standard Classes */
@@ -161,15 +160,12 @@ header, main, footer
     padding-left: 24px;
     padding-right: 24px;
     border-radius: 128px;
+    color: #111111;
 }
 .cta:hover, .cta:active
 {
     background-color: var(--gray);
     color: #eeeeee;
-}
-.cta:visited
-{
-    color: #111111;
 }
 .accentCTA
 {
@@ -177,10 +173,6 @@ header, main, footer
     color: #eeeeee;
 }
 .accentCTA:active, .accentCTA:hover
-{
-    color: #eeeeee;
-}
-.accentCTA:visited
 {
     color: #eeeeee;
 }
@@ -307,10 +299,6 @@ main header p
     text-align: center;
     padding: 32px;
     padding-top: 0;
-    color: var(--accent);
-}
-.footerSocialLinks:visited
-{
     color: var(--accent);
 }
 .footerSocialLinks li

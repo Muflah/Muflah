@@ -26,7 +26,10 @@ body
     background-color: #eeeeee;
     color: #111111;
 }
-
+a
+{
+    color: inherit;
+}
 a, a:active, a:hover, a:visited
 {
     text-decoration: none;

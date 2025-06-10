@@ -203,11 +203,11 @@ a, a:active, a:hover, a:visited
 }
 .card:active a, .card:hover a
 {
-	color: var(--accent);
+	color: #ffffff;
 }
 .card a:active, .card a:hover
 {
-	color: #ffffff;
+	color: var(--accent);
 }
 .card:active h3, .card:hover h3, .card:active h4, .card:hover h4, .card:active h5, .card:hover h5, .card:active h6, .card:hover h6
 {

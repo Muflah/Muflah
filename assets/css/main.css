@@ -203,7 +203,14 @@ a, a:active, a:hover, a:visited
 }
 .card:active a, .card:hover a
 {
-	color: #ffffff;
+	color: #000000;
+}
+@media(prefers-color-scheme: dark)
+{
+  .card:active a, .card:hover a
+  {
+    color: #ffffff;
+  }
 }
 .card a:active, .card a:hover
 {

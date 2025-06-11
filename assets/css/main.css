@@ -201,7 +201,7 @@ a, a:active, a:hover, a:visited
 {
 	border-color: var(--accent);
 }
-.card a:active, .card a:hover
+.card:active a, .card:hover a
 {
 	color: var(--accent);
 }

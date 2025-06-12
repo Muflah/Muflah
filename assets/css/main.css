@@ -1,6 +1,7 @@
 :root
 {
-    --accent: #ff3333;
+    /*--accent: #ff3333;*/
+	--accent: #228844;
 }
 
 /* Reset */
@@ -211,24 +212,24 @@ a, a:active, a:hover, a:visited
 }
 .card h3
 {
-	font-size: 1.1rem;
+	font-size: 1.15rem;
  	margin-bottom: 4px;
 }
 .card h4
 {
-	font-size: 1rem;
+	font-size: 0.975rem;
 	margin-top: 4px;
  	margin-bottom: 4px;
 }
 .card h5
 {
-	font-size: 0.9rem;
+	font-size: 0.95rem;
 	margin-top: 4px;
  	margin-bottom: 4px;
 }
 .card h6
 {
-	font-size: 0.9rem;
+	font-size: 0.95rem;
 	margin-top: 4px;
  	margin-bottom: 4px;
 }

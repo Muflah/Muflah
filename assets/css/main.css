@@ -218,10 +218,6 @@ a, a:active, a:hover, a:visited
 {
 	color: var(--accent);
 }
-.card h3, .card h4, .card h5, .card h6
-{
-	color: var(--accent);
-}
 .card h3
 {
 	font-size: 1.15rem;
@@ -265,13 +261,9 @@ a, a:active, a:hover, a:visited
 	{
 		background-color: #333333;
 	}
-	.card h3
+	.card h3, .card h4, .card h5, .card h6
 	{
-		color: var(--accent);
-	}
-	.card h4, .card h5, .card h6
-	{
-		color: #eeeeee;
+		color: #ffffff;
 	}
 	.card p, .card a
 	{

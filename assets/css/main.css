@@ -2,7 +2,6 @@
 {
     /*--accent: #ff3333;*/
 	--accent: #2277dd;
-	--accent: #55cc33;
 }
 @media(prefers-color-scheme: dark)
 {
@@ -10,7 +9,6 @@
 	{
 		/*--accent: #ff3333;*/
 		--accent: #2277dd;
-		--accent: #55cc33;
 	}
 }
 

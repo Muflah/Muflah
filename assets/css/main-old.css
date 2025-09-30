@@ -1,11 +1,13 @@
 :root
 {
+    /*--accent: #ff3333;*/
 	--accent: #2277dd;
 }
 @media(prefers-color-scheme: dark)
 {
 	:root
 	{
+		/*--accent: #ff3333;*/
 		--accent: #2277dd;
 	}
 }
@@ -23,11 +25,17 @@ html, body, header, main, footer, section, div, span, h1, h2, h3, h4, h5, h6, p,
 html
 {
     background-color: #eeeeee;
-    color: #111111;
 }
-
+@media(prefers-color-scheme: dark)
+{
+	html
+	{
+		background-color: #111111;
+	}
+}
 body
 {
+    max-width: 720px;
     margin: auto;
 }
 
@@ -102,29 +110,27 @@ h1, h2, h3, h4, h5, h6
 h1, h2, h3, h4, h5, h6
 {
     font-weight: 700;
+    color: #111111;
 }
 p
 {
+    color: #333333;
 	margin-bottom: 4px;
 }
-/*
 @media(prefers-color-scheme: dark)
 {
-    html
+	h1, h2, h3, h4, h5, h6
 	{
-		background-color: #111111;
+		color: #eeeeee;
+	}
+	p
+	{
 		color: #aaaaaa;
 	}
-}*/
+}
 a, a:active, a:hover, a:visited
 {
-    color: var(--accent);
     text-decoration: none;
-}
-a:active, a:hover
-{
-    transition: color ease 1s;
-    color: #111111;
 }
 
 /* Shared Classes */
@@ -140,18 +146,17 @@ a:active, a:hover
 	color: #ffffff;
 	font-weight: 800;
 }
-/*@media(prefers-color-scheme: dark)
+@media(prefers-color-scheme: dark)
 {
 	.ctaButton
 	{
 		background-color: #333333;
 	}
-}*/
+}
 .ctaButton:active, .ctaButton:hover
 {
 	color: #eeeeee;
 	background-color: #666666;
-    transition: background-color ease 1s;
 }
 .accentText
 {
@@ -166,32 +171,122 @@ a:active, a:hover
 	padding-top: 16px;
 	padding-bottom: 16px;
 }
-.defSectionArticle
+/* Cards */
+.cardWrapper
 {
-    padding-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
-
-/* Body */
-body
+.cardColumn
 {
-    max-width: 640px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
-header, main, footer
+.cardRow
 {
-    padding: 16px;
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+}
+.card
+{
+	flex: 1;
+	border-radius: 4px;
+	background-color: #ffffff;
+	padding: 8px;
+	display: block;
+	margin: 0;
+	border: 1px solid #666666;
+	transition: border-color ease 1s;
+	transition: color ease 1s;
+	transition: all ease 1s;
+	align-items: center;
+}
+.card:active, .card:hover
+{
+	border-color: var(--accent);
+}
+.card:active a, .card:hover a
+{
+	color: var(--accent);
+}
+.card:active h3, .card:hover h3, .card:active h4, .card:hover h4, .card:active h5, .card:hover h5, .card:active h6, .card:hover h6
+{
+	color: var(--accent);
+}
+.card h3
+{
+	font-size: 1.15rem;
+ 	margin-bottom: 4px;
+}
+.card h4
+{
+	font-size: 0.975rem;
+	margin-top: 4px;
+ 	margin-bottom: 4px;
+}
+.card h5
+{
+	font-size: 0.95rem;
+	margin-top: 4px;
+ 	margin-bottom: 4px;
+}
+.card h6
+{
+	font-size: 0.95rem;
+	margin-top: 4px;
+ 	margin-bottom: 4px;
+}
+.card p
+{
+	font-size: 0.9rem;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+.card a
+{
+	font-size: 0.8rem;
+	color: #222222;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-weight: 650;
+}
+@media(prefers-color-scheme: dark)
+{
+	.card
+	{
+		background-color: #333333;
+	}
+	.card h3, .card h4, .card h5, .card h6
+	{
+		color: #ffffff;
+	}
+	.card p, .card a
+	{
+		color: #cccccc;
+	}
 }
 @media(orientation: portrait)
 {
-    body
-    {
-        max-width: none;
-    }
-    header, main, footer
-    {
-        padding: 8px;
-        padding-left: 16px;
-        padding-right: 16px;
-    }
+  .cardColumn
+  {
+    flex-direction: column;
+  }
+  .cardRow
+  {
+    flex-direction: column;
+  }
+}
+
+/* Body */
+header, main, footer
+{
+    padding: 32px;
+    display: block;
 }
 
 /* Header */
@@ -208,6 +303,13 @@ header, main, footer
 .headerLogo:active, .headerLogo:hover
 {
 	color: var(--accent);
+}
+@media(prefers-color-scheme: dark)
+{
+	.headerLogo
+	{
+		color: #eeeeee;
+	}
 }
 @media(orientation: portrait)
 {
@@ -229,18 +331,8 @@ header, main, footer
   padding-top: 32px;
   padding-bottom: 32px;
 }
-.mainCTAWrapper a
-{
-    color: #ffffff;
-}
 .mainCTAWrapper li
 {
   flex: auto;
   display: inline;
-}
-
-/* Footer */
-.footerCopyright
-{
-    font-size: 0.8rem;
 }

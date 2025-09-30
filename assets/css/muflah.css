@@ -118,7 +118,13 @@ p
 }*/
 a, a:active, a:hover, a:visited
 {
+    color: var(--accent);
     text-decoration: none;
+}
+a:active, a:hover
+{
+    transition: color ease 1s;
+    color: #111111;
 }
 
 /* Shared Classes */
@@ -145,6 +151,7 @@ a, a:active, a:hover, a:visited
 {
 	color: #eeeeee;
 	background-color: #666666;
+    transition: background-color ease 1s;
 }
 .accentText
 {
@@ -221,6 +228,10 @@ header, main, footer
   gap: 8px;
   padding-top: 32px;
   padding-bottom: 32px;
+}
+.mainCTAWrapper a
+{
+    color: #ffffff;
 }
 .mainCTAWrapper li
 {

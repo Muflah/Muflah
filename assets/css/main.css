@@ -22,10 +22,17 @@ html, body, header, main, footer, section, div, span, h1, h2, h3, h4, h5, h6, p,
 /* Page Setup */
 html
 {
+    padding: 32px;
     background-color: #eeeeee;
     color: #111111;
 }
-
+@media(orientation: portrait)
+{
+    html
+    {
+        padding: 16px;
+    }
+}
 body
 {
     margin: auto;
@@ -174,7 +181,11 @@ a:active, a:hover
 /* Body */
 body
 {
+    background-color: #ffffff;
     max-width: 640px;
+    border: 1px solid #eeeeee;
+    border-radius: 32px;
+    filter: drop-shadow(#888888 0.2rem 0.2rem 4px);
 }
 header, main, footer
 {
@@ -184,7 +195,7 @@ header, main, footer
 {
     body
     {
-        max-width: none;
+        border-radius: 16px;
     }
     header, main, footer
     {

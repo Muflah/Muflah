@@ -122,15 +122,6 @@ p
 {
 	margin-bottom: 4px;
 }
-/*
-@media(prefers-color-scheme: dark)
-{
-    html
-	{
-		background-color: #111111;
-		color: #aaaaaa;
-	}
-}*/
 a, a:active, a:hover, a:visited
 {
     color: var(--accent);
@@ -140,6 +131,13 @@ a:active, a:hover
 {
     transition: color ease 1s;
     color: #111111;
+}
+@media(prefers-color-scheme: dark)
+{
+    a:active, a:hover
+    {
+        color: #eeeeee;
+    }
 }
 
 /* Shared Classes */

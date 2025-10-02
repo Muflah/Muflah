@@ -186,15 +186,7 @@ a:active, a:hover
 /* Body */
 body
 {
-    background-color: #eeeeee;
     max-width: 640px;
-}
-@media(prefers-color-scheme: dark)
-{
-    body
-    {
-        background-color: #111111;
-    }
 }
 header, main, footer
 {

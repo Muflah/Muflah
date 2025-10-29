@@ -122,9 +122,13 @@ p
 {
 	margin-bottom: 4px;
 }
-a, a:active, a:hover, a:visited
+a, a:active, a:hover
 {
     color: var(--accent);
+    text-decoration: none;
+}
+a:visited
+{
     text-decoration: none;
 }
 a:active, a:hover

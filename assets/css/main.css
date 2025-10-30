@@ -247,7 +247,7 @@ footer
     font-size: 1rem;
     display: inline-block;
 	color: inherit;
-	font-weight: 650;
+	font-weight: 600;
 	transition: color ease 1s;
 }
 .headerLogo:active, .headerLogo:hover

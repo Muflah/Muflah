@@ -1,12 +1,14 @@
 :root
 {
 	--accent: #2277dd;
+    --accent: #46f;
 }
 @media(prefers-color-scheme: dark)
 {
 	:root
 	{
 		--accent: #2277dd;
+        --accent: #46f;
 	}
 }
 

@@ -1,0 +1,290 @@
+:root
+{
+	--accent: #008844;
+}
+@media(prefers-color-scheme: dark)
+{
+    :root
+    {
+        --accent: #008844;
+    }
+}
+/* Reset */
+html, body, header, main, footer, section, div, span, h1, h2, h3, h4, h5, h6, p, a, ul, li, img
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+}
+
+/* Page Setup */
+html
+{
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 100%;
+}
+@media(prefers-color-scheme: dark)
+{
+    html
+    {
+        color: #ffffff;
+        background: #111111;
+    }
+}
+body
+{
+    width: 100%;
+}
+
+/* Font Setup*/
+.nunito
+{
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+.jersey-15
+{
+  font-family: "Jersey 15", sans-serif;
+  font-style: normal;
+}
+
+body
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+
+    font-family: "Jersey 15", sans-serif;
+    font-weight: 400;
+}
+
+/* * 1. BASE SETTINGS: Ensures R.E.M. scaling works 
+ * Set the base size on the root HTML element. All other REMs scale from this. 
+ */
+html {
+    /* Sets the base font size to 16px, so 1rem = 16px */
+    font-size: 100%; 
+}
+
+/* Optional: Adjust root font size for smaller screens (mobile first) */
+@media (max-width: 768px) {
+    /* Gently reduces the base size on small screens to prevent huge text */
+    html {
+        font-size: 93.75%; /* Now 1rem = 15px */
+    }
+}
+
+/* * 2. HEADING STYLES 
+ */
+h1 {
+    font-size: 8rem;        /* 128px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 4rem;        /* 64px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.15;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+h3 {
+    font-size: 3rem;        /* 48px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.2;
+    margin-top: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+h4 {
+    font-size: 2rem;        /* 32px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.25;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+h5 {
+    font-size: 1.5rem;      /* 24px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.3;
+    margin-top: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+h6 {
+    font-size: 1.25rem;     /* 20px */
+    font-weight: 500;       /* Medium */
+    line-height: 1.4;
+    margin-top: 0.6rem;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+
+/* * 3. BODY TEXT AND LINKS 
+ */
+p, a, li {
+    font-size: 1.125rem;    /* 18px for better readability on screens */
+    font-weight: 400;       /* Regular */
+    line-height: 1.6;       /* Optimal line height for long paragraphs */
+}
+
+a, a:active, a:hover, a:visited
+{
+    text-decoration: none;
+}
+
+/* Defaults */
+.accentBackground
+{
+    background-color: var(--accent);
+}
+.accentText
+{
+    color: var(--accent);
+}
+
+/* Shared */
+.ctaButton
+{
+	padding: 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+	transition: background-color ease 1s;
+	font-size: 1.5rem;
+	font-weight: 400;
+
+    border: 4px solid var(--accent);
+}
+.ctaButton:active, .ctaButton:hover
+{
+    transition: background-color ease 1s;
+}
+.defaultAlignment
+{
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+.defaultSpacingV
+{
+    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 32px;
+}
+
+/* Body */
+header
+{
+    overflow: hidden;
+}
+.logoHeader
+{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.logoHeader img
+{
+    background-color: var(--accent);
+    border: 4px solid var(--accent);
+}
+
+main
+{
+    width: 100%;
+}
+.mainCover
+{
+    padding-top: 64px;
+}
+.mainCTAWrapper
+{
+    display: inline-flex;
+    gap: 16px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+.mainCTAWrapper a
+{
+    color: #ffffff;
+}
+.mainCTAWrapper li
+{
+    flex: auto;
+    display: inline;
+}
+
+.myStats
+{
+    display: inline-flex;
+    gap: 32px;
+}
+.myStats article
+{
+    margin: 0;
+    padding: 0;
+    padding-top: 32px;
+    color: #ffffff;
+    text-align: center;
+    flex: 1;
+    flex-direction: column;
+}
+.myStats i
+{
+    font-size: 64px;
+    padding: 16px;
+}
+.myStats p
+{
+    font-size: 1.2rem;
+    font-family: "Jersey 15", sans-serif;
+    padding: 32px;
+    padding-bottom: 16px;
+}
+
+.myWork
+{
+    display: inline-flex;
+    gap: 32px;
+}
+.myWork article
+{
+    margin: 0;
+    padding: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+    flex: 1;
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
+.letsConnect
+{
+    color: #ffffff;
+}
+
+footer
+{
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+/* Over Write*/
+.letsConnect a, .myWork a
+{
+    line-height: 3rem;
+    color: #ffffff;
+}

@@ -6,132 +6,286 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muflah | Helping Founders Build and Scale Better</title>
 
-    <meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
+	<meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
 
-    <link rel="icon" href="favicon.svg" type="image/png">
-
-    <meta name="theme-color" content="#4466ff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#4466ff" media="(prefers-color-scheme: dark)">
-
-    <link rel="stylesheet" href="assets/css/main.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+	<link rel="icon" href="favicon.svg" type="image/png">
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
 
 	<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
+
+	<meta name="theme-color" content="#008844" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#008844" media="(prefers-color-scheme: dark)">
+
+    <style>
+        :root
+        {
+            --accent: #008844;
+        }
+        .accentText
+        {
+            color: var(--accent);
+        }
+        .accentBackground
+        {
+            background-color: var(--accent);
+        }
+
+		/* Reset */
+		html, body, header, footer, main, div, section, article, h1, h2, h3, h4, h5, h6, a, p, ul, li, table, td, tbody, img, div, span
+		{
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-decoration: none;
+			color: inherit;
+			background-color: none;
+		}
+		a, a:visited, a:active, a:hover
+		{
+			text-decoration: none;
+		}
+
+		/* Page Setup*/
+		html
+		{
+			color: #000000;
+			background-color: #ffffff;
+		}
+		@media(prefers-color-scheme: dark)
+		{
+			html
+			{
+				color: #ffffff;
+				background: #000000;
+			}
+		}
+
+		/* Fonts */
+		body {
+			font-size: 1rem; /* 16px */
+			line-height: 1.6; /* Standard line-height for body text */
+			font-weight: 400;
+			margin: 0;
+			padding: 0;
+		}
+
+		p
+		{
+			font-weight: 600;
+		}
+
+		h1 {
+			font-size: 3.5rem;
+			line-height: 1.25;
+		}
+
+		h2 {
+			font-size: 2.75rem;
+			line-height: 1.3;
+		}
+
+		h3 {
+			font-size: 2rem;
+			line-height: 1.3;
+		}
+
+		h4 {
+			font-size: 1.5rem;
+			line-height: 1.3;
+		}
+
+		h5 {
+			font-size: 1.3rem;
+			line-height: 1.3;
+		}
+
+		h6 {
+			font-size: 1.2rem;
+			line-height: 1.3;
+		}
+
+		p, a, li, i, b {
+			font-size: 1.1rem; 
+			line-height: 1.3;
+		}
+		
+		.doto {
+		font-family: "Doto", sans-serif;
+		font-optical-sizing: auto;
+		font-style: normal;
+		font-variation-settings: "ROND" 0;
+		}
+
+		/* Shared Classes */
+		.defAlignment
+		{
+			max-width: 800px;
+			margin-left: auto;
+			margin-right: auto;
+			padding-left: 16px;
+			padding-right: 16px;
+		}
+		.defCTA
+		{
+			color: var(--accent);
+			border: 4px solid var(--accent);
+
+			padding: 8px;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			font-size: 1.2rem;
+			font-weight: 600;
+		}
+		.defCTA:active, .defCTA:hover
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA:active, .primaryCTA:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+
+		/* Everything Else*/
+		.logoHeader
+		{
+			display: inline-block;
+			font-size: 2.2rem;
+			line-height: 1;
+			font-weight: 800;
+
+			padding: 12px;
+			padding-top: 8px;
+
+			background-color: var(--accent);
+			color: #ffffff;
+
+			border: 4px solid var(--accent);
+		}
+		.logoHeader:active, .logoHeader:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+		.coverWrapper
+		{
+			padding-top: 64px;
+			padding-bottom: 64px;
+		}
+		.coverCTA
+		{
+			display: flex;
+			gap: 16px;
+		}
+		.coverCTA li
+		{
+			margin-bottom: 16px;
+		}
+		@media (orientation: portrait)
+		{
+			.coverCTA
+			{
+				flex-direction: column;
+			}
+		}
+		.coverCTA li
+		{
+			display: inline-block;
+		}
+
+		.footerSocials
+		{
+			display: flex;
+			gap: 8px;
+		}
+		.footerSocials li
+		{
+			display: inline-block;
+		}
+		.footerSocials a
+		{
+			line-height: 1;
+			display: inline-block;
+			padding: 8px;
+		}
+		.footerSocials i
+		{
+			display: inline-block;
+			aspect-ratio: 1/1;
+		}
+		.copyrightNotice
+		{
+			padding-top: 16px;
+			padding-bottom: 24px;
+			font-size: 1rem;
+		}
+    </style>
 </head>
-
-<body class="nunito">
+<body class="doto">
     <header>
-        <a href="https://muflah.com/" class="headerLogo">m<span class="headerLogoLong">uflah</span><span class="accentText">.</span></a>
-    </header>
-
-    <main>
-        <div class="mainCover defaultSection">
-            <h1>Hi, I'm Muflah<span class="accentText">.</span></h1>
-
-            <h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>!</h2>
-
-            <p>
-                I work with founders and startups to help them turn ideas into real products.
-                Taking products from early development to platforms that scale.
-                I've delivered multiple multi-tenant apps and worked on various enterprise products.
-            </p>
-
-            <ul class="mainCTAWrapper">
-                <li><a href="https://calendly.com/muflahulfurqan/30min" class="ctaButton accentBackground" target="_blank">BOOK A MEETING</a></li>
-                <li><a href="https://www.linkedin.com/in/muflah/" class="ctaButton" target="_blank">LINKEDIN</a></li>
-            </ul>
-        </div>
-
-        <div class="defaultSection">
-            <h2>WORK</h2>
-
-            <article class="defSectionArticle">
-                <h3>Aga Khan Development Network</h3>
-                <p>Assisted with migration to a newer version, built from scratch on top of DatoCMS after the older platform reached end of life.</p>
-                <a href="https://the.akdn/" target="_blank">VISIT WEBSITE</a>
-            </article>
-
-            <article class="defSectionArticle">
-                <h3>SHFTR</h3>
-                <p>Contributed to the development of a multi-tenant food delivery platform.</p>
-				<a href="https://mythod.com/projects/shftr/" target="_blank">CASE STUDY</a>
-            </article>
-
-			<article class="defSectionArticle">
-                <h3>The Crowdbase</h3>
-                <p>Worked on the MVP of the MarTech product. Formed a team that later delivered the product.</p>
-                <a href="https://thecrowdbase.com/" target="_blank">LEARN MORE</a>
-            </article>
-
-			<article class="defSectionArticle">
-                <h3>I Need A Massage</h3>
-                <p>A marketplace for service providers where they can offer services, manage appointments, and handle payments.</p>
-                <a href="https://ineedamassage.com/" target="_blank">LEARN MORE</a>
-            </article>
-			
-			<article class="defSectionArticle">
-                <h3>Aga Khan Library</h3>
-                <p>CMS based on WordPress.</p>
-                <a href="https://agakhanlibrary.org/" target="_blank">VISIT WEBSITE</a>
-            </article>
-        </div>
-
-        <div class="defaultSection" style="display: none;">
-            <h2>ABOUT</h2>
-
-			<article class="defSectionArticle">
-                <h3>Little bit about me</h3>
-                <p>
-					I started an engineer and transitioned to product management by chance.
-                    Unaware of the jorney, like many others, I somehow ended up doing what I enjoy a lot.
-                    I started with smaller projects, CMS websites and marketplaces.
-                    The first big project that I worked on was SHFTR, a platform for resturants.
-                    Right after SHFTR I led the development of The Crowdbase, in teh meanwhile building the development team.
-                    These day's I'm working with same of the very talented people at Getac Video Solutions on their enterprise platform.
-				</p>
-        	</article>
-
-			<article class="defSectionArticle">
-                <h3>What I do?</h3>
-				<h4>
-                    I help founders and businesses build, design, and scale.
-                </h4>
-                <p>
-					It's been half a decade since I started working on products, and it’s now the major part of my career.
-                    So far, I’ve delivered and worked on a variety of products and enterprise platforms.
-				</p>
-        	</article>
+		<div class="defAlignment">
+			<a href="#" class="logoHeader pixelify-sans-regular">m</a>
 		</div>
+    </header>
+    
+    <main>
+		<div class="coverWrapper">
+		<div class="defAlignment">
+			<h1>Hi, I'm <span class="accentText">Muflah</span>.</h1>
+			<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
 
-		<div class="defaultSection">
-            <h2>CONNECT</h2>
+			<br><br>
 
-			<article class="defSectionArticle">
-                <h3>Book A Meeting</h3>
-                <p>Book a meeting to discuss ideas and opportunities.</p>
-                <a href="https://calendly.com/muflahulfurqan/30min" target="_blank">
-					<i class="fa-solid fa-calendar-day"></i> Calendar
-				</a>
-        	</article>
+			<p>
+				I work with founders and startups to help them turn ideas into scalable products and platforms.
+				With more than half a decade of experience,
+				I have already worked on 10+ products including SaaS and enterprise platforms and helped 2 startup founders.
+			</p>
 
-			<article class="defSectionArticle">
-                <h3>Socials</h3>
-				<p>Let's connect.</p>
-                <a href="https://www.facebook.com/Muflah/" target="_blank">
-                    <i class="fa-brands fa-facebook"></i> facebook.com/muflah
-                </a><br>
-                <a href="https://www.linkedin.com/in/muflah/" target="_blank">
-                    <i class="fa-brands fa-linkedin-in"></i> linkedin.com/in/muflah
-                </a>
-            </article>
-        </div>
+			<br><br>
+
+			<ul class="coverCTA">
+				<li><a href="https://calendly.com/muflahulfurqan/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
+				<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
+			</ul>
+		</div>
+		</div>
     </main>
 
     <footer>
-        <p class="footerCopyright">&copy 2025 Muflah Ul Furqan.</p>
+		<div class="defAlignment">
+			<ul class="footerSocials">
+				<li>
+					<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
+						<i class="fa-brands fa-facebook"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
+						<i class="fa-brands fa-linkedin-in"></i>
+					</a>
+				</li>
+			</ul>
+
+			<!--
+			<a href="https://docs.google.com/document/d/1oCsxnXRNlWSDo5ufzE2hTatqNLRgTwpYBYWHfpbCJQg/edit?usp=sharing" class="defCTA" target="_blank">
+				<i class="fa-solid fa-file-arrow-down"></i>
+			</a>
+			-->
+
+			<br>
+			<p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
+		</div>
     </footer>
 </body>
 </html>

@@ -10,11 +10,17 @@
 
 	<link rel="icon" href="favicon.svg" type="image/png">
 	
+	<!--
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
+	-->
 
-	<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
+	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" as="style" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" media="print" onload="this.media='all'" />
+	<noscript>
+		<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
+	</noscript>
 
 	<meta name="theme-color" content="#008844" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#008844" media="(prefers-color-scheme: dark)">
@@ -295,4 +301,7 @@
 		</div>
     </footer>
 </body>
+
+<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
+
 </html>

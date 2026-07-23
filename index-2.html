@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muflah | Helping Founders Build and Scale Better</title>
+
+	<meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
+
+	<link rel="icon" href="favicon.svg" type="image/png">
+	
+	<!--
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
+	-->
+
+	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" as="style" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" media="print" onload="this.media='all'" />
+	<noscript>
+		<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
+	</noscript>
+
+	<meta name="theme-color" content="#008844" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#008844" media="(prefers-color-scheme: dark)">
+
+    <style>
+        :root
+        {
+            --accent: #4488ff;
+        }
+        .accentText
+        {
+            color: var(--accent);
+        }
+        .accentBackground
+        {
+            background-color: var(--accent);
+        }
+
+		/* Reset */
+		html, body, header, footer, main, div, section, article, h1, h2, h3, h4, h5, h6, a, p, ul, li, table, td, tbody, img, div, span
+		{
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-decoration: none;
+			color: inherit;
+			background-color: none;
+		}
+		a, a:visited, a:active, a:hover
+		{
+			text-decoration: none;
+		}
+
+		/* Theme */
+		html
+		{
+			color: #000000;
+			background-color: #ffffff;
+		}
+		@media(prefers-color-scheme: dark)
+		{
+			html
+			{
+				color: #ffffff;
+				background: #000000;
+			}
+		}
+
+		/* Page Setup */
+		html
+		{
+			background-image: url(pexels-lahzeha-214375022-17408946.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			display: grid;
+  			place-items: center;
+  			min-height: 100vh;
+			padding-left: 16px;
+			padding-right: 16px;
+  			margin: 0;
+		}
+		body
+		{
+			border: 2px solid var(--accent);
+			border-radius: 16px;
+			max-width: 512px;
+			display: block;
+
+			margin: 0;
+			padding: 0;
+
+			padding-left: 16px;
+			padding-right: 16px;
+			overflow: hidden;
+		}
+
+		/* Frosted Glass */
+		body
+		{
+			/* Blur background behind the element */
+  			backdrop-filter: blur(10px);
+  			-webkit-backdrop-filter: blur(10px); /* For Safari support */
+  
+  			/* Semi-transparent background & border */
+  			background: rgba(255, 255, 255, 0.6); 
+  			border: 1px solid rgba(255, 255, 255, 0.2);
+		}
+		@media(prefers-color-scheme: dark)
+		{
+			body
+			{
+				/* Blur background behind the element */
+  				backdrop-filter: blur(10px);
+  				-webkit-backdrop-filter: blur(10px); /* For Safari support */
+  
+  				/* Semi-transparent background & border */
+  				background: rgba(0, 0, 0, 0.15); 
+  				border: 1px solid rgba(255, 255, 255, 0.2);
+			}
+		}
+		/* Fonts */
+		body {
+			font-family: 'Courier New', Courier, monospace;
+			font-family: "Doto", sans-serif;
+			font-optical-sizing: auto;
+			font-style: normal;
+			font-variation-settings: "ROND" 0;
+			
+			font-size: 0.5rem; /* 8px */
+			font-size: 4px;
+			line-height: 1.6; /* Standard line-height for body text */
+			font-weight: 400;
+		}
+
+		p
+		{
+			font-family: 'Courier New', Courier, monospace;
+			font-weight: 400;
+		}
+
+		h1 {
+			font-size: 3rem;
+			line-height: 1.25;
+		}
+
+		h2 {
+			font-size: 2.5rem;
+			line-height: 1.3;
+		}
+
+		h3 {
+			font-size: 1.8rem;
+			line-height: 1.3;
+		}
+
+		h4 {
+			font-size: 1.3rem;
+			line-height: 1.3;
+		}
+
+		h5 {
+			font-size: 1.2rem;
+			line-height: 1.3;
+		}
+
+		h6 {
+			font-size: 1.1rem;
+			line-height: 1.3;
+		}
+
+		p, a, li, i, b {
+			font-size: 1rem; 
+			line-height: 1.3;
+		}
+		
+		.doto {
+		font-family: "Doto", sans-serif;
+		font-optical-sizing: auto;
+		font-style: normal;
+		font-variation-settings: "ROND" 0;
+		}
+
+		/* Shared Classes */
+		.defCTA
+		{
+			color: var(--accent);
+			border: 4px solid var(--accent);
+
+			padding: 8px;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			font-size: 1.2rem;
+			font-weight: 600;
+		}
+		.defCTA:active, .defCTA:hover
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA:active, .primaryCTA:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+
+		/* Everything Else*/
+		.logoHeader
+		{
+			display: inline-block;
+			font-size: 2.2rem;
+			line-height: 1;
+			font-weight: 800;
+
+			padding: 12px;
+			padding-top: 8px;
+
+			background-color: var(--accent);
+			color: #ffffff;
+
+			border: 4px solid var(--accent);
+		}
+		.logoHeader:active, .logoHeader:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+		.coverWrapper
+		{
+			padding-top: 16px;
+			padding-bottom: 16px;
+		}
+		.coverCTA
+		{
+			display: flex;
+			gap: 16px;
+		}
+		.coverCTA li
+		{
+			margin-bottom: 16px;
+		}
+		@media (orientation: portrait)
+		{
+			.coverCTA
+			{
+				flex-direction: column;
+			}
+		}
+		.coverCTA li
+		{
+			display: inline-block;
+		}
+
+		.footerSocials
+		{
+			display: flex;
+			gap: 8px;
+		}
+		.footerSocials li
+		{
+			display: inline-block;
+		}
+		.footerSocials a
+		{
+			line-height: 1;
+			display: inline-block;
+			padding: 8px;
+		}
+		.footerSocials i
+		{
+			display: inline-block;
+			aspect-ratio: 1/1;
+		}
+		.copyrightNotice
+		{
+			padding-top: 16px;
+			padding-bottom: 24px;
+			font-size: 1rem;
+		}
+    </style>
+</head>
+<body>
+    <header>
+		<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
+    </header>
+    
+    <main>
+		<div class="coverWrapper">
+			<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
+			<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
+
+			<br>
+
+			<p>
+				I work with founders and startups to help them turn ideas into scalable products and platforms.
+			</p>
+
+			<br><br><br>
+
+			<ul class="coverCTA">
+				<li><a href="https://calendly.com/muflahulfurqan/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
+				<li>
+					<a class="defCTA" target="_blank" href="https://docs.google.com/document/d/1oCsxnXRNlWSDo5ufzE2hTatqNLRgTwpYBYWHfpbCJQg/edit?usp=sharing">RESUME</a>
+				</li>
+				<!--
+				<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
+				-->
+			</ul>
+		</div>
+    </main>
+
+    <footer>
+		<ul class="footerSocials">
+			<li>
+				<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
+					<i class="fa-brands fa-facebook"></i>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
+					<i class="fa-brands fa-linkedin-in"></i>
+				</a>
+			</li>
+		</ul>
+
+		<br>
+			
+		<p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
+    </footer>
+</body>
+
+<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
+
+</html>

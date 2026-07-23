@@ -22,14 +22,23 @@
 		<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
 	</noscript>
 
-	<meta name="theme-color" content="#008844" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#008844" media="(prefers-color-scheme: dark)">
+	<meta name="theme-color" content="#224488" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#4488ff" media="(prefers-color-scheme: dark)">
 
     <style>
         :root
         {
-            --accent: #4488ff;
+			--accent-light: #224488;
+			--accent-dark: #4488ff;
+			--accent: var(--accent-light);
         }
+		@media(prefers-color-scheme: dark)
+		{
+			:root
+        	{
+				--accent: var(--accent-dark);
+			}
+		}
         .accentText
         {
             color: var(--accent);
@@ -339,7 +348,7 @@
 
 		<br>
 			
-		<p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
+		<p class="copyrightNotice">&copy 2026 Muflah Ul Furqan.</p>
     </footer>
 </body>
 

@@ -28,7 +28,7 @@
     <style>
         :root
         {
-            --accent: #4488ff;
+            --accent: #008844;
         }
         .accentText
         {
@@ -54,42 +54,11 @@
 			text-decoration: none;
 		}
 
-		/* Page Setup */
-		html
-		{
-			display: grid;
-  			place-items: center;
-  			min-height: 100vh;
-			padding-left: 16px;
-			padding-right: 16px;
-  			margin: 0;
-
-			overflow: auto;
-		}
-		body
-		{
-			border: 2px solid var(--accent);
-			border-radius: 16px;
-			max-width: 512px;
-			display: block;
-
-			margin: 0;
-			padding: 0;
-
-			padding-left: 16px;
-			padding-right: 16px;
-			overflow: hidden;
-		}
-
-		/* Theme */
+		/* Page Setup*/
 		html
 		{
 			color: #000000;
 			background-color: #ffffff;
-
-			background-image: url(pexels-fotios-photos-17322819.jpg);
-			background-repeat: no-repeat;
-			background-size: cover;
 		}
 		@media(prefers-color-scheme: dark)
 		{
@@ -97,36 +66,9 @@
 			{
 				color: #ffffff;
 				background: #000000;
-				background-image: url(pexels-lahzeha-214375022-17408946.jpg);
-				background-repeat: no-repeat;
-				background-size: cover;
 			}
 		}
 
-		/* Frosted Glass */
-		body
-		{
-			/* Blur background behind the element */
-  			backdrop-filter: blur(10px);
-  			-webkit-backdrop-filter: blur(10px); /* For Safari support */
-  
-  			/* Semi-transparent background & border */
-  			background: rgba(255, 255, 255, 0.25); 
-  			border: 1px solid rgba(255, 255, 255, 0.2);
-		}
-		@media(prefers-color-scheme: dark)
-		{
-			body
-			{
-				/* Blur background behind the element */
-  				backdrop-filter: blur(10px);
-  				-webkit-backdrop-filter: blur(10px); /* For Safari support */
-  
-  				/* Semi-transparent background & border */
-  				background: rgba(0, 0, 0, 0.15); 
-  				border: 1px solid rgba(255, 255, 255, 0.2);
-			}
-		}
 		/* Fonts */
 		body {
 			font-family: 'Courier New', Courier, monospace;
@@ -135,10 +77,11 @@
 			font-style: normal;
 			font-variation-settings: "ROND" 0;
 			
-			font-size: 0.5rem; /* 8px */
-			font-size: 4px;
+			font-size: 1rem; /* 16px */
 			line-height: 1.6; /* Standard line-height for body text */
 			font-weight: 400;
+			margin: 0;
+			padding: 0;
 		}
 
 		p
@@ -148,37 +91,37 @@
 		}
 
 		h1 {
-			font-size: 3rem;
+			font-size: 3.5rem;
 			line-height: 1.25;
 		}
 
 		h2 {
-			font-size: 2.5rem;
+			font-size: 2.75rem;
 			line-height: 1.3;
 		}
 
 		h3 {
-			font-size: 1.8rem;
+			font-size: 2rem;
 			line-height: 1.3;
 		}
 
 		h4 {
-			font-size: 1.3rem;
+			font-size: 1.5rem;
 			line-height: 1.3;
 		}
 
 		h5 {
-			font-size: 1.2rem;
+			font-size: 1.3rem;
 			line-height: 1.3;
 		}
 
 		h6 {
-			font-size: 1.1rem;
+			font-size: 1.2rem;
 			line-height: 1.3;
 		}
 
 		p, a, li, i, b {
-			font-size: 1rem; 
+			font-size: 1.1rem; 
 			line-height: 1.3;
 		}
 		
@@ -190,6 +133,14 @@
 		}
 
 		/* Shared Classes */
+		.defAlignment
+		{
+			max-width: 800px;
+			margin-left: auto;
+			margin-right: auto;
+			padding-left: 16px;
+			padding-right: 16px;
+		}
 		.defCTA
 		{
 			color: var(--accent);
@@ -241,8 +192,8 @@
 		}
 		.coverWrapper
 		{
-			padding-top: 16px;
-			padding-bottom: 16px;
+			padding-top: 64px;
+			padding-bottom: 64px;
 		}
 		.coverCTA
 		{
@@ -295,21 +246,26 @@
 </head>
 <body>
     <header>
-		<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
+		<div class="defAlignment">
+			<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
+		</div>
     </header>
     
     <main>
 		<div class="coverWrapper">
+		<div class="defAlignment">
 			<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
 			<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
 
-			<br>
+			<br><br>
 
 			<p>
 				I work with founders and startups to help them turn ideas into scalable products and platforms.
+				With more than half a decade of experience,
+				I have already worked on 10+ products including SaaS and enterprise platforms and helped 2 startup founders.
 			</p>
 
-			<br><br><br>
+			<br><br>
 
 			<ul class="coverCTA">
 				<li><a href="https://calendly.com/muflahulfurqan/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
@@ -321,25 +277,28 @@
 				-->
 			</ul>
 		</div>
+		</div>
     </main>
 
     <footer>
-		<ul class="footerSocials">
-			<li>
-				<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
-					<i class="fa-brands fa-facebook"></i>
-				</a>
-			</li>
-			<li>
-				<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
-					<i class="fa-brands fa-linkedin-in"></i>
-				</a>
-			</li>
-		</ul>
+		<div class="defAlignment">
+			<ul class="footerSocials">
+				<li>
+					<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
+						<i class="fa-brands fa-facebook"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
+						<i class="fa-brands fa-linkedin-in"></i>
+					</a>
+				</li>
+			</ul>
 
-		<br>
+			<br>
 			
-		<p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
+			<p class="copyrightNotice">&copy 2025 Muflah Ul Furqan.</p>
+		</div>
     </footer>
 </body>
 

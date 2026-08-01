@@ -89,6 +89,19 @@
 			padding-right: 16px;
 			overflow: hidden;
 		}
+		header
+		{
+			padding-bottom: 8px;
+		}
+		main
+		{
+			padding-top: 2px;
+			padding-bottom: 2px;
+		}
+		footer
+		{
+			padding-top: 2px;
+		}
 
 		/* Theme */
 		html
@@ -235,8 +248,9 @@
 			line-height: 1;
 			font-weight: 800;
 
-			padding: 8px;
-			padding-top: 4px;
+			padding: 6px;
+			padding-left: 8px;
+			padding-top: 2px;
 
 			background-color: var(--accent);
 			color: #ffffff;
@@ -247,11 +261,6 @@
 		{
 			color: var(--accent);
 			background-color: initial;
-		}
-		.coverWrapper
-		{
-			padding-top: 16px;
-			padding-bottom: 16px;
 		}
 		.coverCTA
 		{
@@ -274,22 +283,24 @@
 			display: inline-block;
 		}
 
-		.footerSocials
+		.headerSocials
 		{
+			padding: 8px;
 			display: flex;
 			gap: 8px;
+			float: right;
 		}
-		.footerSocials li
+		.headerSocials li
 		{
 			display: inline-block;
 		}
-		.footerSocials a
+		.headerSocials a
 		{
 			line-height: 1;
 			display: inline-block;
 			padding: 8px;
 		}
-		.footerSocials i
+		.headerSocials i
 		{
 			display: inline-block;
 			aspect-ratio: 1/1;
@@ -305,35 +316,8 @@
 <body>
     <header>
 		<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
-    </header>
-    
-    <main>
-		<div class="coverWrapper">
-			<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
-			<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
 
-			<br>
-
-			<p>
-				I work with founders and startups to help them turn ideas into scalable products and platforms.
-			</p>
-
-			<br><br><br><br>
-
-			<ul class="coverCTA">
-				<li><a href="https://calendly.com/muflah/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
-				<li>
-					<a class="defCTA" target="_blank" href="https://docs.google.com/document/d/1a3fkKtGc7Xy1cH_3YoHdfBhEmsAXmmokGRLIrmbip7Y/edit?usp=sharing">RESUME</a>
-				</li>
-				<!--
-				<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
-				-->
-			</ul>
-		</div>
-    </main>
-
-    <footer>
-		<ul class="footerSocials">
+		<ul class="headerSocials">
 			<li>
 				<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
 					<i class="fa-brands fa-facebook"></i>
@@ -345,9 +329,32 @@
 				</a>
 			</li>
 		</ul>
+    </header>
+    
+    <main>
+		<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
+		<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
 
 		<br>
-			
+
+		<p>
+			I work with founders and startups to help them turn ideas into scalable products and platforms.
+		</p>
+
+		<br><br><br><br>
+
+		<ul class="coverCTA">
+			<li><a href="https://calendly.com/muflah/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
+			<li>
+				<a class="defCTA" target="_blank" href="https://docs.google.com/document/d/1a3fkKtGc7Xy1cH_3YoHdfBhEmsAXmmokGRLIrmbip7Y/edit?usp=sharing">RESUME</a>
+			</li>
+			<!--
+			<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
+			-->
+		</ul>
+    </main>
+
+    <footer>
 		<p class="copyrightNotice">&copy 2026 Muflah Ul Furqan.</p>
     </footer>
 </body>

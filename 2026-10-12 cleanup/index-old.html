@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muflah | Helping Founders Build and Scale Better</title>
+
+	<meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
+
+	<link rel="icon" href="favicon.svg" type="image/png">
+	
+	<!--
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
+	-->
+
+	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" as="style" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" media="print" onload="this.media='all'" />
+	<noscript>
+		<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
+	</noscript>
+
+	<meta name="theme-color" content="#224488" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#4488ff" media="(prefers-color-scheme: dark)">
+
+    <style>
+        :root
+        {
+			--accent-light: #224488;
+			--accent-dark: #4488ff;
+			--accent: var(--accent-light);
+        }
+		@media(prefers-color-scheme: dark)
+		{
+			:root
+        	{
+				--accent: var(--accent-dark);
+			}
+		}
+        .accentText
+        {
+            color: var(--accent);
+        }
+        .accentBackground
+        {
+            background-color: var(--accent);
+        }
+
+		/* Reset */
+		html, body, header, footer, main, div, section, article, h1, h2, h3, h4, h5, h6, a, p, ul, li, table, td, tbody, img, div, span
+		{
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-decoration: none;
+			color: inherit;
+			background-color: none;
+		}
+		a, a:visited, a:active, a:hover
+		{
+			text-decoration: none;
+		}
+
+		/* Page Setup */
+		html
+		{
+			display: grid;
+  			place-items: center;
+  			min-height: 100vh;
+			padding-left: 16px;
+			padding-right: 16px;
+  			margin: 0;
+
+			overflow: auto;
+		}
+		body
+		{
+			border: 2px solid var(--accent);
+			border-radius: 16px;
+			max-width: 512px;
+			display: block;
+
+			margin: 0;
+			padding: 0;
+
+			padding-left: 16px;
+			padding-right: 16px;
+			overflow: hidden;
+		}
+		header
+		{
+			padding-bottom: 8px;
+		}
+		main
+		{
+			padding-top: 2px;
+			padding-bottom: 2px;
+		}
+		footer
+		{
+			padding-top: 2px;
+		}
+
+		/* Theme */
+		html
+		{
+			color: #000000;
+			background-color: #ffffff;
+
+			background-image: url(pexels-brett-sayles-9332668.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		@media(prefers-color-scheme: dark)
+		{
+			html
+			{
+				color: #ffffff;
+				background: #000000;
+				background-image: url(pexels-lahzeha-214375022-17408946.jpg);
+				background-repeat: no-repeat;
+				background-size: cover;
+			}
+		}
+
+		/* Frosted Glass */
+		body
+		{
+			/* Blur background behind the element */
+  			backdrop-filter: blur(10px);
+  			-webkit-backdrop-filter: blur(10px); /* For Safari support */
+  
+  			/* Semi-transparent background & border */
+  			background: rgba(255, 255, 255, 0.25); 
+  			border: 1px solid rgba(255, 255, 255, 0.2);
+		}
+		@media(prefers-color-scheme: dark)
+		{
+			body
+			{
+				/* Blur background behind the element */
+  				backdrop-filter: blur(10px);
+  				-webkit-backdrop-filter: blur(10px); /* For Safari support */
+  
+  				/* Semi-transparent background & border */
+  				background: rgba(0, 0, 0, 0.15); 
+  				border: 1px solid rgba(255, 255, 255, 0.2);
+			}
+		}
+		/* Fonts */
+		body {
+			font-family: 'Courier New', Courier, monospace;
+			font-family: "Doto", sans-serif;
+			font-optical-sizing: auto;
+			font-style: normal;
+			font-variation-settings: "ROND" 0;
+			
+			font-size: 1rem; /* 16px */
+			font-size: 4px;
+			line-height: 1.6; /* Standard line-height for body text */
+			font-weight: 400;
+		}
+
+		p
+		{
+			font-family: 'Courier New', Courier, monospace;
+			font-weight: 400;
+		}
+
+		h1 {
+			font-size: 2.2rem;
+			line-height: 1.4;
+		}
+
+		h2 {
+			font-size: 2.0rem;
+			line-height: 1.35;
+		}
+
+		h3 {
+			font-size: 1.3rem;
+			line-height: 1.3;
+		}
+
+		h4 {
+			font-size: 1.2rem;
+			line-height: 1.25;
+		}
+
+		h5 {
+			font-size: 1.15rem;
+			line-height: 1.2;
+		}
+
+		h6 {
+			font-size: 1.1rem;
+			line-height: 1.15;
+		}
+
+		p, a, li, i, b {
+			font-size: 1rem; 
+			line-height: 1;
+		}
+		
+		.doto {
+		font-family: "Doto", sans-serif;
+		font-optical-sizing: auto;
+		font-style: normal;
+		font-variation-settings: "ROND" 0;
+		}
+
+		/* Shared Classes */
+		.defCTA
+		{
+			color: var(--accent);
+			border: 2px solid var(--accent);
+
+			padding: 6px;
+			padding-left: 12px;
+			padding-right: 12px;
+
+			font-size: 1rem;
+			font-weight: 600;
+		}
+		.defCTA:active, .defCTA:hover
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA
+		{
+			color: #ffffff;
+			background-color: var(--accent);
+		}
+		.primaryCTA:active, .primaryCTA:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+
+		/* Everything Else*/
+		.logoHeader
+		{
+			display: inline-block;
+			font-size: 2rem;
+			line-height: 1;
+			font-weight: 800;
+
+			padding: 6px;
+			padding-left: 8px;
+			padding-top: 2px;
+
+			background-color: var(--accent);
+			color: #ffffff;
+
+			border: 2px solid var(--accent);
+		}
+		.logoHeader:active, .logoHeader:hover
+		{
+			color: var(--accent);
+			background-color: initial;
+		}
+		.coverCTA
+		{
+			display: flex;
+			gap: 16px;
+		}
+		.coverCTA li
+		{
+			margin-bottom: 16px;
+		}
+		@media (orientation: portrait)
+		{
+			.coverCTA
+			{
+				flex-direction: column;
+			}
+		}
+		.coverCTA li
+		{
+			display: inline-block;
+		}
+
+		.headerSocials
+		{
+			padding: 8px;
+			display: flex;
+			gap: 8px;
+			float: right;
+		}
+		.headerSocials li
+		{
+			display: inline-block;
+		}
+		.headerSocials a
+		{
+			line-height: 1;
+			display: inline-block;
+			padding: 8px;
+		}
+		.headerSocials i
+		{
+			display: inline-block;
+			aspect-ratio: 1/1;
+		}
+		.copyrightNotice
+		{
+			padding-top: 12px;
+			padding-bottom: 16px;
+			font-size: 0.8rem;
+		}
+    </style>
+</head>
+<body>
+    <header>
+		<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
+
+		<ul class="headerSocials">
+			<li>
+				<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
+					<i class="fa-brands fa-facebook"></i>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
+					<i class="fa-brands fa-linkedin-in"></i>
+				</a>
+			</li>
+		</ul>
+    </header>
+    
+    <main>
+		<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
+		<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
+
+		<br>
+
+		<p>
+			I work with founders and startups to help them turn ideas into scalable products and platforms.
+		</p>
+
+		<br><br><br><br>
+
+		<ul class="coverCTA">
+			<li><a href="https://calendly.com/muflah/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
+			<li>
+				<a class="defCTA" target="_blank" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing">
+					RESUME
+				</a>
+			</li>
+			<!--
+			<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
+			-->
+		</ul>
+    </main>
+
+    <footer>
+		<p class="copyrightNotice">&copy 2026 Muflah Ul Furqan.</p>
+    </footer>
+</body>
+
+<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
+
+</html>

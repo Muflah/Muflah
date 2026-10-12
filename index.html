@@ -1,366 +1,110 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muflah | Helping Founders Build and Scale Better</title>
-
-	<meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
-
-	<link rel="icon" href="favicon.svg" type="image/png">
-	
-	<!--
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
-	-->
-
-	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" as="style" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" media="print" onload="this.media='all'" />
-	<noscript>
-		<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
-	</noscript>
-
-	<meta name="theme-color" content="#224488" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#4488ff" media="(prefers-color-scheme: dark)">
-
-    <style>
-        :root
-        {
-			--accent-light: #224488;
-			--accent-dark: #4488ff;
-			--accent: var(--accent-light);
-        }
-		@media(prefers-color-scheme: dark)
-		{
-			:root
-        	{
-				--accent: var(--accent-dark);
-			}
-		}
-        .accentText
-        {
-            color: var(--accent);
-        }
-        .accentBackground
-        {
-            background-color: var(--accent);
-        }
-
-		/* Reset */
-		html, body, header, footer, main, div, section, article, h1, h2, h3, h4, h5, h6, a, p, ul, li, table, td, tbody, img, div, span
-		{
-			padding: 0;
-			margin: 0;
-			border: 0;
-			text-decoration: none;
-			color: inherit;
-			background-color: none;
-		}
-		a, a:visited, a:active, a:hover
-		{
-			text-decoration: none;
-		}
-
-		/* Page Setup */
-		html
-		{
-			display: grid;
-  			place-items: center;
-  			min-height: 100vh;
-			padding-left: 16px;
-			padding-right: 16px;
-  			margin: 0;
-
-			overflow: auto;
-		}
-		body
-		{
-			border: 2px solid var(--accent);
-			border-radius: 16px;
-			max-width: 512px;
-			display: block;
-
-			margin: 0;
-			padding: 0;
-
-			padding-left: 16px;
-			padding-right: 16px;
-			overflow: hidden;
-		}
-		header
-		{
-			padding-bottom: 8px;
-		}
-		main
-		{
-			padding-top: 2px;
-			padding-bottom: 2px;
-		}
-		footer
-		{
-			padding-top: 2px;
-		}
-
-		/* Theme */
-		html
-		{
-			color: #000000;
-			background-color: #ffffff;
-
-			background-image: url(pexels-brett-sayles-9332668.jpg);
-			background-repeat: no-repeat;
-			background-size: cover;
-		}
-		@media(prefers-color-scheme: dark)
-		{
-			html
-			{
-				color: #ffffff;
-				background: #000000;
-				background-image: url(pexels-lahzeha-214375022-17408946.jpg);
-				background-repeat: no-repeat;
-				background-size: cover;
-			}
-		}
-
-		/* Frosted Glass */
-		body
-		{
-			/* Blur background behind the element */
-  			backdrop-filter: blur(10px);
-  			-webkit-backdrop-filter: blur(10px); /* For Safari support */
-  
-  			/* Semi-transparent background & border */
-  			background: rgba(255, 255, 255, 0.25); 
-  			border: 1px solid rgba(255, 255, 255, 0.2);
-		}
-		@media(prefers-color-scheme: dark)
-		{
-			body
-			{
-				/* Blur background behind the element */
-  				backdrop-filter: blur(10px);
-  				-webkit-backdrop-filter: blur(10px); /* For Safari support */
-  
-  				/* Semi-transparent background & border */
-  				background: rgba(0, 0, 0, 0.15); 
-  				border: 1px solid rgba(255, 255, 255, 0.2);
-			}
-		}
-		/* Fonts */
-		body {
-			font-family: 'Courier New', Courier, monospace;
-			font-family: "Doto", sans-serif;
-			font-optical-sizing: auto;
-			font-style: normal;
-			font-variation-settings: "ROND" 0;
-			
-			font-size: 1rem; /* 16px */
-			font-size: 4px;
-			line-height: 1.6; /* Standard line-height for body text */
-			font-weight: 400;
-		}
-
-		p
-		{
-			font-family: 'Courier New', Courier, monospace;
-			font-weight: 400;
-		}
-
-		h1 {
-			font-size: 2.2rem;
-			line-height: 1.4;
-		}
-
-		h2 {
-			font-size: 2.0rem;
-			line-height: 1.35;
-		}
-
-		h3 {
-			font-size: 1.3rem;
-			line-height: 1.3;
-		}
-
-		h4 {
-			font-size: 1.2rem;
-			line-height: 1.25;
-		}
-
-		h5 {
-			font-size: 1.15rem;
-			line-height: 1.2;
-		}
-
-		h6 {
-			font-size: 1.1rem;
-			line-height: 1.15;
-		}
-
-		p, a, li, i, b {
-			font-size: 1rem; 
-			line-height: 1;
-		}
-		
-		.doto {
-		font-family: "Doto", sans-serif;
-		font-optical-sizing: auto;
-		font-style: normal;
-		font-variation-settings: "ROND" 0;
-		}
-
-		/* Shared Classes */
-		.defCTA
-		{
-			color: var(--accent);
-			border: 2px solid var(--accent);
-
-			padding: 6px;
-			padding-left: 12px;
-			padding-right: 12px;
-
-			font-size: 1rem;
-			font-weight: 600;
-		}
-		.defCTA:active, .defCTA:hover
-		{
-			color: #ffffff;
-			background-color: var(--accent);
-		}
-		.primaryCTA
-		{
-			color: #ffffff;
-			background-color: var(--accent);
-		}
-		.primaryCTA:active, .primaryCTA:hover
-		{
-			color: var(--accent);
-			background-color: initial;
-		}
-
-		/* Everything Else*/
-		.logoHeader
-		{
-			display: inline-block;
-			font-size: 2rem;
-			line-height: 1;
-			font-weight: 800;
-
-			padding: 6px;
-			padding-left: 8px;
-			padding-top: 2px;
-
-			background-color: var(--accent);
-			color: #ffffff;
-
-			border: 2px solid var(--accent);
-		}
-		.logoHeader:active, .logoHeader:hover
-		{
-			color: var(--accent);
-			background-color: initial;
-		}
-		.coverCTA
-		{
-			display: flex;
-			gap: 16px;
-		}
-		.coverCTA li
-		{
-			margin-bottom: 16px;
-		}
-		@media (orientation: portrait)
-		{
-			.coverCTA
-			{
-				flex-direction: column;
-			}
-		}
-		.coverCTA li
-		{
-			display: inline-block;
-		}
-
-		.headerSocials
-		{
-			padding: 8px;
-			display: flex;
-			gap: 8px;
-			float: right;
-		}
-		.headerSocials li
-		{
-			display: inline-block;
-		}
-		.headerSocials a
-		{
-			line-height: 1;
-			display: inline-block;
-			padding: 8px;
-		}
-		.headerSocials i
-		{
-			display: inline-block;
-			aspect-ratio: 1/1;
-		}
-		.copyrightNotice
-		{
-			padding-top: 12px;
-			padding-bottom: 16px;
-			font-size: 0.8rem;
-		}
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="I'm Muflah. I help founders and teams turn early ideas into useful products and make them better over time.">
+  <title>Muflah Ul Furqan | Product Manager</title>
+  <link rel="canonical" href="https://muflah.com/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Doto:wght@100..900&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-    <header>
-		<a href="https://muflah.com/" class="logoHeader pixelify-sans-regular">m</a>
-
-		<ul class="headerSocials">
-			<li>
-				<a href="https://www.facebook.com/Muflah/" target="_blank" class="defCTA">
-					<i class="fa-brands fa-facebook"></i>
-				</a>
-			</li>
-			<li>
-				<a href="https://www.linkedin.com/in/muflah/" target="_blank" class="defCTA">
-					<i class="fa-brands fa-linkedin-in"></i>
-				</a>
-			</li>
-		</ul>
+  <div class="shell">
+    <header class="header">
+      <a class="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+      <nav class="nav" aria-label="Social links">
+        <a href="https://www.facebook.com/Muflah/" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+        <a href="https://www.linkedin.com/in/muflah/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </nav>
     </header>
-    
+
     <main>
-		<h1>Hi, I'm <strong class="accentText">Muflah</strong>.</h1>
-		<h2>I help <span class="accentText">ship</span> amazing <span class="accentText">products</span>.</h2>
+      <section class="hero" aria-labelledby="greeting">
+        <div class="hero-portrait">
+          <img src="assets/media/muflah-portrait.png" alt="Portrait of Muflah" fetchpriority="high">
+        </div>
+        <div class="hero-copy">
+          <h1 id="greeting">Hi, I'm <strong>Muflah</strong>.</h1>
+          <h2>I help <span>ship</span> amazing <span>products</span>.</h2>
+          <p class="intro">I work with founders and startups to help them turn ideas into scalable products and platforms.</p>
+          <div class="actions">
+            <a class="button button-primary" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">LET'S TALK <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">VIEW RESUME <span class="arrow" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
 
-		<br>
-
-		<p>
-			I work with founders and startups to help them turn ideas into scalable products and platforms.
-		</p>
-
-		<br><br><br><br>
-
-		<ul class="coverCTA">
-			<li><a href="https://calendly.com/muflah/30min" class="defCTA primaryCTA" target="_blank">BOOK A MEETING</a></li>
-			<li>
-				<a class="defCTA" target="_blank" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing">
-					RESUME
-				</a>
-			</li>
-			<!--
-			<li><a href="https://www.figma.com/design/iLZKRXcXtZf5B2ctP0fLf9/Muflah-Portfolio?node-id=86-22&t=ZwZeBzfWfIg70VTA-1" class="defCTA" target="_blank">LEARN MORE</a></li>
-			-->
-		</ul>
+      <section class="proof" aria-labelledby="proof-title">
+        <div class="proof-head">
+          <p class="micro" id="proof-title">My work in brief</p>
+          <a href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">More about my work ↗</a>
+        </div>
+        <div class="stats">
+          <article class="stat"><strong class="number">7+</strong><p class="label">years helping teams make digital products at startups and larger companies</p></article>
+          <article class="stat"><strong class="number">Idea to launch</strong><p class="label">Helping turn an early idea into a first version people can try.</p></article>
+          <article class="stat"><strong class="number">Better together</strong><p class="label">Bringing people with different skills together to solve the right problem.</p></article>
+        </div>
+      </section>
+      <section class="about" aria-labelledby="about-title">
+        <div class="about-copy">
+          <p class="micro">Who am I?</p>
+          <h2 id="about-title">An experienced product manager with an engineering background.</h2>
+          <p>My product design background helps me think about both how a product works and how it feels to use. I enjoy understanding what people need, making complicated things easier, and working with a team to bring useful ideas to life.</p>
+          <p>I'm also building Friink, a place for people in Pakistan and South Asia to share thoughts on mental wellbeing and find professionals in the field.</p>
+        </div>
+        <div class="about-photo">
+          <img src="assets/media/pexels-ryank-17841014.jpg" alt="" loading="lazy">
+        </div>
+      </section>
+      <section class="approach" aria-labelledby="approach-title">
+        <p class="micro">Turning ideas into products</p>
+        <h2 id="approach-title">Listen, make a plan, then build together.</h2>
+        <p class="approach-intro">I start by understanding what people need, then help the team focus on what will make the biggest difference.</p>
+        <div class="steps">
+          <article class="step">
+            <span class="step-number">01 / LISTEN</span>
+            <h3>Understand what people need</h3>
+            <p>Talk with the people who will use it and learn what is getting in their way.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">02 / PLAN</span>
+            <h3>Choose what to do first</h3>
+            <p>Help the team agree on a simple first version and how people will use it.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">03 / MAKE</span>
+            <h3>Build, share, improve</h3>
+            <p>Release it, hear what people think, and keep making it better.</p>
+          </article>
+        </div>
+      </section>
+      <section class="strengths" aria-labelledby="strengths-title">
+        <p class="micro">What I bring to a team</p>
+        <h2 id="strengths-title">I connect people, design, and engineering.</h2>
+        <div class="strength-grid">
+          <article class="strength">
+            <h3>Keep the big picture clear</h3>
+            <p>Help the team balance what people need with what the business is trying to do.</p>
+          </article>
+          <article class="strength">
+            <h3>Care about the details</h3>
+            <p>Use my design background to make screens and everyday tasks easier to understand.</p>
+          </article>
+          <article class="strength">
+            <h3>Work well with engineers</h3>
+            <p>Ask the right questions, understand what is practical, and make thoughtful choices together.</p>
+          </article>
+        </div>
+      </section>
     </main>
 
-    <footer>
-		<p class="copyrightNotice">&copy 2026 Muflah Ul Furqan.</p>
-    </footer>
+    <footer><p>&copy; 2026 Muflah Ul Furqan.</p></footer>
+  </div>
 </body>
-
-<script src="https://kit.fontawesome.com/088b0b403f.js" crossorigin="anonymous"></script>
-
 </html>

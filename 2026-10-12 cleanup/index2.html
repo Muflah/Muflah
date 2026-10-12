@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4eee3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#211a16" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="I am Muflah. I help founders and businesses build, design, and scale innovative digital products using Agile and design-driven development.">
+  <title>Muflah | Helping Founders Build and Scale Better</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Doto:wght@100..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f4eee3;
+      --ink: #30231b;
+      --muted: #77675a;
+      --line: #dfd1bf;
+      --green: #a96520;
+      --lime: #e8b65e;
+      --mono: "DM Mono", monospace;
+      --sans: "Manrope", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .page { width: min(1180px, calc(100% - 64px)); margin: 0 auto; }
+    .topbar {
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--paper);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.08em;
+      padding-right: 2px;
+      font-family: "Doto", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings: "ROND" 0;
+    }
+    .top-note, .eyebrow, .socials a, .availability, .footer-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .top-note { color: var(--muted); }
+    .socials { display: flex; gap: 24px; }
+    .socials a { text-decoration: none; color: var(--ink); transition: color .2s; }
+    .socials a:hover { color: var(--green); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.13fr) minmax(300px, .87fr);
+      gap: clamp(40px, 8vw, 108px);
+      align-items: center;
+      padding: clamp(68px, 11vh, 128px) 0 100px;
+    }
+    .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--muted); margin: 0 0 28px; }
+    .eyebrow::before { content: ""; width: 25px; height: 1px; background: var(--green); }
+    h1, h2, p { margin-top: 0; }
+    h1 { font-size: clamp(58px, 8.6vw, 112px); line-height: .98; letter-spacing: -.085em; font-weight: 600; margin-bottom: 22px; }
+    h1 strong { font-weight: 600; color: var(--green); }
+    h2 { max-width: 700px; font-size: clamp(30px, 4.2vw, 54px); line-height: 1.12; letter-spacing: -.065em; font-weight: 500; margin-bottom: 28px; }
+    h2 span { color: var(--green); }
+    .intro { max-width: 450px; color: var(--muted); font-size: 16px; line-height: 1.8; margin: 0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 0 19px;
+      border: 1px solid var(--ink);
+      border-radius: 3px;
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .05em;
+      transition: transform .2s, background .2s, color .2s;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { background: var(--ink); color: var(--paper); }
+    .button-primary:hover { background: var(--green); border-color: var(--green); }
+    .button-secondary:hover { background: var(--lime); }
+    .arrow { font-size: 16px; line-height: 1; }
+    .visual { position: relative; min-height: 490px; }
+    .photo {
+      position: absolute;
+      inset: 0 22px 28px 0;
+      overflow: hidden;
+      background: #c8c7b8;
+    }
+    .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(20,27,22,.42)); }
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.72); }
+    .photo-caption { position: absolute; z-index: 1; left: 22px; bottom: 20px; color: #fff; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .availability {
+      position: absolute;
+      right: 0;
+      top: 32px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      writing-mode: vertical-rl;
+      color: var(--green);
+    }
+    .availability::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #7d9f53; }
+    .proof {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 78px;
+    }
+    .proof-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 26px;
+    }
+    .proof-heading .eyebrow { margin: 0; }
+    .proof-heading a {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+    }
+    .proof-item { min-height: 156px; padding: 24px; }
+    .proof-item + .proof-item { border-left: 1px solid var(--line); }
+    .proof-number {
+      display: block;
+      color: var(--green);
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -.07em;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .proof-label { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0; }
+    .proof-foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px 24px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .04em;
+    }
+    .proof-foot strong { color: var(--ink); font-weight: 500; }
+    .proof-contact { color: inherit; text-decoration-color: var(--green); text-underline-offset: 4px; }
+    footer {
+      min-height: 72px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+    }
+    .footer-note { margin: 0; font-size: 10px; letter-spacing: .04em; text-transform: none; }
+    @media (max-width: 760px) {
+      .page { width: min(100% - 40px, 560px); }
+      .topbar { min-height: 76px; }
+      .top-note { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 44px; padding: 70px 0 72px; }
+      .visual { min-height: min(105vw, 440px); order: -1; }
+      .photo { inset: 0 20px 20px 0; }
+      .availability { top: 20px; }
+      h1 { font-size: clamp(60px, 14vw, 92px); }
+      h2 { font-size: clamp(33px, 8vw, 48px); }
+      .proof { padding-bottom: 56px; }
+      .proof-item { padding: 18px; min-height: 140px; }
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #211a16;
+        --ink: #f3eadc;
+        --muted: #baa995;
+        --line: #49382b;
+        --green: #e8ad59;
+        --lime: #e8b65e;
+      }
+      .brand { background: var(--lime); color: #211a16; }
+      .button-primary { background: var(--lime); border-color: var(--lime); color: #211a16; }
+      .button-primary:hover { background: #f1c875; border-color: #f1c875; }
+      .button-secondary:hover { color: #211a16; }
+      .photo img { filter: saturate(.62) brightness(.8); }
+    }
+    @media (max-width: 420px) {
+      .page { width: calc(100% - 32px); }
+      .socials { gap: 14px; }
+      .socials a { font-size: 10px; }
+      .actions { display: grid; grid-template-columns: 1fr; }
+      .button { justify-content: space-between; }
+      footer { align-items: flex-start; flex-direction: column; justify-content: center; padding: 18px 0; gap: 7px; }
+      .proof-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .proof-item { min-height: 0; padding: 18px; }
+      .proof-item + .proof-item { border-left: 0; border-top: 1px solid var(--line); }
+      .proof-number { font-size: 40px; margin-bottom: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+      <span class="top-note">Independent product partner</span>
+      <nav class="socials" aria-label="Social links">
+        <a href="https://www.facebook.com/Muflah/" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+        <a href="https://www.linkedin.com/in/muflah/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <section class="hero-copy" aria-labelledby="greeting">
+        <p class="eyebrow">A thoughtful approach to making</p>
+        <h1 id="greeting">Hi, I'm <strong>Muflah</strong>.</h1>
+        <h2>I help <span>ship</span> amazing <span>products</span>.</h2>
+        <p class="intro">I work with founders and startups to help them turn ideas into scalable products and platforms.</p>
+        <div class="actions">
+          <a class="button button-primary" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">BOOK A MEETING <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">RESUME <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
+      <aside class="visual" aria-label="Featured background photograph">
+        <div class="photo">
+          <img src="pexels-ryank-17841014.jpg" alt="" fetchpriority="high">
+          <span class="photo-caption">Ideas into products</span>
+        </div>
+        <span class="availability">Building what’s next</span>
+      </aside>
+    </main>
+
+    <section class="proof" aria-labelledby="proof-title">
+      <div class="proof-heading">
+        <p class="eyebrow" id="proof-title">Product work, with outcomes</p>
+        <a href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">More in my resume ↗</a>
+      </div>
+      <div class="proof-grid">
+        <article class="proof-item">
+          <strong class="proof-number">7+</strong>
+          <p class="proof-label">years turning ideas into SaaS and enterprise products</p>
+        </article>
+        <article class="proof-item">
+          <strong class="proof-number">33%</strong>
+          <p class="proof-label">faster feature go-live after reshaping iteration scope</p>
+        </article>
+        <article class="proof-item">
+          <strong class="proof-number">50%</strong>
+          <p class="proof-label">less testing time after embedding SQA in delivery teams</p>
+        </article>
+      </div>
+      <div class="proof-foot">
+        <span><strong>Selected product work</strong> &nbsp; Friink · Getac Video Solutions · The Crowdbase</span>
+        <a class="proof-contact" href="mailto:muflah@outlook.com">muflah@outlook.com ↗</a>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-note">&copy; 2026 Muflah Ul Furqan.</p>
+      <p class="footer-note">Build with intention.</p>
+    </footer>
+  </div>
+</body>
+</html>

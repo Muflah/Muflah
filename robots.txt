@@ -1,2 +1,3 @@
 User-agent: *
-Disallow: /assests/media
+Allow: /
+Sitemap: https://muflah.com/sitemap.xml

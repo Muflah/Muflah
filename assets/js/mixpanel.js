@@ -4,6 +4,11 @@
   const CONSENT_STORAGE_KEY = "muflah-analytics-consent";
   const consentBanner = document.getElementById("analytics-consent");
 
+  const hideConsentBanner = () => {
+    consentBanner.hidden = true;
+    consentBanner.style.setProperty("display", "none", "important");
+  };
+
   const readCookie = () => {
     const cookie = document.cookie.split("; ").find((item) => item.startsWith(`${CONSENT_COOKIE}=`));
     return cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : null;
@@ -65,7 +70,7 @@
 
   const enableAnalytics = () => {
     saveConsent("granted");
-    consentBanner.hidden = true;
+    hideConsentBanner();
     loadMixpanel().then((mixpanel) => {
       mixpanel.track("analytics_consent_granted");
       trackClicks(mixpanel);
@@ -74,7 +79,7 @@
 
   const disableAnalytics = () => {
     saveConsent("denied");
-    consentBanner.hidden = true;
+    hideConsentBanner();
   };
 
   window.addEventListener("muflah-analytics-consent", (event) => {

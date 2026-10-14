@@ -3,6 +3,7 @@
   const CONSENT_COOKIE = "muflah_analytics_consent";
   const CONSENT_STORAGE_KEY = "muflah-analytics-consent";
   const consentBanner = document.getElementById("analytics-consent");
+  let mixpanelSdkPromise;
 
   const hideConsentBanner = () => {
     consentBanner.hidden = true;
@@ -39,23 +40,39 @@
   };
 
   const loadMixpanel = () => {
-    if (window.mixpanel) return Promise.resolve(window.mixpanel);
+    if (mixpanelSdkPromise) return mixpanelSdkPromise;
 
-    return new Promise((resolve, reject) => {
+    mixpanelSdkPromise = new Promise((resolve, reject) => {
+      const mixpanel = window.mixpanel = window.mixpanel || [];
+      mixpanel._i = mixpanel._i || [];
+      mixpanel.__SV = mixpanel.__SV || 1.2;
+      mixpanel.init = mixpanel.init || ((token, config, name) => {
+        mixpanel._i.push([token, config, name]);
+      });
+
       const script = document.createElement("script");
       script.src = "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
       script.async = true;
       script.onload = () => {
-        window.mixpanel.init(MIXPANEL_TOKEN, {
-          track_pageview: true,
-          persistence: "localStorage",
-          autocapture: false
-        });
-        resolve(window.mixpanel);
+        try {
+          window.mixpanel.init(MIXPANEL_TOKEN, {
+            track_pageview: true,
+            persistence: "localStorage",
+            autocapture: false
+          });
+          if (typeof window.mixpanel.track !== "function") {
+            throw new Error("Mixpanel SDK loaded without exposing track()");
+          }
+          resolve(window.mixpanel);
+        } catch (error) {
+          reject(error);
+        }
       };
       script.onerror = reject;
       document.head.appendChild(script);
     });
+
+    return mixpanelSdkPromise;
   };
 
   const trackClicks = (mixpanel) => {
@@ -74,7 +91,7 @@
     loadMixpanel().then((mixpanel) => {
       mixpanel.track("analytics_consent_granted");
       trackClicks(mixpanel);
-    }).catch(() => {});
+    }).catch((error) => console.error("Mixpanel initialization failed:", error));
   };
 
   const disableAnalytics = () => {
@@ -89,7 +106,7 @@
 
   const consent = readConsent();
   if (consent === "granted") {
-    loadMixpanel().then(trackClicks).catch(() => {});
+    loadMixpanel().then(trackClicks).catch((error) => console.error("Mixpanel initialization failed:", error));
   } else if (consent !== "denied") {
     consentBanner.hidden = false;
   }

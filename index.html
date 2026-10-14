@@ -34,8 +34,8 @@
           <h2>I help <span>ship</span> amazing <span>products</span>.</h2>
           <p class="intro">I work with founders and startups to help them turn ideas into scalable products and platforms.</p>
           <div class="actions">
-            <a class="button button-primary" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">LET'S TALK <span class="arrow" aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">VIEW RESUME <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="button button-primary" data-mixpanel-event="meeting_booking_clicked" data-mixpanel-placement="hero" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">LET'S TALK <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" data-mixpanel-event="resume_viewed" href="https://docs.google.com/document/d/1NSwxxVOuTpqLoCOvSrfyldq3o7otMvgYP5nws6H9kjQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">VIEW RESUME <span class="arrow" aria-hidden="true">↗</span></a>
           </div>
         </div>
       </section>
@@ -55,7 +55,7 @@
               <li>Mental wellbeing</li>
               <li>Professional discovery</li>
             </ul>
-            <a class="work-link" href="https://friink.com" target="_blank" rel="noopener noreferrer">Visit Friink ↗</a>
+            <a class="work-link" data-mixpanel-event="friink_link_clicked" href="https://friink.com" target="_blank" rel="noopener noreferrer">Visit Friink ↗</a>
           </div>
           <div class="work-art" aria-label="Friink, a place for humans" role="img">
             <span class="work-orbit work-orbit-one" aria-hidden="true"></span>
@@ -119,12 +119,23 @@
             <p class="micro">Let's talk</p>
             <h2 id="contact-title">Have a product challenge to work through?</h2>
           </div>
-          <a class="button button-primary" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">BOOK A CHAT <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="button button-primary" data-mixpanel-event="meeting_booking_clicked" data-mixpanel-placement="contact" href="https://calendly.com/muflah/30min" target="_blank" rel="noopener noreferrer">BOOK A CHAT <span class="arrow" aria-hidden="true">↗</span></a>
         </div>
       </section>
     </main>
 
     <footer><p>&copy; 2026 Muflah Ul Furqan.</p></footer>
   </div>
+  <aside class="analytics-consent" id="analytics-consent" hidden aria-labelledby="analytics-consent-title">
+    <div>
+      <strong id="analytics-consent-title">Help me learn what’s useful.</strong>
+      <p>I’d like to use anonymous Mixpanel analytics to understand which parts of this site are helpful. No form data is collected.</p>
+    </div>
+    <div class="analytics-consent-actions">
+      <button class="analytics-consent-button analytics-consent-button-primary" id="analytics-accept" type="button">Allow analytics</button>
+      <button class="analytics-consent-button" id="analytics-reject" type="button">No thanks</button>
+    </div>
+  </aside>
+  <script src="assets/js/mixpanel.js" defer></script>
 </body>
 </html>

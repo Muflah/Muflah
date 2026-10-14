@@ -1,21 +1,35 @@
 (() => {
   const MIXPANEL_TOKEN = "a3a7311474fc0c6026d88f512ebbc0a4";
-  const CONSENT_KEY = "muflah-analytics-consent";
+  const CONSENT_COOKIE = "muflah_analytics_consent";
+  const CONSENT_STORAGE_KEY = "muflah-analytics-consent";
   const consentBanner = document.getElementById("analytics-consent");
 
+  const readCookie = () => {
+    const cookie = document.cookie.split("; ").find((item) => item.startsWith(`${CONSENT_COOKIE}=`));
+    return cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : null;
+  };
+
+  const saveCookie = (value) => {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(value)}; Max-Age=31536000; Path=/; SameSite=Lax${secure}`;
+  };
+
   const readConsent = () => {
+    const cookieConsent = readCookie();
+    if (cookieConsent) return cookieConsent;
     try {
-      return window.localStorage.getItem(CONSENT_KEY);
+      return window.localStorage.getItem(CONSENT_STORAGE_KEY);
     } catch (_) {
       return null;
     }
   };
 
   const saveConsent = (value) => {
+    saveCookie(value);
     try {
-      window.localStorage.setItem(CONSENT_KEY, value);
+      window.localStorage.setItem(CONSENT_STORAGE_KEY, value);
     } catch (_) {
-      // Analytics still works for this visit when browser storage is unavailable.
+      // The consent cookie is sufficient when browser storage is unavailable.
     }
   };
 

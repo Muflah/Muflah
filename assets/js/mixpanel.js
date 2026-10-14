@@ -2,8 +2,6 @@
   const MIXPANEL_TOKEN = "a3a7311474fc0c6026d88f512ebbc0a4";
   const CONSENT_KEY = "muflah-analytics-consent";
   const consentBanner = document.getElementById("analytics-consent");
-  const acceptButton = document.getElementById("analytics-accept");
-  const rejectButton = document.getElementById("analytics-reject");
 
   const readConsent = () => {
     try {
@@ -65,8 +63,10 @@
     consentBanner.hidden = true;
   };
 
-  acceptButton.addEventListener("click", enableAnalytics);
-  rejectButton.addEventListener("click", disableAnalytics);
+  window.addEventListener("muflah-analytics-consent", (event) => {
+    if (event.detail === "granted") enableAnalytics();
+    if (event.detail === "denied") disableAnalytics();
+  });
 
   const consent = readConsent();
   if (consent === "granted") {

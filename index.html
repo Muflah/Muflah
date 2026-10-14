@@ -129,13 +129,13 @@
   <aside class="analytics-consent" id="analytics-consent" hidden aria-labelledby="analytics-consent-title">
     <div>
       <strong id="analytics-consent-title">Help me learn what’s useful.</strong>
-      <p>I’d like to use anonymous Mixpanel analytics to understand which parts of this site are helpful. No form data is collected.</p>
+      <p>This site uses anonymous analytics to understand which pages and links are useful. No forms or personal information are collected.</p>
     </div>
     <div class="analytics-consent-actions">
-      <button class="analytics-consent-button analytics-consent-button-primary" id="analytics-accept" type="button">Allow analytics</button>
-      <button class="analytics-consent-button" id="analytics-reject" type="button">No thanks</button>
+      <button class="analytics-consent-button analytics-consent-button-primary" id="analytics-accept" type="button" onclick="document.getElementById('analytics-consent').hidden = true; window.dispatchEvent(new CustomEvent('muflah-analytics-consent', { detail: 'granted' }));">Allow analytics</button>
+      <button class="analytics-consent-button" id="analytics-reject" type="button" onclick="document.getElementById('analytics-consent').hidden = true; window.dispatchEvent(new CustomEvent('muflah-analytics-consent', { detail: 'denied' }));">No thanks</button>
     </div>
   </aside>
-  <script src="assets/js/mixpanel.js?v=2" defer></script>
+  <script src="assets/js/mixpanel.js?v=3" defer></script>
 </body>
 </html>

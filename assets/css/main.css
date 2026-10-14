@@ -218,9 +218,3 @@
     .hero .button-secondary { border-color: rgba(236,253,245,.85); color: #f0fdf4; }
     .hero .button-secondary:hover { background: rgba(236,253,245,.12); }
     :focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
-    .analytics-consent { position: fixed; z-index: 10; right: 20px; bottom: 20px; left: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 760px; margin: 0 auto; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 14px 34px rgba(0,0,0,.12); color: var(--ink); }
-    .analytics-consent p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .analytics-consent-actions { display: flex; flex: 0 0 auto; gap: 8px; }
-    .analytics-consent-button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: inherit; cursor: pointer; font: 500 11px var(--mono); }
-    .analytics-consent-button-primary { border-color: var(--ink); background: var(--ink); color: var(--surface); }
-    @media (max-width: 600px) { .analytics-consent { align-items: stretch; flex-direction: column; gap: 12px; } .analytics-consent-actions { justify-content: flex-end; } }

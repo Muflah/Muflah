@@ -2,6 +2,24 @@
   const MIXPANEL_TOKEN = "a3a7311474fc0c6026d88f512ebbc0a4";
   const CONSENT_KEY = "muflah-analytics-consent";
   const consentBanner = document.getElementById("analytics-consent");
+  const acceptButton = document.getElementById("analytics-accept");
+  const rejectButton = document.getElementById("analytics-reject");
+
+  const readConsent = () => {
+    try {
+      return window.localStorage.getItem(CONSENT_KEY);
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const saveConsent = (value) => {
+    try {
+      window.localStorage.setItem(CONSENT_KEY, value);
+    } catch (_) {
+      // Analytics still works for this visit when browser storage is unavailable.
+    }
+  };
 
   const loadMixpanel = () => {
     if (window.mixpanel) return Promise.resolve(window.mixpanel);
@@ -34,7 +52,7 @@
   };
 
   const enableAnalytics = () => {
-    localStorage.setItem(CONSENT_KEY, "granted");
+    saveConsent("granted");
     consentBanner.hidden = true;
     loadMixpanel().then((mixpanel) => {
       mixpanel.track("analytics_consent_granted");
@@ -43,16 +61,17 @@
   };
 
   const disableAnalytics = () => {
-    localStorage.setItem(CONSENT_KEY, "denied");
+    saveConsent("denied");
     consentBanner.hidden = true;
   };
 
-  const consent = localStorage.getItem(CONSENT_KEY);
+  acceptButton.addEventListener("click", enableAnalytics);
+  rejectButton.addEventListener("click", disableAnalytics);
+
+  const consent = readConsent();
   if (consent === "granted") {
     loadMixpanel().then(trackClicks).catch(() => {});
   } else if (consent !== "denied") {
     consentBanner.hidden = false;
-    document.getElementById("analytics-accept").addEventListener("click", enableAnalytics);
-    document.getElementById("analytics-reject").addEventListener("click", disableAnalytics);
   }
 })();

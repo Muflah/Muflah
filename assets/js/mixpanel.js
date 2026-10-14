@@ -1,7 +1,7 @@
 (() => {
   const MIXPANEL_TOKEN = "a3a7311474fc0c6026d88f512ebbc0a4";
-  const CONSENT_COOKIE = "muflah_analytics_consent";
-  const CONSENT_STORAGE_KEY = "muflah-analytics-consent";
+  const CONSENT_COOKIE = "muflah_analytics_consent_v2";
+  const CONSENT_STORAGE_KEY = "muflah-analytics-consent-v2";
   const consentBanner = document.getElementById("analytics-consent");
   let mixpanelSdkPromise;
 
@@ -58,7 +58,8 @@
           window.mixpanel.init(MIXPANEL_TOKEN, {
             track_pageview: true,
             persistence: "localStorage",
-            autocapture: false
+            autocapture: false,
+            api_host: "https://api-eu.mixpanel.com"
           });
           if (typeof window.mixpanel.track !== "function") {
             throw new Error("Mixpanel SDK loaded without exposing track()");

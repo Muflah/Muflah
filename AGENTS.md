@@ -8,7 +8,8 @@ This project uses Mixpanel as its only product analytics tool.
 - SDK: Mixpanel Browser JavaScript SDK loaded from `https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js`
 - Initialization: `assets/js/mixpanel.js`
 - Project token: stored in `assets/js/mixpanel.js` as a public browser token
-- Consent: initialization is delayed until the visitor chooses “Allow analytics”; consent state is stored in the first-party `muflah_analytics_consent` cookie, with local storage as a fallback
+- Project region: EU; events use `https://api-eu.mixpanel.com`
+- Consent: initialization is delayed until the visitor chooses “Allow analytics”; consent state is stored in the first-party `muflah_analytics_consent_v2` cookie, with local storage as a fallback
 - Identity: anonymous tracking only; this site has no authentication flow, so do not add `identify`, `people.set`, or `reset` without a stable account ID and an approved identity plan
 
 ## Tracking plan

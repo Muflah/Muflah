@@ -1,0 +1,175 @@
+# Reusable Authentication and Session System
+
+This directory contains an experiment to design and build an authentication and session system that can be reused across future products.
+
+## Service model
+
+This project will become a self-hosted authentication service, deployed independently from the products that consume it. A typical production deployment will be available at `https://auth.example.com`.
+
+Better Auth will provide the underlying authentication runtime and standard session primitives. Our implementation will configure and extend it with the reusable risk, OTP, account, session, JWT, and cookie policies defined in this project. Better Auth remains an external dependency; it will not be copied or forked into this repository.
+
+The service is organized around two boundaries:
+
+- **Better Auth integration**: framework configuration, plugins, database adapter, cookie configuration, session configuration, and service wiring.
+- **Reusable implementation**: risk evaluation, OTP policy, account switching, session policy, JWT conventions, domain rules, and product-neutral interfaces.
+
+Product-specific behavior should remain outside the reusable core.
+
+## Repository structure
+
+This is a modular monolith: all modules run in one auth service and share one database. The folders are internal boundaries, not separate deployable services.
+
+```text
+src/
+├── better-auth/          # Better Auth setup
+├── api/routes/           # Public JSON API routes
+├── app/                  # Next.js entrypoints and Better Auth HTTP route
+├── accounts/             # Users and account context
+├── sessions/             # Sessions and account switching
+├── otp/                  # OTP verification
+├── risk/                 # Risk rules
+├── tokens/               # JWT and JWKS behavior
+├── cookies/              # Cookie behavior
+├── db/                   # Database access
+├── integrations/         # Email/SMS providers
+├── config/               # Runtime configuration
+├── web/                  # Minimal direct-access HTML/CSS interface
+└── audit/                # Future authentication/security event records
+
+migrations/              # Database migrations
+tests/
+├── unit/
+├── integration/
+└── contract/             # Public API contract tests
+```
+
+Planned folders are present as placeholders so the intended boundaries are visible from the beginning. They should gain implementation files only when their work enters scope.
+
+## Application-owned authorization
+
+Roles and permissions will not be owned by this auth service. Each consuming application will own its own authorization model and policy because only that application understands its resources and business rules.
+
+The auth service establishes who the user is and manages authentication sessions. An application may maintain its own:
+
+- Roles such as `owner`, `admin`, and `member`.
+- Permissions such as `project.read` and `billing.manage`.
+- User-to-account memberships.
+- Policy checks and authorization interfaces for products.
+
+These application-owned permissions are intentionally outside the auth service. Initial JWTs should contain identity and session information only. Applications should not depend on the auth service to interpret product-specific roles or permissions.
+
+## Direct-access interface
+
+The auth subdomain will include a small server-rendered HTML and CSS interface for cases where a user visits `auth.<root-domain>` directly. It will cover the basic authentication journey, including signup, login, OTP entry, logout, and clear error or status pages.
+
+This interface is a simple fallback and authentication surface, not a product dashboard. It should remain framework-light, accessible, responsive, and usable without a client-side application. Product integrations will continue to use the JSON API.
+
+## Public API
+
+The service will expose standard HTTP and JSON APIs so browser, mobile, desktop, and backend clients can integrate without depending on a specific programming language or framework.
+
+Core operations will include signup, login, OTP request and verification, logout, session inspection, account listing, account switching, and session management. The exact routes and schemas will be documented before implementation.
+
+Browser clients will use secure, domain-wide cookies issued through the `auth` subdomain. Non-browser clients and backend services may use JWTs. A JWKS endpoint will allow compatible services to verify JWT signatures independently.
+
+The public API will use unversioned, stable routes by default. We will evolve contracts additively and preserve existing request fields, response meanings, and authentication behavior. A versioned route will be introduced only when an unavoidable breaking change cannot be handled compatibly.
+
+## Release model
+
+The service will use rolling releases. During deployment, old and new service instances may run at the same time, so changes must be backward-compatible across the transition.
+
+Database changes should use expand-and-contract migrations. JWT claims, cookie behavior, API schemas, and session records must remain readable and valid across adjacent releases. Breaking changes require an explicit migration and compatibility plan before rollout.
+
+## Status
+
+The vanilla Better Auth signup/login baseline is implemented. OTP, risk rules, account switching, JWT issuance, and the broader reusable policies remain future work.
+
+## Local setup
+
+1. Copy `.env.example` to `.env.local`.
+2. Set `BETTER_AUTH_SECRET` to a high-entropy value.
+3. Set `DATABASE_URL` to the dedicated PostgreSQL database.
+4. Run `npm install`.
+5. Run `npm run db:migrate` to create the Better Auth tables.
+6. Run `npm run dev` and open `http://localhost:3000`.
+
+The initial test surface supports email/password signup and login. It is intentionally smaller than the final scope and does not yet configure OTP or risk-based verification.
+
+## Initial scope
+
+The first version will cover the smallest reusable authentication foundation:
+
+1. Risk-based one-time passcode (OTP) verification.
+2. Login and signup.
+3. An account switcher with support for multiple active sessions.
+4. JWT-based authentication tokens.
+5. Domain-wide authentication cookies managed by the `auth` subdomain.
+
+### 1. Risk-based OTP verification
+
+OTP is used to verify ownership of an email address or phone number during signup, login, and account-recovery flows where required by risk evaluation.
+
+The risk engine should be able to require, skip, or step up OTP based on signals such as device, session, location, velocity, and recent authentication history. Risk signals must be treated as inputs to a documented policy, not as a replacement for rate limits or abuse controls.
+
+The initial implementation must define OTP expiry, one-time use, retry limits, resend limits, lockout behavior, delivery-provider boundaries, and safe error messages.
+
+### 2. Login and signup
+
+The initial account lifecycle includes:
+
+- Create an account with a verified login identifier.
+- Log in to an existing account.
+- Log out the current session.
+- Recover access through a verified identifier where supported.
+
+The exact identifier and credential strategy remain open decisions. The implementation must not assume that email, phone, password, or a specific OTP delivery provider is the only future option.
+
+### 3. Account switcher and multi-session support
+
+The system should allow an authenticated user to access more than one account without signing out of the authentication system. Switching accounts must change the active account context deliberately and must not grant access to an account that is not already authorized for that user.
+
+Sessions are independently revocable. The design should support listing and revoking sessions, while keeping the first implementation focused on the current session and account-switch operation.
+
+### 4. JWT
+
+JWTs will represent authenticated sessions or access tokens exchanged by products with the auth system. The design must define the signing algorithm, key rotation and publication, issuer, audience, subject, expiry, clock-skew handling, claims, revocation strategy, and separation between access and renewal tokens.
+
+JWT contents should be minimal and should not contain secrets or mutable authorization data that cannot tolerate token lifetime or revocation delay.
+
+### 5. Domain-wide cookies
+
+Authentication will live at `auth.<root-domain>`. The auth service will issue cookies scoped to the parent domain when cross-subdomain authentication is required, allowing approved product subdomains to participate in the same login session.
+
+Cookie behavior must be explicitly configured and tested for `Secure`, `HttpOnly`, `SameSite`, `Domain`, `Path`, expiry, logout, and session renewal. Parent-domain cookies increase the impact of a compromise in any sibling subdomain, so product participation must be deliberate and the trust boundary documented.
+
+The root domain, supported product subdomains, local-development domain strategy, and cross-origin request policy are still to be decided.
+
+## Out of scope for the first version
+
+- Social login and enterprise federation.
+- Application-owned roles, permissions, memberships, and authorization policy checks.
+- Billing, organizations, roles, and administrative consoles.
+- A universal identity-analytics integration.
+- Supporting arbitrary third-party domains through the parent-domain cookie mechanism.
+
+## Goals
+
+- Build a secure, maintainable authentication and session foundation.
+- Make the system portable across products and deployment environments.
+- Document security-sensitive decisions before implementation.
+- Keep product-specific integrations out of the core system.
+
+## Planned areas
+
+- User registration, sign-in, sign-out, and account recovery flows.
+- Session creation, renewal, expiry, revocation, and protected-resource behavior.
+- Credential, token, storage, and error-handling decisions.
+- Environment and secret-management requirements.
+- Tests for successful, failed, expired, renewed, and revoked sessions.
+
+## Implementation notes
+
+Before selecting a provider or backend, document the intended threat model, architecture, interfaces, callback requirements, required environment variables, and local development steps here. Product-specific adapters should remain separate from the reusable core.
+
+Do not commit credentials, private keys, session secrets, or provider configuration containing secrets.
+

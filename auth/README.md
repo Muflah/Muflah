@@ -15,15 +15,14 @@ The implemented flow is email-first with risk-based OTP: password login on a tru
 ## Email-first signup/login flow
 
 1. Ask only for the email address and show a single `Next` action.
-2. Keep the interface neutral about whether the address already exists.
-3. Send an OTP with a neutral message such as “We have sent you an email.” The email copy explains whether the user is signing in or creating an account without exposing account existence in the browser.
-4. For an existing account, ask for the password.
-5. Evaluate the device/session risk after the password is accepted.
-6. On a trusted device, complete login without OTP.
-7. On a new or risky device, verify the OTP and expire it after the configured lifetime.
-8. For a new account, verify the OTP, ask for a password twice, validate it, and create the account.
-9. Ask for the platform name, unique username, and date of birth.
-10. If the user leaves after password creation, resume profile completion on the next login.
+2. Send the same neutral OTP challenge for every address.
+3. Keep the interface neutral about whether the address already exists.
+4. After the email is proven, ask existing accounts for their password; ask new accounts to create a password twice.
+5. For existing accounts, evaluate device/session risk after the password is accepted.
+6. On a trusted device, complete login without the additional risk OTP.
+7. On a new or risky device, verify the additional OTP and expire it after the configured lifetime.
+8. Ask new accounts for the platform name, unique username, and date of birth.
+9. If the user leaves after password creation, resume profile completion on the next login.
 
 If the user leaves after OTP verification but before creating a password, the verified signup session can resume while it is valid; otherwise the user starts the signup flow again. The auth service owns this platform-wide identity profile. Products add only their own product-specific profile fields.
 

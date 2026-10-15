@@ -10,7 +10,7 @@ const authClient = createAuthClient({
 });
 
 type Mode = "sign-in" | "sign-up";
-type Stage = "email" | "login-password" | "login-otp" | "signup-otp" | "signup-password" | "profile";
+type Stage = "email" | "email-otp" | "login-password" | "login-otp" | "signup-password" | "profile";
 
 export default function HomePage() {
   const [mode, setMode] = useState<Mode>("sign-in");
@@ -57,18 +57,11 @@ export default function HomePage() {
 
   async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-
-    if (mode === "sign-up") {
-      const result = await authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" });
-      setBusy(false);
-      if (result.error) { setMessage("We could not send the email. Please try again."); return; }
-      setStage("signup-otp");
-      setMessage("We have sent you an email.");
-      return;
-    }
-
+    const result = await authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" });
     setBusy(false);
-    setStage("login-password");
+    if (result.error) { setMessage("We could not send the email. Please try again."); return; }
+    setStage("email-otp");
+    setMessage("We have sent you an email.");
   }
 
   async function handleLoginPassword(event: FormEvent<HTMLFormElement>) {
@@ -95,7 +88,7 @@ export default function HomePage() {
     await loadSession();
   }
 
-  async function handleSignupOtp(event: FormEvent<HTMLFormElement>) {
+  async function handleEmailOtp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
     const response = await fetch("/api/auth-flow/verify-signup-otp", {
       method: "POST",
@@ -105,8 +98,15 @@ export default function HomePage() {
     const result = (await response.json()) as { error?: string };
     setBusy(false);
     if (!response.ok) { setMessage(result.error ?? "That code is invalid or expired. Please request a new one."); return; }
-    setStage("signup-password");
-    setMessage("Email verified. Create your password.");
+    const statusResponse = await fetch("/api/auth-flow/status");
+    const status = (await statusResponse.json()) as { hasCredential?: boolean };
+    if (status.hasCredential) {
+      setStage("login-password");
+      setMessage("Email verified. Enter your password.");
+    } else {
+      setStage("signup-password");
+      setMessage("Email verified. Create your password.");
+    }
   }
 
   async function handleSignupPassword(event: FormEvent<HTMLFormElement>) {
@@ -170,7 +170,7 @@ export default function HomePage() {
         {stage === "email" && "Enter your email to continue."}
         {stage === "login-password" && "Enter your password."}
         {stage === "login-otp" && "We have sent you an email."}
-        {stage === "signup-otp" && "We have sent you an email."}
+        {stage === "email-otp" && "We have sent you an email."}
         {stage === "signup-password" && "Create a password for your account."}
         {stage === "profile" && "Finish your Muflah profile."}
       </p>
@@ -190,7 +190,7 @@ export default function HomePage() {
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
       </form>}
 
-      {stage === "signup-otp" && <form onSubmit={handleSignupOtp}>
+      {stage === "email-otp" && <form onSubmit={handleEmailOtp}>
         <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
       </form>}

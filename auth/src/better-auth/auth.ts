@@ -100,16 +100,13 @@ export const auth = betterAuth({
           expiresIn: otpPeriodMinutes * 60,
           allowedAttempts: otpAllowedAttempts,
           async sendVerificationOTP({ email, otp, type }) {
-            const subject =
-              type === "sign-in"
-                ? "Your Muflah sign-in code"
-                : "Verify your Muflah email";
+            const subject = type === "sign-in" ? "Your Muflah verification code" : "Verify your Muflah email";
 
             await sendAuthEmail({
               to: email,
               subject,
-              text: `Your Muflah verification code is ${otp}. It expires soon.`,
-              html: `<p>Your Muflah verification code is:</p><p><strong>${otp}</strong></p><p>It expires soon.</p>`,
+              text: `Your Muflah verification code is ${otp}. Use it to continue. It expires soon.`,
+              html: `<p>Your Muflah verification code is:</p><p><strong>${otp}</strong></p><p>Use it to continue. It expires soon.</p>`,
             });
           },
         }),

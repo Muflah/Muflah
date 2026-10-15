@@ -46,6 +46,15 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/app/username/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Use Neutral OTP Before Account Branching
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Correct the new-email UX so unregistered emails are not sent to a misleading password screen.
+- Changes Made: The email entry flow now sends a neutral OTP for every address. After OTP verification, existing accounts continue to password login and new accounts continue to password creation. Updated the email copy and flow documentation.
+- Files: `src/app/page.tsx`, `src/better-auth/auth.ts`, `README.md`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

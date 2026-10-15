@@ -49,11 +49,12 @@ Signup OTP verification must use a signup-specific verification path. It must no
 ## Login
 
 1. User enters an email address.
-2. User enters the password.
-3. The service evaluates the device/session trust state.
-4. A trusted device may complete login without OTP.
-5. A new or risky device must complete email OTP verification.
-6. A successful login creates the normal Better Auth session.
+2. The service sends a neutral email OTP challenge without revealing account existence.
+3. After email ownership is proven, an existing user enters the password.
+4. The service evaluates the device/session trust state.
+5. A trusted device may complete login without the additional risk OTP.
+6. A new or risky device must complete the additional email OTP verification.
+7. A successful login creates the normal Better Auth session.
 
 Password errors remain generic so they do not disclose whether an account exists.
 

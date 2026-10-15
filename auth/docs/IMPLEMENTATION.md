@@ -52,7 +52,7 @@ The standard Better Auth JSON API, including sessions, password login, password 
 POST /api/auth-flow/verify-signup-otp
 ```
 
-Signup-specific OTP verification. For an existing user, it verifies email ownership before allowing the login-OTP endpoint to run, preserving existing credential accounts.
+Email-first OTP verification. It verifies email ownership before branching to existing-account password login or new-account password creation, preserving existing credential accounts.
 
 ```text
 POST /api/auth-flow/finish-signup

@@ -92,7 +92,7 @@ Password errors remain generic so they do not disclose whether an account exists
 - The add-account flow uses `/?mode=add-account` and must not redirect an already authenticated user back to the current username path before signup begins.
 - If `AUTH_MAX_SESSIONS` is missing or invalid in a deployment, the service intentionally retains only one active session; deployments must set the variable explicitly when account switching is needed.
 - Switching accounts must redirect to the selected account's actual username path.
-- Account switches must be broadcast across tabs. Visible tabs should refresh immediately; hidden tabs may wait until they become visible to avoid unnecessary background work.
+- Account switches must be broadcast across tabs. The tab performing the switch navigates after the server confirms success; other tabs refresh when they become visible. This avoids canceling the active tab's session-switch request with a competing reload.
 
 ## Cross-subdomain sessions
 

@@ -9,11 +9,7 @@ export default function SessionSync() {
   useEffect(() => {
     let refreshWhenVisible = false;
     const refresh = () => {
-      if (document.visibilityState === "visible") {
-        window.location.reload();
-      } else {
-        refreshWhenVisible = true;
-      }
+      refreshWhenVisible = true;
     };
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible" && refreshWhenVisible) window.location.reload();
@@ -46,7 +42,7 @@ export function announceSessionSwitch() {
       channel.close();
     }
   } catch {
-    // The active tab must still reload if cross-tab messaging is unavailable.
+    // The active tab navigates after setActive succeeds; messaging is best effort.
   }
   try {
     window.localStorage.setItem(SESSION_SWITCH_STORAGE_KEY, String(Date.now()));

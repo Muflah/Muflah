@@ -136,6 +136,15 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Prevent Canceled Account Switch Requests
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Account switching returned a browser `(canceled)` status and stopped switching accounts.
+- Changes Made: Removed immediate reloads from non-switching tabs. The active tab now navigates only after Better Auth confirms `setActive`; other tabs refresh when they become visible. Updated the account-switching documentation and changelog to record this safer synchronization tradeoff.
+- Files: `src/app/session-sync.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: Typecheck and diff validation pending after this correction.
+
 # 2026-10-16T00:00:00+05:00 — Guarantee Active-Tab Session Switch Reload
 
 - Agent: Codex

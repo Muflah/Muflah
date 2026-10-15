@@ -104,7 +104,7 @@ The identity setup screen shown after authentication for new accounts and existi
 
 The authenticated landing screen for a completed account, for example `/muflah95`. The root authentication flow redirects to the signed-in user's actual username path; it is not the signup or profile-completion screen.
 
-The page uses `multiSessionClient()` to list browser sessions and activate another account. “Add another account” links back to `/?mode=add-account`; the root page treats that query as an explicit add-account flow and bypasses the normal redirect for an already authenticated user. A global client-side session-sync component broadcasts account switches through `BroadcastChannel` with a `localStorage` fallback. Messaging is best effort and never blocks the active tab from reloading. Visible tabs reload immediately; hidden tabs reload when they become visible.
+The page uses `multiSessionClient()` to list browser sessions and activate another account. “Add another account” links back to `/?mode=add-account`; the root page treats that query as an explicit add-account flow and bypasses the normal redirect for an already authenticated user. A global client-side session-sync component broadcasts account switches through `BroadcastChannel` with a `localStorage` fallback. The switching tab navigates only after `setActive` succeeds; other tabs refresh when they become visible. This prevents a cross-tab reload from canceling the active tab's session-switch request.
 
 ```text
 GET /reset-password
@@ -161,4 +161,4 @@ The build may emit the PostgreSQL SSL-mode compatibility warning from `pg-connec
 - Resend is the only implemented email adapter.
 - Resend delivery webhooks are not yet processed; accepted email requests can still later bounce.
 - Resend cooldowns and email/IP rate limiting need a dedicated production-hardening pass.
-- Explicit trusted-device revocation UI, JWT issuance, JWKS, global cross-device session limits, and cross-tab UI synchronization remain future work.
+- Explicit trusted-device revocation UI, JWT issuance, JWKS, and global cross-device session limits remain future work. Cross-tab account-switch synchronization is implemented as a best-effort browser UI convenience.

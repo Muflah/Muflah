@@ -61,7 +61,7 @@ export default function UsernamePage() {
     try {
       announceSessionSwitch();
     } finally {
-      window.location.reload();
+      window.location.assign(account.username ? `/${encodeURIComponent(account.username)}` : "/onboarding");
     }
   }
 

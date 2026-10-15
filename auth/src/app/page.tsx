@@ -34,7 +34,7 @@ export default function HomePage() {
     const statusResponse = await fetch("/api/auth-flow/status");
     const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean };
     if (status.hasCredential && !status.onboardingComplete) {
-      setStage("profile");
+      window.location.replace("/username");
       return;
     }
     if (!status.hasCredential) {
@@ -122,8 +122,7 @@ export default function HomePage() {
     const result = (await response.json()) as { error?: string };
     setBusy(false);
     if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
-    setStage("profile");
-    setMessage("Your password is set. Finish your platform profile.");
+    window.location.replace("/username");
   }
 
   async function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {

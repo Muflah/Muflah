@@ -73,6 +73,12 @@ POST /api/auth-flow/complete-profile
 Validates and saves the platform name, username, and date of birth, then marks onboarding complete.
 
 ```text
+/username
+```
+
+The dedicated onboarding screen on the auth subdomain. Auth redirects authenticated users here whenever `onboardingComplete` is false. The normal auth shell is shown only after profile completion.
+
+```text
 GET /reset-password
 ```
 

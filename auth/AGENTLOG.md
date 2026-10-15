@@ -37,6 +37,15 @@ Each entry contains:
 - Files: `src/better-auth/auth.ts`, `src/app/page.tsx`, `src/app/api/auth-flow/verify-signup-otp/route.ts`, `src/app/api/auth-flow/finish-signup/route.ts`, `src/app/api/auth-flow/status/route.ts`, `src/app/api/auth-flow/complete-profile/route.ts`, `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run db:migrate -- --yes`, database backfill, `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Redirect Incomplete Profiles to Username Setup
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Ensure every authenticated user completes platform profile onboarding before reaching the auth shell.
+- Changes Made: Added the `/username` auth-subdomain route, redirected incomplete sessions there after login or password creation, and documented the onboarding guard for consuming products.
+- Files: `src/app/page.tsx`, `src/app/username/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

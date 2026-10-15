@@ -22,6 +22,8 @@ This document defines the product-neutral business rules and user experience for
 
 If the user leaves after OTP verification, the service keeps only a temporary verified signup session. If the user leaves after creating the password, the account remains valid but onboarding is incomplete. The next login resumes profile completion.
 
+An authenticated user with incomplete onboarding is redirected to `/username` on the auth subdomain before reaching the normal auth shell. Consuming products must enforce the same `onboardingComplete` check before opening their product shell.
+
 The auth service owns this platform-wide identity profile. Consuming products own additional product-specific profile fields.
 
 Username rules:

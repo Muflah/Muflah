@@ -21,6 +21,7 @@ All notable changes to the authentication implementation are documented here.
 - Fixed signup OTP verification so it does not use the login-OTP path or remove an existing credential account.
 - Added `docs/RULES.md`, `docs/ARCHITECTURE.md`, and `docs/IMPLEMENTATION.md` for the business rules, system architecture, and technical implementation details.
 - Added resumable platform onboarding: OTP verification, password creation, then platform name, username, and date-of-birth profile completion.
+- Added the dedicated `/username` onboarding route and redirect guard for incomplete platform profiles.
 
 ### Changed
 

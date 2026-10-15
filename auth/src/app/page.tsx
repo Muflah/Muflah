@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useEffect } from "react";
 import { createAuthClient } from "better-auth/client";
 
 const authClient = createAuthClient();
@@ -14,6 +15,21 @@ export default function HomePage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+
+  useEffect(() => {
+    void loadSession();
+  }, []);
+
+  async function loadSession() {
+    const result = await authClient.getSession();
+    if (result.data?.user) {
+      setUser({
+        name: result.data.user.name,
+        email: result.data.user.email,
+      });
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,12 +42,33 @@ export default function HomePage() {
         : await authClient.signIn.email({ email, password });
 
     setBusy(false);
-    setMessage(
-      result.error
-        ? result.error.message ?? "Authentication failed."
-        : mode === "sign-up"
-          ? "Account created and signed in."
-          : "Signed in successfully.",
+    if (result.error) {
+      setMessage(result.error.message ?? "Authentication failed.");
+      return;
+    }
+
+    await loadSession();
+  }
+
+  async function handleSignOut() {
+    setBusy(true);
+    await authClient.signOut();
+    setUser(null);
+    setBusy(false);
+  }
+
+  if (user) {
+    return (
+      <main className="shell">
+        <section className="card" aria-labelledby="profile-title">
+          <p className="eyebrow">Signed in</p>
+          <h1 id="profile-title">{user.name}</h1>
+          <p className="profile-email">{user.email}</p>
+          <button type="button" disabled={busy} onClick={handleSignOut}>
+            {busy ? "Signing out…" : "Sign out"}
+          </button>
+        </section>
+      </main>
     );
   }
 

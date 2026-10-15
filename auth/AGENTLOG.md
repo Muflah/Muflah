@@ -37,6 +37,15 @@ Each entry contains:
 - Files: `.env`, `package.json`, `package-lock.json`, and `AGENTLOG.md`; the configured database schema was also updated with the initial Better Auth tables.
 - Verification Status: Better Auth migration completed successfully; `npm run typecheck` passed; `npm run build` passed. Vercel deployment and remote signup/login remain pending Vercel authentication and environment-variable configuration.
 
+# 2026-10-16T00:50:00+05:00 — Add Basic Signed-In Screen
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Show the authenticated user's name and email after signup or login.
+- Changes Made: Added session loading on page entry and after authentication. Added a minimal signed-in screen displaying the user's name and email, plus sign-out for repeat testing.
+- Files: `src/app/page.tsx`, `src/app/globals.css`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. The build emitted the existing PostgreSQL SSL-mode compatibility warning.
+
 # 2026-10-15T18:59:23Z — Add Planned Module Placeholders
 
 - Agent: Codex

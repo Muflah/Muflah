@@ -48,6 +48,11 @@ h1 {
   color: #55554f;
 }
 
+.profile-email {
+  margin: 0.75rem 0 1.75rem;
+  color: #55554f;
+}
+
 form {
   display: grid;
   gap: 1rem;

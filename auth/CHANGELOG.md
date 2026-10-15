@@ -18,4 +18,5 @@ All notable changes to the authentication implementation are documented here.
 - Clarified that roles, permissions, memberships, and authorization policies belong to consuming applications, not the auth service; removed the authorization module placeholders.
 - Added the planned minimal server-rendered HTML/CSS interface for direct visits to the auth subdomain.
 - Added the initial Vercel-compatible Better Auth service with PostgreSQL configuration, email/password signup and login, a catch-all auth API route, and a basic test page.
+- Added a minimal signed-in screen showing the authenticated user's name and email, with sign-out for repeat testing.
 

@@ -18,6 +18,7 @@ type AccountSession = {
 export default function UsernamePage() {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   const [accounts, setAccounts] = useState<AccountSession[]>([]);
+  const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(true);
 
   useEffect(() => { void loadSession(); }, []);
@@ -50,11 +51,18 @@ export default function UsernamePage() {
 
   async function switchAccount(account: AccountSession) {
     if (!account.sessionToken || account.active) return;
-    setBusy(true);
+    setBusy(true); setMessage("");
     const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
-    if (result.error) { setBusy(false); return; }
-    announceSessionSwitch();
-    window.location.reload();
+    if (result.error) {
+      setMessage("We could not switch accounts. Please refresh and try again.");
+      setBusy(false);
+      return;
+    }
+    try {
+      announceSessionSwitch();
+    } finally {
+      window.location.reload();
+    }
   }
 
   async function handleSignOut() {
@@ -76,6 +84,7 @@ export default function UsernamePage() {
           </button>)}
           <a className="link-button" href="/?mode=add-account">Add another account</a>
         </div>}
+        {message && <p className="message" role="alert">{message}</p>}
         <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
       </section></div>
     </main>

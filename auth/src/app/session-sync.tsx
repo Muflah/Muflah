@@ -39,10 +39,18 @@ export default function SessionSync() {
 
 export function announceSessionSwitch() {
   if (typeof window === "undefined") return;
-  if ("BroadcastChannel" in window) {
-    const channel = new BroadcastChannel(SESSION_SWITCH_EVENT);
-    channel.postMessage({ switchedAt: Date.now() });
-    channel.close();
+  try {
+    if ("BroadcastChannel" in window) {
+      const channel = new BroadcastChannel(SESSION_SWITCH_EVENT);
+      channel.postMessage({ switchedAt: Date.now() });
+      channel.close();
+    }
+  } catch {
+    // The active tab must still reload if cross-tab messaging is unavailable.
   }
-  window.localStorage.setItem(SESSION_SWITCH_STORAGE_KEY, String(Date.now()));
+  try {
+    window.localStorage.setItem(SESSION_SWITCH_STORAGE_KEY, String(Date.now()));
+  } catch {
+    // Cross-tab refresh is best effort; it must not block account switching.
+  }
 }

@@ -136,6 +136,24 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Guarantee Active-Tab Session Switch Reload
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix account switching after cross-tab synchronization was added.
+- Changes Made: Made BroadcastChannel and localStorage notifications best effort and guaranteed that the active tab reloads after Better Auth activates the selected session.
+- Files: `src/app/session-sync.tsx`, `src/app/[username]/page.tsx`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
+# 2026-10-16T00:00:00+05:00 — Surface Account Switch Errors
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Diagnose account switching that appears to do nothing.
+- Changes Made: Kept Better Auth's official `setActive` flow, but added explicit error feedback when the plugin rejects a session switch instead of silently leaving the user on the current account.
+- Files: `src/app/[username]/page.tsx` and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Synchronize Account Switches Across Tabs
 
 - Agent: Codex

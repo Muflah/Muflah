@@ -69,14 +69,14 @@ export default function HomePage() {
     const statusResponse = await fetch("/api/auth-flow/status");
     const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean };
     if (status.hasCredential && !status.onboardingComplete) {
-      window.location.replace("/username");
+      window.location.replace("/onboarding");
       return;
     }
     if (!status.hasCredential) {
       setStage("signup-password");
       return;
     }
-    setUser({ name: result.data.user.name, email: result.data.user.email });
+    window.location.replace("/username");
   }
 
   function resetFlow(nextMode: Mode = mode) {
@@ -178,7 +178,7 @@ export default function HomePage() {
       window.clearTimeout(timeout);
       const result = (await response.json()) as { error?: string };
       if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
-      window.location.replace("/username");
+      window.location.replace("/onboarding");
     } catch { setMessage("We could not finish creating the account. Please try again."); }
     finally { setBusy(false); }
   }

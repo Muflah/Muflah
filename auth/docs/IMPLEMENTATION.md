@@ -87,10 +87,16 @@ POST /api/auth-flow/verify-password
 Verifies the password against the email-OTP-authenticated session. This prevents the email proof and password steps from immediately triggering a duplicate two-factor OTP challenge.
 
 ```text
+/onboarding
+```
+
+The identity setup screen shown after authentication for new accounts and existing accounts with incomplete profiles. It collects the platform name, username, and date of birth.
+
+```text
 /username
 ```
 
-The dedicated onboarding screen on the auth subdomain. Auth redirects authenticated users here whenever `onboardingComplete` is false. The normal auth shell is shown only after profile completion.
+The authenticated landing screen for a completed account. The root authentication flow redirects here after login; it is not the signup or profile-completion screen.
 
 ```text
 GET /reset-password

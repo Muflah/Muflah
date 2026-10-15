@@ -280,3 +280,12 @@ Each entry contains:
 - Files: `README.md`, `AGENTS.md`, `CHANGELOG.md`, `AGENTLOG.md`, `src/web/templates/.gitkeep`, and `src/web/static/.gitkeep`.
 - Verification Status: `git diff --check` passed. No implementation code or automated tests were run.
 
+# 2026-10-16T00:00:00+05:00 — Separate Authentication and Authenticated Routes
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Keep email, OTP, and password at the root auth URL; send incomplete accounts to `/onboarding` and completed accounts to `/username`.
+- Changes Made: Routed new and incomplete profiles to `/onboarding`, made `/username` the completed authenticated landing screen, and documented the distinction in the rules, implementation notes, and changelog. Corrected route and onboarding wording.
+- Files: `src/app/page.tsx`, `src/app/onboarding/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` passed and `git diff --check` passed. `npm run build` remains blocked by a Windows/OneDrive `EPERM` lock while Next.js tries to remove a generated `.next` artifact; this is not a source or type error.
+

@@ -13,12 +13,14 @@ export default function UsernamePage() {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(true);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => {
     void checkOnboarding();
   }, []);
 
   async function checkOnboarding() {
+    const isOnboardingRoute = window.location.pathname === "/onboarding";
     const session = await authClient.getSession();
     if (!session.data?.user) {
       window.location.replace("/");
@@ -27,14 +29,28 @@ export default function UsernamePage() {
 
     const response = await fetch("/api/auth-flow/status");
     const status = (await response.json()) as { onboardingComplete?: boolean };
-    if (status.onboardingComplete) {
-      window.location.replace("/");
+    if (!status.onboardingComplete && !isOnboardingRoute) {
+      window.location.replace("/onboarding");
+      return;
+    }
+    if (status.onboardingComplete && isOnboardingRoute) {
+      window.location.replace("/username");
       return;
     }
 
-    setName(session.data.user.name === session.data.user.email.split("@")[0] ? "" : session.data.user.name);
     setEmail(session.data.user.email);
+    if (status.onboardingComplete) {
+      setUser({ name: session.data.user.name, email: session.data.user.email });
+    } else {
+      setName(session.data.user.name === session.data.user.email.split("@")[0] ? "" : session.data.user.name);
+    }
     setBusy(false);
+  }
+
+  async function handleSignOut() {
+    setBusy(true);
+    await authClient.signOut();
+    window.location.replace("/");
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -55,14 +71,26 @@ export default function UsernamePage() {
       return;
     }
 
-    window.location.replace("/");
+    window.location.replace("/username");
   }
+
+  if (user) return (
+    <main className="shell">
+      <header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header>
+      <div className="auth-main"><section className="card" aria-labelledby="profile-title">
+        <p className="eyebrow">Signed in</p>
+        <h1 id="profile-title">{user.name}</h1>
+        <p className="profile-email">{user.email}</p>
+        <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
+      </section></div>
+    </main>
+  );
 
   return (
     <main className="shell">
       <header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header>
       <div className="auth-main"><section className="card" aria-labelledby="username-title">
-        <p className="eyebrow">Finish setup</p>
+        <p className="eyebrow">Onboarding</p>
         <h1 id="username-title">Your platform profile</h1>
         <p className="intro">Choose how you’ll be known across Muflah products.</p>
         <p className="email-context">Continuing with <strong>{email}</strong></p>

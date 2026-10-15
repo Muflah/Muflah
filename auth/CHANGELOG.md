@@ -21,13 +21,14 @@ All notable changes to the authentication implementation are documented here.
 - Fixed signup OTP verification so it does not use the login-OTP path or remove an existing credential account.
 - Added `docs/RULES.md`, `docs/ARCHITECTURE.md`, and `docs/IMPLEMENTATION.md` for the business rules, system architecture, and technical implementation details.
 - Added resumable platform onboarding: OTP verification, password creation, then platform name, username, and date-of-birth profile completion.
-- Added the dedicated `/username` onboarding route and redirect guard for incomplete platform profiles.
+- Added `/onboarding` for new and incomplete profiles, and `/username` as the completed authenticated landing screen.
 - Changed the email entry flow to send a neutral OTP before branching to existing-account login or new-account signup, preventing new users from being shown a misleading password screen.
 - Routed the initial email OTP request through a server JSON route so delivery failures are handled consistently for new and existing addresses.
 - Added resend-OTP actions with a 30-second client cooldown to the email verification and risk-based login screens.
 - Added a welcome/account-creation email from `hello@<AUTH_EMAIL_DOMAIN>` after platform profile completion; security emails now use the `auth@` alias.
 - Removed the duplicate post-password OTP challenge when the same login already completed email OTP verification.
 - Fixed the onboarding guard to require actual platform profile fields, so legacy accounts without a username are redirected to `/username`.
+- Kept email, OTP, and password at the root auth URL; authenticated users now go to `/onboarding` when profile setup is incomplete and `/username` when it is complete.
 
 ### Changed
 

@@ -136,6 +136,15 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Preserve Add-Account Signup Route
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Prevent the add-account signup page from redirecting an already signed-in user back to the current username route.
+- Changes Made: Made `/?mode=sign-up` an explicit add-account mode that bypasses the normal authenticated redirect, and documented the route behavior.
+- Files: `src/app/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Add Configurable Better Auth Multi-Session Support
 
 - Agent: Codex

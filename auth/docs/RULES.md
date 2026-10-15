@@ -26,6 +26,13 @@ The root URL handles the complete authentication flow: email, OTP, and password.
 
 The auth service owns this platform-wide identity profile. Consuming products own additional product-specific profile fields.
 
+Route rules:
+
+- `/` is the single authentication surface for email entry, OTP verification, password login, password creation, and password reset entry points.
+- `/onboarding` is used for new accounts and existing accounts whose platform profile is incomplete.
+- `/<username>` is the authenticated landing screen for a completed account, for example `/muflah95`.
+- A completed profile redirects to the user's actual username path, never to a literal `/username` path.
+
 Username rules:
 
 - Usernames are globally unique within the auth service.
@@ -74,6 +81,17 @@ Password errors remain generic so they do not disclose whether an account exists
 - The current trusted period is 30 days.
 - Browser fingerprints alone must not be treated as proof of trust.
 - Signing out does not necessarily revoke every trusted device; explicit device/session management will be added with the session module.
+
+## Account switching and multiple sessions
+
+- Use Better Auth's official multi-session plugin rather than a custom session-cookie implementation.
+- `AUTH_MAX_SESSIONS` controls the maximum number of active account sessions supported in one browser/device.
+- Valid values are whole numbers from 1 through 10. Empty, invalid, zero, negative, decimal, and larger values default to 1.
+- The account switcher must list only sessions available to the current browser and activate a selected session deliberately.
+- “Add another account” starts the normal signup flow without requiring the current account to be signed out first.
+- The add-account flow uses `/?mode=sign-up` and must not redirect an already authenticated user back to the current username path before signup begins.
+- Switching accounts must redirect to the selected account's actual username path.
+- Cross-tab UI synchronization is a client concern; cookie changes alone must not be assumed to update already-rendered application state.
 
 ## Password recovery
 

@@ -67,6 +67,13 @@ export default function HomePage() {
   }, [resendCooldown]);
 
   async function loadSession() {
+    const addingAccount = new URLSearchParams(window.location.search).get("mode") === "sign-up";
+    if (addingAccount) {
+      setMode("sign-up");
+      setStage("email");
+      return;
+    }
+
     const result = await authClient.getSession();
     if (!result.data?.user) return;
     const statusResponse = await fetch("/api/auth-flow/status");

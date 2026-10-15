@@ -29,7 +29,8 @@ Next.js app and JSON routes
         │     ├── email/password credentials
         │     ├── email OTP verification
         │     ├── two-factor OTP
-        │     └── trusted-device cookies
+        │     ├── trusted-device cookies
+        │     └── multi-session account switching
         │
         ├── Resend email adapter
         └── PostgreSQL database
@@ -59,6 +60,10 @@ AUTH_EMAIL_DOMAIN=mail.muflah.com
 
 The current default alias is `no-reply@<AUTH_EMAIL_DOMAIN>`.
 
+### Account sessions
+
+The official Better Auth multi-session plugin keeps multiple account sessions available in one browser. The service configures its maximum from `AUTH_MAX_SESSIONS`, with a safe fallback of one for invalid values. The UI lists available sessions, activates a selected session, and starts the normal root signup flow when the user chooses to add another account. The session table remains Better Auth-owned; the service does not create a parallel session store.
+
 ## Database ownership
 
 The auth service owns its PostgreSQL database. Applications should not directly write to auth tables. Database migrations are deliberate deployment steps and are not run automatically by every Vercel build.
@@ -66,6 +71,10 @@ The auth service owns its PostgreSQL database. Applications should not directly 
 ## Application authorization
 
 Roles and permissions are intentionally outside this service. Product applications may associate their own memberships and authorization policies with the auth user ID.
+
+## Route boundary
+
+The root route owns authentication. `/onboarding` owns incomplete platform profile setup. The dynamic `/<username>` route is the authenticated landing surface for completed profiles. The username is read from the persisted auth user profile and is never hard-coded as a literal route name.
 
 ## Release approach
 

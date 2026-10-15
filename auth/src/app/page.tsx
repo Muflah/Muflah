@@ -123,14 +123,19 @@ export default function HomePage() {
   }
 
   if (user) return (
-    <main className="shell"><section className="card" aria-labelledby="profile-title">
-      <p className="eyebrow">Signed in</p><h1 id="profile-title">{user.name}</h1><p className="profile-email">{user.email}</p>
-      <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
-    </section></main>
+    <main className="shell">
+      <header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header>
+      <div className="auth-main"><section className="card" aria-labelledby="profile-title">
+        <p className="eyebrow">Signed in</p><h1 id="profile-title">{user.name}</h1><p className="profile-email">{user.email}</p>
+        <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
+      </section></div>
+    </main>
   );
 
   return (
-    <main className="shell"><section className="card" aria-labelledby="page-title">
+    <main className="shell">
+      <header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header>
+      <div className="auth-main"><section className="card" aria-labelledby="page-title">
       <p className="eyebrow">Auth service</p>
       <h1 id="page-title">{mode === "sign-in" ? "Sign in" : "Create account"}</h1>
       <p className="intro">
@@ -176,6 +181,7 @@ export default function HomePage() {
         {mode === "sign-in" ? "Don’t have an account? Create one" : "Already have an account? Sign in"}
       </button>}
       {stage !== "email" && <button className="link-button" type="button" onClick={() => resetFlow()}>Start over</button>}
-    </section></main>
+      </section></div>
+    </main>
   );
 }

@@ -9,6 +9,33 @@ const authClient = createAuthClient({
   plugins: [emailOTPClient(), twoFactorClient(), usernameClient()],
 });
 
+function PasswordField({
+  label,
+  name,
+  autoComplete,
+  value,
+  onChange,
+  visible,
+  onToggle,
+}: {
+  label: string;
+  name: string;
+  autoComplete: "current-password" | "new-password";
+  value: string;
+  onChange: (value: string) => void;
+  visible: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <label>{label}<span className="password-field">
+      <input name={name} type={visible ? "text" : "password"} autoComplete={autoComplete} required value={value} onChange={(event) => onChange(event.target.value)} />
+      <button className="password-toggle" type="button" aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`} onClick={onToggle}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+      </button>
+    </span></label>
+  );
+}
+
 type Mode = "sign-in" | "sign-up";
 type Stage = "email" | "email-otp" | "login-password" | "login-otp" | "signup-password" | "profile";
 
@@ -19,6 +46,8 @@ export default function HomePage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
   const [username, setUsername] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [otp, setOtp] = useState("");
@@ -55,6 +84,8 @@ export default function HomePage() {
     setStage("email");
     setPassword("");
     setPasswordConfirmation("");
+    setShowPassword(false);
+    setShowPasswordConfirmation(false);
     setUsername("");
     setDateOfBirth("");
     setOtp("");
@@ -64,21 +95,22 @@ export default function HomePage() {
 
   async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const response = await fetch("/api/auth-flow/request-email-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    setBusy(false);
-    if (!response.ok) { setMessage("We could not send the email. Please try again."); return; }
-    setStage("email-otp");
-    setMessage("We have sent you an email.");
-    setResendCooldown(30);
+    try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15000);
+      const response = await fetch("/api/auth-flow/request-email-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }), signal: controller.signal });
+      window.clearTimeout(timeout);
+      if (!response.ok) { setMessage("We could not send the email. Please try again."); return; }
+      setStage("email-otp"); setMessage("We have sent you an email."); setResendCooldown(30);
+    } catch { setMessage("We could not send the email. Please try again."); }
+    finally { setBusy(false); }
   }
 
   async function handleLoginPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const result = await authClient.signIn.email({ email, password });
+    let result;
+    try { result = await authClient.signIn.email({ email, password }); }
+    catch { setBusy(false); setMessage("We could not sign you in with those details."); return; }
     setBusy(false);
 
     if (result.error) { setMessage("We could not sign you in with those details."); return; }
@@ -147,15 +179,16 @@ export default function HomePage() {
     if (!isStrongPassword(password)) { setBusy(false); setMessage(passwordRequirements); return; }
     if (password !== passwordConfirmation) { setBusy(false); setMessage("The passwords do not match."); return; }
 
-    const response = await fetch("/api/auth-flow/finish-signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    const result = (await response.json()) as { error?: string };
-    setBusy(false);
-    if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
-    window.location.replace("/username");
+    try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15000);
+      const response = await fetch("/api/auth-flow/finish-signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }), signal: controller.signal });
+      window.clearTimeout(timeout);
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
+      window.location.replace("/username");
+    } catch { setMessage("We could not finish creating the account. Please try again."); }
+    finally { setBusy(false); }
   }
 
   async function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
@@ -207,24 +240,26 @@ export default function HomePage() {
         {stage === "signup-password" && "Create a password for your account."}
         {stage === "profile" && "Finish your Muflah profile."}
       </p>
+      {stage !== "email" && <p className="email-context">Continuing with <strong>{email}</strong></p>}
 
       {stage === "email" && <form onSubmit={handleEmailSubmit}>
-        <label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value.trim().toLowerCase())} /></label>
+        <label>Email<input name="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value.trim().toLowerCase())} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Next"}</button>
       </form>}
 
       {stage === "login-password" && <form onSubmit={handleLoginPassword}>
-        <label>Password<input type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+        <label>Email<input name="username" type="email" autoComplete="username" value={email} readOnly /></label>
+        <PasswordField label="Password" name="password" autoComplete="current-password" value={password} onChange={setPassword} visible={showPassword} onToggle={() => setShowPassword((value) => !value)} />
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Continue"}</button>
       </form>}
 
       {stage === "login-otp" && <form onSubmit={handleLoginOtp}>
-        <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
+        <label>Verification code<input name="otp" inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
       </form>}
 
       {stage === "email-otp" && <form onSubmit={handleEmailOtp}>
-        <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
+        <label>Verification code<input name="otp" inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
       </form>}
 
@@ -233,16 +268,17 @@ export default function HomePage() {
       </button>}
 
       {stage === "signup-password" && <form onSubmit={handleSignupPassword}>
-        <label>Password<input type="password" autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
-        <label>Confirm password<input type="password" autoComplete="new-password" required value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} /></label>
+        <label>Email<input name="username" type="email" autoComplete="username" value={email} readOnly /></label>
+        <PasswordField label="Password" name="password" autoComplete="new-password" value={password} onChange={setPassword} visible={showPassword} onToggle={() => setShowPassword((value) => !value)} />
+        <PasswordField label="Confirm password" name="password-confirmation" autoComplete="new-password" value={passwordConfirmation} onChange={setPasswordConfirmation} visible={showPasswordConfirmation} onToggle={() => setShowPasswordConfirmation((value) => !value)} />
         <p className="hint">{passwordRequirements}</p>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Create account"}</button>
       </form>}
 
       {stage === "profile" && <form onSubmit={handleProfileSubmit}>
-        <label>Name<input autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
-        <label>Username<input autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
-        <label>Date of birth<input type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
+        <label>Name<input name="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
+        <label>Username<input name="username" autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
+        <label>Date of birth<input name="bday" type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Finish profile"}</button>
       </form>}
 

@@ -8,6 +8,7 @@ const authClient = createAuthClient({ plugins: [usernameClient()] });
 
 export default function UsernamePage() {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [message, setMessage] = useState("");
@@ -32,6 +33,7 @@ export default function UsernamePage() {
     }
 
     setName(session.data.user.name === session.data.user.email.split("@")[0] ? "" : session.data.user.name);
+    setEmail(session.data.user.email);
     setBusy(false);
   }
 
@@ -63,10 +65,11 @@ export default function UsernamePage() {
         <p className="eyebrow">Finish setup</p>
         <h1 id="username-title">Your platform profile</h1>
         <p className="intro">Choose how you’ll be known across Muflah products.</p>
+        <p className="email-context">Continuing with <strong>{email}</strong></p>
         <form onSubmit={handleSubmit}>
-          <label>Name<input autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
-          <label>Username<input autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
-          <label>Date of birth<input type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
+          <label>Name<input name="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
+          <label>Username<input name="username" autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
+          <label>Date of birth<input name="bday" type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
           <button type="submit" disabled={busy}>{busy ? "Working…" : "Continue"}</button>
         </form>
         {message && <p className="message" role="status">{message}</p>}

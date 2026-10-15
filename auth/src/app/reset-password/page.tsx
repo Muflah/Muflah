@@ -9,6 +9,7 @@ const authClient = createAuthClient();
 export default function ResetPasswordPage() {
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -32,7 +33,12 @@ export default function ResetPasswordPage() {
     <main className="shell"><section className="card" aria-labelledby="reset-title">
       <p className="eyebrow">Auth service</p><h1 id="reset-title">Reset password</h1>
       <form onSubmit={handleSubmit}>
-        <label>New password<input type="password" autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+        <label>New password<span className="password-field">
+          <input name="password" type={showPassword ? "text" : "password"} autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} />
+          <button className="password-toggle" type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword((value) => !value)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+          </button>
+        </span></label>
         <p className="hint">{passwordRequirements}</p>
         <button type="submit" disabled={busy || !token}>{busy ? "Working…" : "Reset password"}</button>
       </form>

@@ -73,6 +73,15 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `docs/RULES.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Improve Password and Email UX
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the password-screen loading state, add password visibility controls, and preserve the email context for OTP/password autofill.
+- Changes Made: Added timeout/error handling around email and signup requests, accessible eye toggles for login/signup/reset passwords, visible email context on OTP and password screens, readonly username fields for browser password managers, and explicit form field names/autocomplete attributes.
+- Files: `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `src/app/username/page.tsx`, `src/app/globals.css`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

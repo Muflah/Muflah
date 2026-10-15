@@ -34,13 +34,15 @@ async function sendAuthEmail({
   subject,
   text,
   html,
+  alias = "auth",
 }: {
   to: string;
   subject: string;
   text: string;
   html: string;
+  alias?: string;
 }) {
-  await sendResendEmail({ to, subject, text, html });
+  await sendResendEmail({ to, subject, text, html, alias });
 }
 
 export const auth = betterAuth({
@@ -70,6 +72,7 @@ export const auth = betterAuth({
         subject: "Reset your Muflah password",
         text: `Reset your password by opening this link: ${url}`,
         html: `<p>Reset your Muflah password by opening this link:</p><p><a href="${url}">${url}</a></p>`,
+        alias: "auth",
       });
     },
   },
@@ -89,6 +92,7 @@ export const auth = betterAuth({
                 subject: "Your Muflah security code",
                 text: `Your Muflah security code is ${otp}. It expires soon.`,
                 html: `<p>Your Muflah security code is:</p><p><strong>${otp}</strong></p><p>It expires soon.</p>`,
+                alias: "auth",
               });
             },
           },
@@ -107,6 +111,7 @@ export const auth = betterAuth({
               subject,
               text: `Your Muflah verification code is ${otp}. Use it to continue. It expires soon.`,
               html: `<p>Your Muflah verification code is:</p><p><strong>${otp}</strong></p><p>Use it to continue. It expires soon.</p>`,
+              alias: "auth",
             });
           },
         }),

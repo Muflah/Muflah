@@ -52,9 +52,8 @@ Signup OTP verification must use a signup-specific verification path. It must no
 2. The service sends a neutral email OTP challenge without revealing account existence.
 3. After email ownership is proven, an existing user enters the password.
 4. The service evaluates the device/session trust state.
-5. A trusted device may complete login without the additional risk OTP.
-6. A new or risky device must complete the additional email OTP verification.
-7. A successful login creates the normal Better Auth session.
+5. The email OTP already satisfies the initial email/risk proof for this login attempt; the service must not immediately send a duplicate OTP.
+6. A successful password check creates or promotes the normal Better Auth session.
 
 Password errors remain generic so they do not disclose whether an account exists.
 
@@ -81,6 +80,12 @@ Password errors remain generic so they do not disclose whether an account exists
 - Password reset uses an email link sent through the configured email provider.
 - Reset passwords follow the same password policy as signup.
 - Password reset should revoke other active sessions when that policy is enabled.
+
+## Account creation email
+
+- After the platform profile is completed, send a welcome/account-creation email from `hello@<AUTH_EMAIL_DOMAIN>`.
+- OTP, password-reset, and other security emails use the `auth@<AUTH_EMAIL_DOMAIN>` alias.
+- Failure to send the welcome email must not undo a successfully completed account, but it must be logged for delivery monitoring.
 
 ## Authorization boundary
 

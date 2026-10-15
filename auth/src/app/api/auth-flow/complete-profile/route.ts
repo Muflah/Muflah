@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "../../../../better-auth/auth";
+import { sendResendEmail } from "../../../../integrations/email/resend";
 
 const usernamePattern = /^[a-z0-9](?:[a-z0-9._]{1,28}[a-z0-9])?$/;
 const reservedUsernames = new Set(["admin", "api", "auth", "help", "muflah", "root", "support"]);
@@ -31,6 +32,18 @@ export async function POST(request: Request) {
       body: { name, username, dateOfBirth, onboardingComplete: true },
       headers,
     });
+
+    try {
+      await sendResendEmail({
+        to: session.user.email,
+        subject: "Welcome to Muflah",
+        text: `Your Muflah account is ready. Your username is @${username}.`,
+        html: `<p>Welcome to Muflah.</p><p>Your account is ready, and your username is <strong>@${username}</strong>.</p>`,
+        alias: "hello",
+      });
+    } catch (error) {
+      console.error("Muflah account creation email could not be sent.", error);
+    }
   } catch {
     return NextResponse.json({ error: "That username is already in use." }, { status: 409 });
   }

@@ -25,6 +25,8 @@ All notable changes to the authentication implementation are documented here.
 - Changed the email entry flow to send a neutral OTP before branching to existing-account login or new-account signup, preventing new users from being shown a misleading password screen.
 - Routed the initial email OTP request through a server JSON route so delivery failures are handled consistently for new and existing addresses.
 - Added resend-OTP actions with a 30-second client cooldown to the email verification and risk-based login screens.
+- Added a welcome/account-creation email from `hello@<AUTH_EMAIL_DOMAIN>` after platform profile completion; security emails now use the `auth@` alias.
+- Removed the duplicate post-password OTP challenge when the same login already completed email OTP verification.
 
 ### Changed
 

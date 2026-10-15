@@ -108,21 +108,13 @@ export default function HomePage() {
 
   async function handleLoginPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    let result;
-    try { result = await authClient.signIn.email({ email, password }); }
-    catch { setBusy(false); setMessage("We could not sign you in with those details."); return; }
-    setBusy(false);
-
-    if (result.error) { setMessage("We could not sign you in with those details."); return; }
-    if ((result.data as { twoFactorRedirect?: boolean } | undefined)?.twoFactorRedirect) {
-      const otpResult = await authClient.twoFactor.sendOtp();
-      if (otpResult.error) { setMessage("We could not send the email. Please try again."); return; }
-      setStage("login-otp");
-      setMessage("We have sent you an email.");
-      setResendCooldown(30);
-      return;
-    }
-    await loadSession();
+    try {
+      const response = await fetch("/api/auth-flow/verify-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) { setMessage(result.error ?? "We could not sign you in with those details."); return; }
+      await loadSession();
+    } catch { setMessage("We could not sign you in with those details."); }
+    finally { setBusy(false); }
   }
 
   async function handleLoginOtp(event: FormEvent<HTMLFormElement>) {

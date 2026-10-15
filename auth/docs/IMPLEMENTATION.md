@@ -26,6 +26,8 @@ AUTH_OTP_MAX_ATTEMPTS=3
 
 `AUTH_EMAIL_DOMAIN` and `EMAIL_API_KEY` are required for email delivery. There is no apex-domain or `BETTER_AUTH_URL` fallback. `EMAIL_API_KEY` is provider-neutral naming; the current implementation still uses the Resend adapter.
 
+Sender aliases are selected by message purpose. Account-creation and welcome messages use `hello@<AUTH_EMAIL_DOMAIN>`. Authentication, OTP, password-reset, and other security messages use `auth@<AUTH_EMAIL_DOMAIN>`; the adapter still defaults to `no-reply` for callers that do not specify an alias.
+
 ## Better Auth configuration
 
 The service enables:
@@ -77,6 +79,12 @@ POST /api/auth-flow/complete-profile
 ```
 
 Validates and saves the platform name, username, and date of birth, then marks onboarding complete.
+
+```text
+POST /api/auth-flow/verify-password
+```
+
+Verifies the password against the email-OTP-authenticated session. This prevents the email proof and password steps from immediately triggering a duplicate two-factor OTP challenge.
 
 ```text
 /username

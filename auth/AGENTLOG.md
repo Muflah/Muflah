@@ -82,6 +82,24 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `src/app/username/page.tsx`, `src/app/globals.css`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Add Account Creation Email Alias
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Send account-creation messages from `hello` while using an auth alias for OTP and security messages.
+- Changes Made: Added purpose-specific sender aliases. Welcome/account-creation email uses `hello@<AUTH_EMAIL_DOMAIN>` after profile completion; OTP, password-reset, and security emails use `auth@<AUTH_EMAIL_DOMAIN>`. Welcome delivery failures are logged without undoing the completed account.
+- Files: `src/better-auth/auth.ts`, `src/app/api/auth-flow/complete-profile/route.ts`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
+# 2026-10-16T00:00:00+05:00 — Remove Duplicate Login OTP and Enforce Username Redirect
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the duplicate OTP during login and ensure incomplete users reach `/username` after password verification.
+- Changes Made: Added a server-side password verification route that uses the already email-OTP-authenticated session, preventing an immediate second OTP challenge. Password verification now reliably calls the existing onboarding guard, which redirects incomplete users to `/username`.
+- Files: `src/app/api/auth-flow/verify-password/route.ts`, `src/app/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

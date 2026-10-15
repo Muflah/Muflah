@@ -93,10 +93,10 @@ Verifies the password against the email-OTP-authenticated session. This prevents
 The identity setup screen shown after authentication for new accounts and existing accounts with incomplete profiles. It collects the platform name, username, and date of birth.
 
 ```text
-/username
+/<username>
 ```
 
-The authenticated landing screen for a completed account. The root authentication flow redirects here after login; it is not the signup or profile-completion screen.
+The authenticated landing screen for a completed account, for example `/muflah95`. The root authentication flow redirects to the signed-in user's actual username path; it is not the signup or profile-completion screen.
 
 ```text
 GET /reset-password

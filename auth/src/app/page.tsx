@@ -67,7 +67,7 @@ export default function HomePage() {
     const result = await authClient.getSession();
     if (!result.data?.user) return;
     const statusResponse = await fetch("/api/auth-flow/status");
-    const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean };
+    const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean; username?: string | null };
     if (status.hasCredential && !status.onboardingComplete) {
       window.location.replace("/onboarding");
       return;
@@ -76,7 +76,7 @@ export default function HomePage() {
       setStage("signup-password");
       return;
     }
-    window.location.replace("/username");
+    if (status.username) window.location.replace(`/${encodeURIComponent(status.username)}`);
   }
 
   function resetFlow(nextMode: Mode = mode) {

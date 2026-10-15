@@ -19,6 +19,7 @@ export async function GET(request: Request) {
   );
   return NextResponse.json({
     authenticated: true,
+    username: currentProfile?.username ?? null,
     hasCredential: accounts.some((account) => account.providerId === "credential"),
     onboardingComplete: currentProfile?.onboardingComplete === true && profileComplete,
   });

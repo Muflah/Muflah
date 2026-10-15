@@ -289,3 +289,12 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/app/onboarding/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck` passed and `git diff --check` passed. `npm run build` remains blocked by a Windows/OneDrive `EPERM` lock while Next.js tries to remove a generated `.next` artifact; this is not a source or type error.
 
+# 2026-10-16T00:00:00+05:00 — Use Dynamic Username Landing Paths
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Use the user's actual username in the completed authenticated URL, such as `/muflah95`, instead of treating `/username` as a literal route.
+- Changes Made: Added the dynamic `/<username>` route, kept `/onboarding` for incomplete profiles, returned the username from auth status, and updated all redirects and documentation.
+- Files: `src/app/[username]/page.tsx`, `src/app/onboarding/page.tsx`, `src/app/page.tsx`, `src/app/api/auth-flow/status/route.ts`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: Typecheck and diff validation pending after this correction.
+

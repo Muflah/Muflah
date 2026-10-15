@@ -12,6 +12,12 @@ All notable changes to the authentication implementation are documented here.
 - Added password-reset email links and a reset-password screen.
 - Added clear delivery errors for missing or rejected Resend configuration.
 - Removed the email-domain fallback; `AUTH_EMAIL_DOMAIN` is now required explicitly, while sender aliases remain application-generated.
+- Recorded the successful end-to-end OTP email test and the planned email-first signup/login flow.
+- Documented the planned OTP expiry setting and security controls to settle before implementing the new flow.
+- Clarified that the target is risk-based OTP: password-only login for trusted devices and password plus OTP for new or risky devices.
+- Implemented the email-first signup/login flow with password validation, risk-based OTP, trusted-device support, and server-side signup completion.
+- Added `AUTH_OTP_EXPIRES_IN_MINUTES` and `AUTH_OTP_MAX_ATTEMPTS` handling.
+- Renamed the provider-specific `RESEND_API_KEY` configuration to provider-neutral `EMAIL_API_KEY`.
 
 ### Changed
 

@@ -97,6 +97,12 @@ button:disabled {
   background: #f0f0eb;
 }
 
+.hint {
+  margin: 0;
+  color: #55554f;
+  font-size: 0.8rem;
+}
+
 .link-button {
   width: 100%;
   margin-top: 1rem;

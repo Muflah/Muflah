@@ -2,7 +2,26 @@
 
 This directory contains an experiment to design and build an authentication and session system that can be reused across future products.
 
-The current baseline includes OTP signup/login, password signup/login, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test has passed.
+The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test and the first end-to-end OTP email test have passed.
+
+The implemented flow is email-first with risk-based OTP: password login on a trusted device, and password plus OTP when the device is new or risky.
+
+## Email-first signup/login flow
+
+1. Ask only for the email address and show a single `Next` action.
+2. Keep the interface neutral about whether the address already exists.
+3. Send an OTP with a neutral message such as “We have sent you an email.” The email copy explains whether the user is signing in or creating an account without exposing account existence in the browser.
+4. For an existing account, ask for the password.
+5. Evaluate the device/session risk after the password is accepted.
+6. On a trusted device, complete login without OTP.
+7. On a new or risky device, verify the OTP and expire it after the configured lifetime.
+8. For a new account, verify the OTP, ask for a password twice, validate it, and create the account.
+
+The OTP lifetime will be configured in minutes with `AUTH_OTP_EXPIRES_IN_MINUTES`; the default target is 3 minutes. The Better Auth integration converts this value to the seconds expected by its OTP plugin.
+
+Trusted-device state should use a revocable, signed, secure, HTTP-only persistent token with an expiry and rotation policy. It should not rely on an untrusted browser fingerprint alone. For production hardening, the service should still add resend cooldowns, email and IP rate limits, password-breach checks, and additional monitoring around the completed flow.
+
+The trusted-device policy uses Better Auth's signed, HTTP-only trusted-device cookie and rotates the associated verification record. The current trusted period is 30 days.
 
 ## Email and OTP configuration
 
@@ -10,13 +29,14 @@ The auth service sends email through Resend. The domain is configured explicitly
 
 ```env
 AUTH_EMAIL_DOMAIN=mail.muflah.com
-RESEND_API_KEY=your_resend_api_key
+EMAIL_API_KEY=your_resend_api_key
 AUTH_OTP_ENABLED=true
+AUTH_OTP_MAX_ATTEMPTS=3
 ```
 
 `AUTH_EMAIL_DOMAIN` is required and must be a verified Resend sending domain. There is no apex or `BETTER_AUTH_URL` fallback. OTP is enabled unless `AUTH_OTP_ENABLED=false`. A missing configuration or rejected Resend request returns a clear email-delivery error.
 
-OTP is used for email-code signup and login. Password signup/login remains available as a fallback. Password reset sends a link to `/reset-password`, where the user can choose a new password.
+OTP verifies new signups and challenges password logins on new or risky devices. Password reset sends a link to `/reset-password`, where the user can choose a new password.
 
 ## Service model
 

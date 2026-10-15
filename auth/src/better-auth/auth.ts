@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, twoFactor } from "better-auth/plugins";
 import { Pool } from "pg";
 import { sendResendEmail } from "../integrations/email/resend";
 
@@ -10,6 +10,20 @@ if (!databaseUrl) {
 }
 
 const otpEnabled = process.env.AUTH_OTP_ENABLED !== "false";
+
+function positiveMinutes(name: string, fallback: number) {
+  const value = Number(process.env[name] ?? fallback);
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`${name} must be a positive number of minutes.`);
+  }
+  return value;
+}
+
+const otpPeriodMinutes = positiveMinutes("AUTH_OTP_EXPIRES_IN_MINUTES", 3);
+const otpAllowedAttempts = Number(process.env.AUTH_OTP_MAX_ATTEMPTS ?? 3);
+if (!Number.isInteger(otpAllowedAttempts) || otpAllowedAttempts < 1) {
+  throw new Error("AUTH_OTP_MAX_ATTEMPTS must be a positive whole number.");
+}
 
 async function sendAuthEmail({
   to,
@@ -44,9 +58,29 @@ export const auth = betterAuth({
   },
   plugins: otpEnabled
     ? [
+        twoFactor({
+          issuer: "Muflah",
+          trustDeviceMaxAge: 30 * 24 * 60 * 60,
+          twoFactorCookieMaxAge: 10 * 60,
+          otpOptions: {
+            period: otpPeriodMinutes,
+            allowedAttempts: otpAllowedAttempts,
+            async sendOTP({ user, otp }) {
+              await sendAuthEmail({
+                to: user.email,
+                subject: "Your Muflah security code",
+                text: `Your Muflah security code is ${otp}. It expires soon.`,
+                html: `<p>Your Muflah security code is:</p><p><strong>${otp}</strong></p><p>It expires soon.</p>`,
+              });
+            },
+          },
+        }),
         emailOTP({
           overrideDefaultEmailVerification: true,
           sendVerificationOnSignUp: true,
+          otpLength: 6,
+          expiresIn: otpPeriodMinutes * 60,
+          allowedAttempts: otpAllowedAttempts,
           async sendVerificationOTP({ email, otp, type }) {
             const subject =
               type === "sign-in"

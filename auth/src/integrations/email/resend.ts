@@ -9,11 +9,11 @@ type ResendEmail = {
 const resendEndpoint = "https://api.resend.com/emails";
 
 export async function sendResendEmail(email: ResendEmail) {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.EMAIL_API_KEY;
   const domain = process.env.AUTH_EMAIL_DOMAIN;
 
   if (!apiKey) {
-    throw new Error("Email can't be sent: RESEND_API_KEY is not configured.");
+    throw new Error("Email can't be sent: EMAIL_API_KEY is not configured.");
   }
 
   if (!domain) {

@@ -37,6 +37,51 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Record OTP Test and Email-First Flow
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Record the successful OTP test and define the next signup/login journey.
+- Changes Made: Documented the email-first flow, neutral OTP messaging, existing-account versus new-account handling, password validation stage, and minute-based OTP expiry configuration with a 3-minute target default. Listed standard security controls still required before implementation.
+- Files: `README.md`, `.env.example`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: Documentation-only change; implementation of the new flow is pending.
+
+# 2026-10-16T00:00:00+05:00 — Clarify Risk-Based OTP Behavior
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Clarify that OTP is required only when a device is not trusted or the login is risky.
+- Changes Made: Updated the planned flow to use password-only login for trusted devices, password plus OTP for new or risky devices, and a password-creation step for new accounts. Documented the need for revocable trusted-device tokens rather than browser fingerprinting alone.
+- Files: `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: Documentation-only change; trusted-device implementation is pending.
+
+# 2026-10-16T00:00:00+05:00 — Implement Email-First Risk-Based Authentication
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Implement the agreed email-first signup/login flow with risk-based OTP.
+- Changes Made: Added Better Auth two-factor OTP with trusted-device cookies, configurable OTP expiry and attempts, email-first UI, signup OTP followed by password creation, password complexity validation, a server-side signup completion route, and consistent reset-password validation. Migrated the database for the two-factor schema and enabled the policy for one existing user.
+- Files: `src/better-auth/auth.ts`, `src/config/password.ts`, `src/integrations/email/resend.ts`, `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `src/app/api/auth-flow/finish-signup/route.ts`, `src/app/globals.css`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, `npm run db:migrate -- --yes`, database backfill, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
+# 2026-10-16T00:00:00+05:00 — Format Environment Files
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Improve `.env` readability using the existing `friink/api/.env` section style.
+- Changes Made: Grouped database/Better Auth, Resend email, and authentication behavior variables with section comments and spacing. Preserved all local secret values.
+- Files: `.env`, `.env.example`.
+- Verification Status: `git diff --check` passed.
+
+# 2026-10-16T00:00:00+05:00 — Use Provider-Neutral Email API Key
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Rename the Resend-specific API key variable to `EMAIL_API_KEY`.
+- Changes Made: Updated the local environment, example environment, email integration, and documentation. No provider selector was added; the implementation continues to use Resend.
+- Files: `.env`, `.env.example`, `src/integrations/email/resend.ts`, `README.md`, and `CHANGELOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-15T18:18:33Z — Define Initial Authentication Scope
 
 - Agent: Codex

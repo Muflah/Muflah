@@ -7,6 +7,11 @@ All notable changes to the authentication implementation are documented here.
 ### Added
 
 - Added initial authentication documentation and implementation guidance.
+- Added Resend email delivery with generated `no-reply@<domain>` sender addresses.
+- Added environment-controlled OTP signup/login (`AUTH_OTP_ENABLED`, enabled by default).
+- Added password-reset email links and a reset-password screen.
+- Added clear delivery errors for missing or rejected Resend configuration.
+- Removed the email-domain fallback; `AUTH_EMAIL_DOMAIN` is now required explicitly, while sender aliases remain application-generated.
 
 ### Changed
 
@@ -19,4 +24,5 @@ All notable changes to the authentication implementation are documented here.
 - Added the planned minimal server-rendered HTML/CSS interface for direct visits to the auth subdomain.
 - Added the initial Vercel-compatible Better Auth service with PostgreSQL configuration, email/password signup and login, a catch-all auth API route, and a basic test page.
 - Added a minimal signed-in screen showing the authenticated user's name and email, with sign-out for repeat testing.
+- Recorded the first successful Vercel login test for the vanilla Better Auth baseline.
 

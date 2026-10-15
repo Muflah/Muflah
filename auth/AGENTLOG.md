@@ -10,6 +10,33 @@ Each entry contains:
 - `Files`: files created, modified, or removed.
 - `Verification Status`: checks performed, their results, and anything still pending.
 
+# 2026-10-16T00:00:00+05:00 — Add OTP and Resend Email Delivery
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add OTP signup/login, Resend delivery, and password-reset links.
+- Changes Made: Added Better Auth email OTP support, Resend delivery with generated sender alias, password-reset email delivery, and test UI flows. Added environment variables for email domain, Resend API key, and OTP enablement.
+- Files: `src/better-auth/auth.ts`, `src/integrations/email/resend.ts`, `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
+# 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Remove the email-domain fallback and fail when sender configuration is missing.
+- Changes Made: Replaced derived `AUTH_EMAIL_DOMAIN` sender configuration with required `AUTH_EMAIL_FROM`. Missing sender configuration now produces a clear delivery error; Resend handles invalid or unverified domains.
+- Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed. The previous production build also passed; this change only tightens email configuration validation.
+
+# 2026-10-16T00:00:00+05:00 — Keep Domain Configuration Separate from Aliases
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Configure only the Resend domain and generate sender aliases in application code.
+- Changes Made: Replaced `AUTH_EMAIL_FROM` with required `AUTH_EMAIL_DOMAIN`. The email module now generates `no-reply@<domain>` by default and supports purpose-specific aliases without adding alias variables to `.env`.
+- Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-15T18:18:33Z — Define Initial Authentication Scope
 
 - Agent: Codex
@@ -45,6 +72,15 @@ Each entry contains:
 - Changes Made: Added session loading on page entry and after authentication. Added a minimal signed-in screen displaying the user's name and email, plus sign-out for repeat testing.
 - Files: `src/app/page.tsx`, `src/app/globals.css`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. The build emitted the existing PostgreSQL SSL-mode compatibility warning.
+
+# 2026-10-16T01:03:11+05:00 — Verify First Vercel Login
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Record the user's successful first login test on the Vercel deployment.
+- Changes Made: Updated the auth status and change history to record successful remote login verification for the vanilla Better Auth signup/login baseline.
+- Files: `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: The user confirmed the first Vercel login test passed. No additional code changes were made.
 
 # 2026-10-15T18:59:23Z — Add Planned Module Placeholders
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createAuthClient } from "better-auth/client";
 import { multiSessionClient } from "better-auth/client/plugins";
+import { announceSessionSwitch } from "../session-sync";
 
 const authClient = createAuthClient({ plugins: [multiSessionClient()] });
 
@@ -52,6 +53,7 @@ export default function UsernamePage() {
     setBusy(true);
     const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
     if (result.error) { setBusy(false); return; }
+    announceSessionSwitch();
     window.location.reload();
   }
 
@@ -72,7 +74,7 @@ export default function UsernamePage() {
           {accounts.map((account) => <button className="link-button" type="button" key={account.email} disabled={busy || account.active} onClick={() => void switchAccount(account)}>
             {account.username ? `@${account.username}` : account.email}{account.active ? " (current)" : ""}
           </button>)}
-          <a className="link-button" href="/?mode=sign-up">Add another account</a>
+          <a className="link-button" href="/?mode=add-account">Add another account</a>
         </div>}
         <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
       </section></div>

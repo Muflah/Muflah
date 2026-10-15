@@ -58,7 +58,7 @@ export default function HomePage() {
 
   useEffect(() => { void loadSession(); }, []);
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("mode") === "sign-up") setMode("sign-up");
+    if (new URLSearchParams(window.location.search).get("mode") === "add-account") setMode("sign-up");
   }, []);
   useEffect(() => {
     if (resendCooldown <= 0) return;
@@ -67,7 +67,7 @@ export default function HomePage() {
   }, [resendCooldown]);
 
   async function loadSession() {
-    const addingAccount = new URLSearchParams(window.location.search).get("mode") === "sign-up";
+    const addingAccount = new URLSearchParams(window.location.search).get("mode") === "add-account";
     if (addingAccount) {
       setMode("sign-up");
       setStage("email");

@@ -136,6 +136,15 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Synchronize Account Switches Across Tabs
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Refresh auth tabs after an account switch while avoiding unnecessary background refreshes.
+- Changes Made: Added a global session-sync client component using `BroadcastChannel` with a `localStorage` fallback. Visible tabs refresh immediately after switching; hidden tabs refresh when they become visible.
+- Files: `src/app/session-sync.tsx`, `src/app/layout.tsx`, `src/app/[username]/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Fix Add-Account OTP Consumption
 
 - Agent: Codex

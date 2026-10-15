@@ -8,7 +8,7 @@ Detailed documentation:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Technical implementation](docs/IMPLEMENTATION.md)
 
-The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test and the first end-to-end OTP email test have passed.
+The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, resumable platform profile onboarding, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test and the first end-to-end OTP email test have passed.
 
 The implemented flow is email-first with risk-based OTP: password login on a trusted device, and password plus OTP when the device is new or risky.
 
@@ -22,6 +22,10 @@ The implemented flow is email-first with risk-based OTP: password login on a tru
 6. On a trusted device, complete login without OTP.
 7. On a new or risky device, verify the OTP and expire it after the configured lifetime.
 8. For a new account, verify the OTP, ask for a password twice, validate it, and create the account.
+9. Ask for the platform name, unique username, and date of birth.
+10. If the user leaves after password creation, resume profile completion on the next login.
+
+If the user leaves after OTP verification but before creating a password, the verified signup session can resume while it is valid; otherwise the user starts the signup flow again. The auth service owns this platform-wide identity profile. Products add only their own product-specific profile fields.
 
 The OTP lifetime will be configured in minutes with `AUTH_OTP_EXPIRES_IN_MINUTES`; the default target is 3 minutes. The Better Auth integration converts this value to the seconds expected by its OTP plugin.
 
@@ -124,7 +128,7 @@ Database changes should use expand-and-contract migrations. JWT claims, cookie b
 
 ## Status
 
-The vanilla Better Auth signup/login baseline is implemented and has passed its first Vercel login test. OTP, risk rules, account switching, JWT issuance, and the broader reusable policies remain future work.
+The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, and resumable platform profile onboarding are implemented and have passed local typecheck/build verification. Account switching, JWT issuance, and the broader reusable policies remain future work.
 
 ## Local setup
 
@@ -132,10 +136,10 @@ The vanilla Better Auth signup/login baseline is implemented and has passed its 
 2. Set `BETTER_AUTH_SECRET` to a high-entropy value.
 3. Set `DATABASE_URL` to the dedicated PostgreSQL database.
 4. Run `npm install`.
-5. Run `npm run db:migrate` to create the Better Auth tables.
+5. Run `npm run db:migrate` to create or update the Better Auth tables.
 6. Run `npm run dev` and open `http://localhost:3000`.
 
-The initial test surface supports email/password signup and login. It is intentionally smaller than the final scope and does not yet configure OTP or risk-based verification.
+The test surface supports the email-first OTP signup flow, password login, risk-based login OTP, profile onboarding, password reset, and sign-out.
 
 ## Initial scope
 

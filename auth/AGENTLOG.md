@@ -28,6 +28,15 @@ Each entry contains:
 - Files: `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Add Resumable Platform Signup
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add the platform-wide signup flow with OTP, password creation, and resumable profile onboarding.
+- Changes Made: Added global username support, platform profile fields, onboarding state, account-status detection, profile completion, and migration/backfill handling. Signup now proceeds from email OTP to password creation and then name, username, and date-of-birth completion. Incomplete onboarding resumes after the next login.
+- Files: `src/better-auth/auth.ts`, `src/app/page.tsx`, `src/app/api/auth-flow/verify-signup-otp/route.ts`, `src/app/api/auth-flow/finish-signup/route.ts`, `src/app/api/auth-flow/status/route.ts`, `src/app/api/auth-flow/complete-profile/route.ts`, `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run db:migrate -- --yes`, database backfill, `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

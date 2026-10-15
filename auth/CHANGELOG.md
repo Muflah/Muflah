@@ -20,6 +20,7 @@ All notable changes to the authentication implementation are documented here.
 - Renamed the provider-specific `RESEND_API_KEY` configuration to provider-neutral `EMAIL_API_KEY`.
 - Fixed signup OTP verification so it does not use the login-OTP path or remove an existing credential account.
 - Added `docs/RULES.md`, `docs/ARCHITECTURE.md`, and `docs/IMPLEMENTATION.md` for the business rules, system architecture, and technical implementation details.
+- Added resumable platform onboarding: OTP verification, password creation, then platform name, username, and date-of-birth profile completion.
 
 ### Changed
 

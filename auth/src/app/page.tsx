@@ -2,15 +2,15 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { createAuthClient } from "better-auth/client";
-import { emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
+import { emailOTPClient, twoFactorClient, usernameClient } from "better-auth/client/plugins";
 import { isStrongPassword, passwordRequirements } from "../config/password";
 
 const authClient = createAuthClient({
-  plugins: [emailOTPClient(), twoFactorClient()],
+  plugins: [emailOTPClient(), twoFactorClient(), usernameClient()],
 });
 
 type Mode = "sign-in" | "sign-up";
-type Stage = "email" | "login-password" | "login-otp" | "signup-otp" | "signup-password";
+type Stage = "email" | "login-password" | "login-otp" | "signup-otp" | "signup-password" | "profile";
 
 export default function HomePage() {
   const [mode, setMode] = useState<Mode>("sign-in");
@@ -19,6 +19,8 @@ export default function HomePage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [username, setUsername] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -28,7 +30,18 @@ export default function HomePage() {
 
   async function loadSession() {
     const result = await authClient.getSession();
-    if (result.data?.user) setUser({ name: result.data.user.name, email: result.data.user.email });
+    if (!result.data?.user) return;
+    const statusResponse = await fetch("/api/auth-flow/status");
+    const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean };
+    if (status.hasCredential && !status.onboardingComplete) {
+      setStage("profile");
+      return;
+    }
+    if (!status.hasCredential) {
+      setStage("signup-password");
+      return;
+    }
+    setUser({ name: result.data.user.name, email: result.data.user.email });
   }
 
   function resetFlow(nextMode: Mode = mode) {
@@ -36,6 +49,8 @@ export default function HomePage() {
     setStage("email");
     setPassword("");
     setPasswordConfirmation("");
+    setUsername("");
+    setDateOfBirth("");
     setOtp("");
     setMessage("");
   }
@@ -102,11 +117,25 @@ export default function HomePage() {
     const response = await fetch("/api/auth-flow/finish-signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ password }),
     });
     const result = (await response.json()) as { error?: string };
     setBusy(false);
     if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
+    setStage("profile");
+    setMessage("Your password is set. Finish your platform profile.");
+  }
+
+  async function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+    const response = await fetch("/api/auth-flow/complete-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, username, dateOfBirth }),
+    });
+    const result = (await response.json()) as { error?: string };
+    setBusy(false);
+    if (!response.ok) { setMessage(result.error ?? "We could not save your profile."); return; }
     await loadSession();
   }
 
@@ -144,6 +173,7 @@ export default function HomePage() {
         {stage === "login-otp" && "We have sent you an email."}
         {stage === "signup-otp" && "We have sent you an email."}
         {stage === "signup-password" && "Create a password for your account."}
+        {stage === "profile" && "Finish your Muflah profile."}
       </p>
 
       {stage === "email" && <form onSubmit={handleEmailSubmit}>
@@ -167,11 +197,17 @@ export default function HomePage() {
       </form>}
 
       {stage === "signup-password" && <form onSubmit={handleSignupPassword}>
-        <label>Name<input autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
         <label>Password<input type="password" autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
         <label>Confirm password<input type="password" autoComplete="new-password" required value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} /></label>
         <p className="hint">{passwordRequirements}</p>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Create account"}</button>
+      </form>}
+
+      {stage === "profile" && <form onSubmit={handleProfileSubmit}>
+        <label>Name<input autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
+        <label>Username<input autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
+        <label>Date of birth<input type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Finish profile"}</button>
       </form>}
 
       {stage === "login-password" && <button className="link-button" type="button" disabled={busy} onClick={handlePasswordResetRequest}>Forgot password?</button>}
@@ -180,7 +216,7 @@ export default function HomePage() {
       {stage === "email" && <button className="link-button" type="button" onClick={() => resetFlow(mode === "sign-in" ? "sign-up" : "sign-in")}>
         {mode === "sign-in" ? "Don’t have an account? Create one" : "Already have an account? Sign in"}
       </button>}
-      {stage !== "email" && <button className="link-button" type="button" onClick={() => resetFlow()}>Start over</button>}
+      {stage !== "email" && stage !== "profile" && <button className="link-button" type="button" onClick={() => resetFlow()}>Start over</button>}
       </section></div>
     </main>
   );

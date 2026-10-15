@@ -33,7 +33,10 @@ The service enables:
 - `emailAndPassword` for credential authentication and password reset links.
 - `emailOTP` for signup email verification.
 - `twoFactor` with email OTP for login step-up verification.
+- `username` for the globally unique platform username.
 - Signed trusted-device cookies with a 30-day lifetime.
+
+The user schema also includes `dateOfBirth` and `onboardingComplete`. Existing users are backfilled as complete only when they already have a credential account.
 
 OTP settings are read from the environment. Better Auth receives the email OTP lifetime in seconds, so the application converts the configured minute value.
 
@@ -55,7 +58,19 @@ Signup-specific OTP verification. For an existing user, it verifies email owners
 POST /api/auth-flow/finish-signup
 ```
 
-Completes a verified signup by validating the password, updating the user name, creating the credential password, and enabling email OTP two-factor protection.
+Completes a verified signup by validating the password, creating the credential password, and enabling email OTP two-factor protection. This creates the account with onboarding incomplete; it does not collect profile fields.
+
+```text
+GET /api/auth-flow/status
+```
+
+Returns the authenticated signup/account state so the client can resume password creation or profile completion after an interrupted flow.
+
+```text
+POST /api/auth-flow/complete-profile
+```
+
+Validates and saves the platform name, username, and date of birth, then marks onboarding complete.
 
 ```text
 GET /reset-password
@@ -87,6 +102,13 @@ The two-factor rollout adds:
 
 - `user.twoFactorEnabled`
 - `twoFactor` table fields for the Better Auth two-factor plugin
+
+The platform profile rollout adds:
+
+- `user.username`
+- `user.displayUsername`
+- `user.dateOfBirth`
+- `user.onboardingComplete`
 
 Do not run migrations automatically from every serverless instance. For a separate production database, run the migration once before deploying code that depends on the new schema.
 

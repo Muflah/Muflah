@@ -16,8 +16,22 @@ This document defines the product-neutral business rules and user experience for
 2. The service sends a signup OTP.
 3. The UI shows a neutral email-sent message.
 4. User enters the OTP.
-5. User enters their name and password twice.
-6. The service validates the password and creates the account.
+5. User enters and confirms a password.
+6. The service creates the platform account and enables the login security policy.
+7. User completes the platform profile with a name, unique username, and date of birth.
+
+If the user leaves after OTP verification, the service keeps only a temporary verified signup session. If the user leaves after creating the password, the account remains valid but onboarding is incomplete. The next login resumes profile completion.
+
+The auth service owns this platform-wide identity profile. Consuming products own additional product-specific profile fields.
+
+Username rules:
+
+- Usernames are globally unique within the auth service.
+- Usernames are normalized to lowercase.
+- Usernames use letters, numbers, dots, and underscores, with a 3–30 character limit.
+- Reserved names such as `admin`, `api`, `auth`, and `support` are unavailable.
+
+Date of birth is sensitive profile data and should only be collected when required by the platform or a product requirement.
 
 Signup password requirements:
 

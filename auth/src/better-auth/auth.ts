@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { emailOTP, twoFactor } from "better-auth/plugins";
+import { emailOTP, twoFactor, username } from "better-auth/plugins";
 import { Pool } from "pg";
 import { sendResendEmail } from "../integrations/email/resend";
 
@@ -47,6 +47,21 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   database,
+  user: {
+    additionalFields: {
+      dateOfBirth: {
+        type: "string",
+        required: false,
+        returned: true,
+      },
+      onboardingComplete: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+        returned: true,
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
@@ -60,6 +75,7 @@ export const auth = betterAuth({
   },
   plugins: otpEnabled
     ? [
+        username(),
         twoFactor({
           issuer: "Muflah",
           trustDeviceMaxAge: 30 * 24 * 60 * 60,
@@ -98,5 +114,5 @@ export const auth = betterAuth({
           },
         }),
       ]
-    : [],
+    : [username()],
 });

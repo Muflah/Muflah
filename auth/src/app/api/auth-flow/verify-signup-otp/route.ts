@@ -35,7 +35,12 @@ export async function POST(request: Request) {
 
   try {
     return await auth.api.signInEmailOTP({
-      body: { email, otp },
+      body: {
+        email,
+        otp,
+        name: email.split("@")[0],
+        onboardingComplete: false,
+      },
       asResponse: true,
     });
   } catch {

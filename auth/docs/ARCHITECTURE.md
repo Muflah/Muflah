@@ -39,11 +39,11 @@ Next.js app and JSON routes
 
 ### Identity and credentials
 
-Better Auth owns users, credential accounts, sessions, verification records, and the two-factor schema. Password hashes are stored in the `account` table under the `credential` provider, not in the `user` table.
+Better Auth owns users, credential accounts, sessions, verification records, and the two-factor schema. The auth service also owns the platform-wide identity profile: name, globally unique username, date of birth, and onboarding state. Password hashes are stored in the `account` table under the `credential` provider, not in the `user` table.
 
 ### Email verification
 
-The email OTP plugin verifies signup email ownership. Signup verification has a dedicated route so email verification cannot accidentally invoke the login flow or remove an existing credential.
+The email OTP plugin verifies signup email ownership. Signup verification has a dedicated route so email verification cannot accidentally invoke the login flow or remove an existing credential. Password creation and profile completion are separate steps, allowing an incomplete account to resume onboarding.
 
 ### Risk-based login OTP
 

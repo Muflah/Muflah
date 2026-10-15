@@ -9,6 +9,10 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required to start the auth service.");
 }
 
+export const database = new Pool({
+  connectionString: databaseUrl,
+});
+
 const otpEnabled = process.env.AUTH_OTP_ENABLED !== "false";
 
 function positiveMinutes(name: string, fallback: number) {
@@ -42,9 +46,7 @@ async function sendAuthEmail({
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
-  database: new Pool({
-    connectionString: databaseUrl,
-  }),
+  database,
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {

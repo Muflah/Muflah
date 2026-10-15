@@ -19,6 +19,15 @@ Each entry contains:
 - Files: `src/better-auth/auth.ts`, `src/integrations/email/resend.ts`, `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Add Core Auth Documentation
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add separate business-rules, architecture, and implementation documents.
+- Changes Made: Added the correctly named `docs/RULES.md`, `docs/ARCHITECTURE.md`, and `docs/IMPLEMENTATION.md` files and linked them from the README.
+- Files: `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex
@@ -36,6 +45,15 @@ Each entry contains:
 - Changes Made: Replaced `AUTH_EMAIL_FROM` with required `AUTH_EMAIL_DOMAIN`. The email module now generates `no-reply@<domain>` by default and supports purpose-specific aliases without adding alias variables to `.env`.
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
+
+# 2026-10-16T00:00:00+05:00 — Separate Signup OTP Verification from Login OTP
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Prevent signup OTP verification from removing an existing password credential.
+- Changes Made: Added a dedicated signup OTP verification route. It validates existing-user OTPs before marking email ownership proven, preserves existing credential accounts, and then completes the OTP session. New users continue through the email-OTP signup path. Shared the database pool with the auth configuration.
+- Files: `src/better-auth/auth.ts`, `src/app/api/auth-flow/verify-signup-otp/route.ts`, `src/app/page.tsx`, `CHANGELOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
 # 2026-10-16T00:00:00+05:00 — Record OTP Test and Email-First Flow
 

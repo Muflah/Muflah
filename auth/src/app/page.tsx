@@ -82,9 +82,14 @@ export default function HomePage() {
 
   async function handleSignupOtp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const result = await authClient.signIn.emailOtp({ email, otp });
+    const response = await fetch("/api/auth-flow/verify-signup-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+    const result = (await response.json()) as { error?: string };
     setBusy(false);
-    if (result.error) { setMessage("That code is invalid or expired. Please request a new one."); return; }
+    if (!response.ok) { setMessage(result.error ?? "That code is invalid or expired. Please request a new one."); return; }
     setStage("signup-password");
     setMessage("Email verified. Create your password.");
   }

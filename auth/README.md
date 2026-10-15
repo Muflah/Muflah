@@ -2,6 +2,12 @@
 
 This directory contains an experiment to design and build an authentication and session system that can be reused across future products.
 
+Detailed documentation:
+
+- [Business rules and UX](docs/RULES.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Technical implementation](docs/IMPLEMENTATION.md)
+
 The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test and the first end-to-end OTP email test have passed.
 
 The implemented flow is email-first with risk-based OTP: password login on a trusted device, and password plus OTP when the device is new or risky.

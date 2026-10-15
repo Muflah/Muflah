@@ -1,0 +1,69 @@
+# Authentication Rules
+
+This document defines the product-neutral business rules and user experience for the reusable auth service.
+
+## Account discovery and privacy
+
+- Start with an email address and a `Next` action.
+- Do not reveal whether an email address is registered before the user proves control of that address.
+- Use neutral messages such as: “We have sent you an email.”
+- Normalize email addresses by trimming whitespace and using lowercase comparison.
+- A verified email address may be told that an account already exists because the user has already proven control of it.
+
+## Signup
+
+1. User enters an email address.
+2. The service sends a signup OTP.
+3. The UI shows a neutral email-sent message.
+4. User enters the OTP.
+5. User enters their name and password twice.
+6. The service validates the password and creates the account.
+
+Signup password requirements:
+
+- At least 8 characters.
+- At least one uppercase letter.
+- At least one lowercase letter.
+- At least one number.
+- At least one special character.
+- Confirmation must exactly match the password.
+
+Signup OTP verification must use a signup-specific verification path. It must not use the login OTP endpoint or delete existing credentials.
+
+## Login
+
+1. User enters an email address.
+2. User enters the password.
+3. The service evaluates the device/session trust state.
+4. A trusted device may complete login without OTP.
+5. A new or risky device must complete email OTP verification.
+6. A successful login creates the normal Better Auth session.
+
+Password errors remain generic so they do not disclose whether an account exists.
+
+## OTP
+
+- OTPs are single-use.
+- OTP expiry is configured in minutes with `AUTH_OTP_EXPIRES_IN_MINUTES`.
+- The default expiry is 3 minutes.
+- Failed attempts are limited by `AUTH_OTP_MAX_ATTEMPTS`.
+- OTPs must never be logged.
+- Resend cooldowns and email/IP rate limits remain required production hardening.
+
+## Trusted devices
+
+- Trusted-device state must use a signed, secure, HTTP-only cookie.
+- Trusted-device state must expire and rotate.
+- The current trusted period is 30 days.
+- Browser fingerprints alone must not be treated as proof of trust.
+- Signing out does not necessarily revoke every trusted device; explicit device/session management will be added with the session module.
+
+## Password recovery
+
+- Password reset uses an email link sent through the configured email provider.
+- Reset passwords follow the same password policy as signup.
+- Password reset should revoke other active sessions when that policy is enabled.
+
+## Authorization boundary
+
+The auth service establishes identity and authentication state. Consuming applications own roles, permissions, memberships, and business authorization.

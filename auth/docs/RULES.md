@@ -66,6 +66,7 @@ Password errors remain generic so they do not disclose whether an account exists
 - Failed attempts are limited by `AUTH_OTP_MAX_ATTEMPTS`.
 - OTPs must never be logged.
 - Resend cooldowns and email/IP rate limits remain required production hardening.
+- The UI offers a resend action after a 30-second cooldown.
 
 ## Trusted devices
 

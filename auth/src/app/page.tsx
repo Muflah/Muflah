@@ -24,9 +24,15 @@ export default function HomePage() {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => { void loadSession(); }, []);
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = window.setInterval(() => setResendCooldown((value) => Math.max(0, value - 1)), 1000);
+    return () => window.clearInterval(timer);
+  }, [resendCooldown]);
 
   async function loadSession() {
     const result = await authClient.getSession();
@@ -53,15 +59,21 @@ export default function HomePage() {
     setDateOfBirth("");
     setOtp("");
     setMessage("");
+    setResendCooldown(0);
   }
 
   async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const result = await authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" });
+    const response = await fetch("/api/auth-flow/request-email-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
     setBusy(false);
-    if (result.error) { setMessage("We could not send the email. Please try again."); return; }
+    if (!response.ok) { setMessage("We could not send the email. Please try again."); return; }
     setStage("email-otp");
     setMessage("We have sent you an email.");
+    setResendCooldown(30);
   }
 
   async function handleLoginPassword(event: FormEvent<HTMLFormElement>) {
@@ -75,6 +87,7 @@ export default function HomePage() {
       if (otpResult.error) { setMessage("We could not send the email. Please try again."); return; }
       setStage("login-otp");
       setMessage("We have sent you an email.");
+      setResendCooldown(30);
       return;
     }
     await loadSession();
@@ -86,6 +99,26 @@ export default function HomePage() {
     setBusy(false);
     if (result.error) { setMessage("That code is invalid or expired. Please request a new one."); return; }
     await loadSession();
+  }
+
+  async function handleResendOtp() {
+    if (busy || resendCooldown > 0) return;
+    setBusy(true); setMessage("");
+    if (stage === "login-otp") {
+      const result = await authClient.twoFactor.sendOtp();
+      setBusy(false);
+      if (result.error) { setMessage("We could not send the email. Please try again."); return; }
+    } else {
+      const response = await fetch("/api/auth-flow/request-email-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setBusy(false);
+      if (!response.ok) { setMessage("We could not send the email. Please try again."); return; }
+    }
+    setResendCooldown(30);
+    setMessage("We have sent you a new email.");
   }
 
   async function handleEmailOtp(event: FormEvent<HTMLFormElement>) {
@@ -194,6 +227,10 @@ export default function HomePage() {
         <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
         <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
       </form>}
+
+      {(stage === "email-otp" || stage === "login-otp") && <button className="link-button" type="button" disabled={busy || resendCooldown > 0} onClick={handleResendOtp}>
+        {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : "Didn’t receive it? Resend code"}
+      </button>}
 
       {stage === "signup-password" && <form onSubmit={handleSignupPassword}>
         <label>Password<input type="password" autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>

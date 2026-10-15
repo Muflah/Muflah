@@ -55,6 +55,24 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/better-auth/auth.ts`, `README.md`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Route Initial OTP Through Auth JSON API
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix missing OTP delivery for new email addresses.
+- Changes Made: Added a server-side email OTP request route that invokes Better Auth directly for both registered and unregistered addresses. Updated the UI to use that route and preserve a consistent delivery-error response.
+- Files: `src/app/api/auth-flow/request-email-otp/route.ts`, `src/app/page.tsx`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
+# 2026-10-16T00:00:00+05:00 — Add Resend OTP Action
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add a way to request another OTP when the first email does not arrive.
+- Changes Made: Added resend actions to the email verification and risk-based login OTP screens with a 30-second client cooldown, plus updated rules and changelog documentation.
+- Files: `src/app/page.tsx`, `docs/RULES.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

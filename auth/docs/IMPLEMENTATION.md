@@ -55,6 +55,12 @@ POST /api/auth-flow/verify-signup-otp
 Email-first OTP verification. It verifies email ownership before branching to existing-account password login or new-account password creation, preserving existing credential accounts.
 
 ```text
+POST /api/auth-flow/request-email-otp
+```
+
+Requests the neutral email-first OTP for both registered and unregistered email addresses and returns a consistent JSON delivery error when the provider rejects the request.
+
+```text
 POST /api/auth-flow/finish-signup
 ```
 

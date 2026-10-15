@@ -100,6 +100,24 @@ Each entry contains:
 - Files: `src/app/api/auth-flow/verify-password/route.ts`, `src/app/page.tsx`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
 
+# 2026-10-16T00:00:00+05:00 — Correct Profile Completion State
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the `/username` redirect being skipped after login.
+- Changes Made: Updated the status guard to require name, username, and date of birth in addition to the completion flag. Corrected one legacy database user incorrectly marked complete despite missing profile data.
+- Files: `src/app/api/auth-flow/status/route.ts`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: Database correction, `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
+# 2026-10-16T00:00:00+05:00 — Read Onboarding State From Database
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Make the `/username` redirect reliable even when Better Auth session data is cached.
+- Changes Made: Updated the status route to read the current name, username, date of birth, and onboarding flag directly from PostgreSQL before deciding whether the profile is complete.
+- Files: `src/app/api/auth-flow/status/route.ts`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
+
 # 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
 
 - Agent: Codex

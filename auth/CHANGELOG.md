@@ -27,6 +27,7 @@ All notable changes to the authentication implementation are documented here.
 - Added resend-OTP actions with a 30-second client cooldown to the email verification and risk-based login screens.
 - Added a welcome/account-creation email from `hello@<AUTH_EMAIL_DOMAIN>` after platform profile completion; security emails now use the `auth@` alias.
 - Removed the duplicate post-password OTP challenge when the same login already completed email OTP verification.
+- Fixed the onboarding guard to require actual platform profile fields, so legacy accounts without a username are redirected to `/username`.
 
 ### Changed
 

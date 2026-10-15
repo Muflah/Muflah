@@ -72,7 +72,7 @@ Completes a verified signup by validating the password, creating the credential 
 GET /api/auth-flow/status
 ```
 
-Returns the authenticated signup/account state so the client can resume password creation or profile completion after an interrupted flow.
+Returns the authenticated signup/account state so the client can resume password creation or profile completion after an interrupted flow. The onboarding guard requires the persisted completion flag and the platform name, username, and date of birth.
 
 ```text
 POST /api/auth-flow/complete-profile

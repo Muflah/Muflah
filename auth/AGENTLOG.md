@@ -136,6 +136,24 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Fix Add-Account OTP Consumption
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the OTP loop during add-account signup and document the deployed session-limit requirement.
+- Changes Made: Removed the duplicate OTP verification call; add-account now consumes each OTP once through `signInEmailOTP`. Documented that `AUTH_MAX_SESSIONS` must be set in Vercel to retain more than one active browser session.
+- Files: `src/app/api/auth-flow/verify-signup-otp/route.ts`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
+# 2026-10-16T00:00:00+05:00 — Add Configurable Cross-Subdomain Cookies
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Allow the auth session cookie to be shared across trusted subdomains through an environment variable.
+- Changes Made: Added optional `AUTH_COOKIE_DOMAIN`; when set, Better Auth enables cross-subdomain cookies for that parent domain, and when empty or missing it preserves host-only cookies. Configured the local environment for `muflah.com` and documented the integration and security boundary.
+- Files: `.env`, `.env.example`, `src/better-auth/auth.ts`, `README.md`, `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Preserve Add-Account Signup Route
 
 - Agent: Codex

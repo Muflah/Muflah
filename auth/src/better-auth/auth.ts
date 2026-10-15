@@ -14,6 +14,7 @@ export const database = new Pool({
 });
 
 const otpEnabled = process.env.AUTH_OTP_ENABLED !== "false";
+const cookieDomain = process.env.AUTH_COOKIE_DOMAIN?.trim();
 const maximumAllowedSessions = 10;
 
 function maximumSessions() {
@@ -60,6 +61,16 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   database,
+  ...(cookieDomain
+    ? {
+        advanced: {
+          crossSubDomainCookies: {
+            enabled: true,
+            domain: cookieDomain,
+          },
+        },
+      }
+    : {}),
   user: {
     additionalFields: {
       dateOfBirth: {

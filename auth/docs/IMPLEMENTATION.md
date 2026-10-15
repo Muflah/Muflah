@@ -15,6 +15,7 @@
 DATABASE_URL=postgresql://...
 BETTER_AUTH_SECRET=...
 BETTER_AUTH_URL=https://auth.muflah.com
+AUTH_COOKIE_DOMAIN=muflah.com
 
 AUTH_EMAIL_DOMAIN=mail.muflah.com
 EMAIL_API_KEY=...
@@ -26,6 +27,8 @@ AUTH_MAX_SESSIONS=4
 ```
 
 `AUTH_EMAIL_DOMAIN` and `EMAIL_API_KEY` are required for email delivery. There is no apex-domain or `BETTER_AUTH_URL` fallback. `EMAIL_API_KEY` is provider-neutral naming; the current implementation still uses the Resend adapter.
+
+`AUTH_COOKIE_DOMAIN` is optional. When set, Better Auth enables cross-subdomain cookies for that parent domain. When missing or empty, cookies remain host-only. In production, the intended value is `muflah.com`; consuming applications must still call the auth API with credentials included and use the approved auth origins.
 
 Sender aliases are selected by message purpose. Account-creation and welcome messages use `hello@<AUTH_EMAIL_DOMAIN>`. Authentication, OTP, password-reset, and other security messages use `auth@<AUTH_EMAIL_DOMAIN>`; the adapter still defaults to `no-reply` for callers that do not specify an alias.
 
@@ -43,7 +46,7 @@ The user schema also includes `dateOfBirth` and `onboardingComplete`. Existing u
 
 OTP settings are read from the environment. Better Auth receives the email OTP lifetime in seconds, so the application converts the configured minute value.
 
-Better Auth's official `multiSession` plugin manages multiple account sessions in one browser. `AUTH_MAX_SESSIONS` controls the maximum and accepts values from 1 through 10; empty, invalid, or out-of-bounds values safely default to 1. The authenticated username screen lists available sessions, supports switching, and links to the root signup flow for adding another account.
+Better Auth's official `multiSession` plugin manages multiple account sessions in one browser. `AUTH_MAX_SESSIONS` controls the maximum and accepts values from 1 through 10; empty, invalid, or out-of-bounds values safely default to 1. The authenticated username screen lists available sessions, supports switching, and links to the root signup flow for adding another account. The value must be configured in the Vercel environment for deployed behavior; changing `.env` locally does not change Vercel.
 
 ## Important routes
 
@@ -57,7 +60,7 @@ The standard Better Auth JSON API, including sessions, password login, password 
 POST /api/auth-flow/verify-signup-otp
 ```
 
-Email-first OTP verification. It verifies email ownership before branching to existing-account password login or new-account password creation, preserving existing credential accounts.
+Email-first OTP verification. It verifies and consumes the OTP exactly once before branching to existing-account password login or new-account password creation, preserving existing credential accounts. The route must not call both `checkVerificationOTP` and `signInEmailOTP` for the same code.
 
 ```text
 POST /api/auth-flow/request-email-otp

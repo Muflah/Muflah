@@ -90,8 +90,16 @@ Password errors remain generic so they do not disclose whether an account exists
 - The account switcher must list only sessions available to the current browser and activate a selected session deliberately.
 - “Add another account” starts the normal signup flow without requiring the current account to be signed out first.
 - The add-account flow uses `/?mode=sign-up` and must not redirect an already authenticated user back to the current username path before signup begins.
+- If `AUTH_MAX_SESSIONS` is missing or invalid in a deployment, the service intentionally retains only one active session; deployments must set the variable explicitly when account switching is needed.
 - Switching accounts must redirect to the selected account's actual username path.
 - Cross-tab UI synchronization is a client concern; cookie changes alone must not be assumed to update already-rendered application state.
+
+## Cross-subdomain sessions
+
+- Cross-subdomain cookies are enabled only when `AUTH_COOKIE_DOMAIN` is explicitly set.
+- The production value is expected to be `muflah.com`; an empty or missing value keeps cookies scoped to `auth.muflah.com`.
+- Shared cookies remain HTTP-only and secure in production.
+- Only trusted Muflah subdomains may use the shared session. Consuming products must use credentialed requests to the auth API and an approved origin configuration.
 
 ## Password recovery
 

@@ -44,9 +44,12 @@ AUTH_OTP_ENABLED=true
 AUTH_OTP_EXPIRES_IN_MINUTES=3
 AUTH_OTP_MAX_ATTEMPTS=3
 AUTH_MAX_SESSIONS=4
+AUTH_COOKIE_DOMAIN=muflah.com
 ```
 
 `AUTH_EMAIL_DOMAIN` is required and must be a verified Resend sending domain. There is no apex or `BETTER_AUTH_URL` fallback. OTP is enabled unless `AUTH_OTP_ENABLED=false`. A missing configuration or rejected Resend request returns a clear email-delivery error.
+
+`AUTH_COOKIE_DOMAIN` is optional. Set it to `muflah.com` to share the secure HTTP-only auth cookie across trusted Muflah subdomains; leave it empty for host-only cookies.
 
 OTP verifies new signups and challenges password logins on new or risky devices. Password reset sends a link to `/reset-password`, where the user can choose a new password.
 
@@ -130,7 +133,7 @@ Database changes should use expand-and-contract migrations. JWT claims, cookie b
 
 ## Status
 
-The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, resumable platform profile onboarding, dynamic username landing paths, and the initial multi-session account switcher are implemented. JWT issuance, JWKS, explicit session revocation UI, and broader reusable policies remain future work.
+The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, resumable platform profile onboarding, dynamic username landing paths, the initial multi-session account switcher, and opt-in cross-subdomain cookies are implemented. JWT issuance, JWKS, explicit session revocation UI, and broader reusable policies remain future work.
 
 ## Local setup
 

@@ -60,6 +60,10 @@ AUTH_EMAIL_DOMAIN=mail.muflah.com
 
 The current default alias is `no-reply@<AUTH_EMAIL_DOMAIN>`.
 
+### Cross-subdomain session cookies
+
+Cross-subdomain cookies are opt-in through `AUTH_COOKIE_DOMAIN`. Setting it to `muflah.com` makes the secure, HTTP-only Better Auth session cookie available to Muflah subdomains. Leaving it empty keeps the cookie host-only. This shares the browser credential but does not automatically integrate a product: each consuming app must use the auth API with credentials and an approved origin policy. A parent-domain cookie also means a compromised sibling subdomain can affect the shared session, so only trusted Muflah subdomains should participate.
+
 ### Account sessions
 
 The official Better Auth multi-session plugin keeps multiple account sessions available in one browser. The service configures its maximum from `AUTH_MAX_SESSIONS`, with a safe fallback of one for invalid values. The UI lists available sessions, activates a selected session, and starts the normal root signup flow when the user chooses to add another account. The session table remains Better Auth-owned; the service does not create a parallel session store.

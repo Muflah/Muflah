@@ -19,22 +19,8 @@ export async function POST(request: Request) {
     [email],
   );
 
-  if (existing.rowCount) {
-    try {
-      await auth.api.checkVerificationOTP({
-        body: { email, type: "sign-in", otp },
-      });
-      await database.query(
-        `UPDATE ${userTable} SET ${verifiedColumn} = true WHERE ${userIdColumn} = $1`,
-        [existing.rows[0].id],
-      );
-    } catch {
-      return NextResponse.json({ error: "The verification code is invalid or expired." }, { status: 400 });
-    }
-  }
-
   try {
-    return await auth.api.signInEmailOTP({
+    const response = await auth.api.signInEmailOTP({
       body: {
         email,
         otp,
@@ -43,6 +29,15 @@ export async function POST(request: Request) {
       },
       asResponse: true,
     });
+
+    if (existing.rowCount) {
+      await database.query(
+        `UPDATE ${userTable} SET ${verifiedColumn} = true WHERE ${userIdColumn} = $1`,
+        [existing.rows[0].id],
+      );
+    }
+
+    return response;
   } catch {
     return NextResponse.json({ error: "The verification code is invalid or expired." }, { status: 400 });
   }

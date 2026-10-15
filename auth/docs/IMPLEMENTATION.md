@@ -42,6 +42,8 @@ The user schema also includes `dateOfBirth` and `onboardingComplete`. Existing u
 
 OTP settings are read from the environment. Better Auth receives the email OTP lifetime in seconds, so the application converts the configured minute value.
 
+Better Auth's official `multiSession` plugin manages multiple account sessions in one browser. `AUTH_MAX_SESSIONS` controls the maximum and accepts values from 1 through 10; empty, invalid, or out-of-bounds values safely default to 1. The authenticated username screen lists available sessions, supports switching, and links to the root signup flow for adding another account.
+
 ## Important routes
 
 ```text

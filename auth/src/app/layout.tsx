@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Auth",
   description: "Authentication service",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

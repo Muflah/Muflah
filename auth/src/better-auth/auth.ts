@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { emailOTP, twoFactor, username } from "better-auth/plugins";
+import { emailOTP, multiSession, twoFactor, username } from "better-auth/plugins";
 import { Pool } from "pg";
 import { sendResendEmail } from "../integrations/email/resend";
 
@@ -14,6 +14,15 @@ export const database = new Pool({
 });
 
 const otpEnabled = process.env.AUTH_OTP_ENABLED !== "false";
+const maximumAllowedSessions = 10;
+
+function maximumSessions() {
+  const value = Number(process.env.AUTH_MAX_SESSIONS?.trim());
+  if (!Number.isInteger(value) || value < 1 || value > maximumAllowedSessions) {
+    return 1;
+  }
+  return value;
+}
 
 function positiveMinutes(name: string, fallback: number) {
   const value = Number(process.env[name] ?? fallback);
@@ -28,6 +37,8 @@ const otpAllowedAttempts = Number(process.env.AUTH_OTP_MAX_ATTEMPTS ?? 3);
 if (!Number.isInteger(otpAllowedAttempts) || otpAllowedAttempts < 1) {
   throw new Error("AUTH_OTP_MAX_ATTEMPTS must be a positive whole number.");
 }
+
+const maxSessions = maximumSessions();
 
 async function sendAuthEmail({
   to,
@@ -79,6 +90,7 @@ export const auth = betterAuth({
   plugins: otpEnabled
     ? [
         username(),
+        multiSession({ maximumSessions: maxSessions }),
         twoFactor({
           issuer: "Muflah",
           trustDeviceMaxAge: 30 * 24 * 60 * 60,
@@ -116,5 +128,5 @@ export const auth = betterAuth({
           },
         }),
       ]
-    : [username()],
+    : [username(), multiSession({ maximumSessions: maxSessions })],
 });

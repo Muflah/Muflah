@@ -136,6 +136,15 @@ Each entry contains:
 - Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Add Configurable Better Auth Multi-Session Support
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Use the official Better Auth multi-session plugin with an environment-controlled limit defaulting to one when invalid.
+- Changes Made: Added `multiSession` and `multiSessionClient`, configured `AUTH_MAX_SESSIONS` with a safe accepted range of 1-10 and fallback 1, added account switching to the username landing page, and added an add-account link to the signup flow.
+- Files: `src/better-auth/auth.ts`, `src/app/[username]/page.tsx`, `src/app/page.tsx`, `.env.example`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Separate Signup OTP Verification from Login OTP
 
 - Agent: Codex
@@ -297,4 +306,13 @@ Each entry contains:
 - Changes Made: Added the dynamic `/<username>` route, kept `/onboarding` for incomplete profiles, returned the username from auth status, and updated all redirects and documentation.
 - Files: `src/app/[username]/page.tsx`, `src/app/onboarding/page.tsx`, `src/app/page.tsx`, `src/app/api/auth-flow/status/route.ts`, `docs/RULES.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: Typecheck and diff validation pending after this correction.
+
+# 2026-10-16T00:00:00+05:00 — Reuse Apex Favicon
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Use the same favicon in the auth service as the Muflah apex site.
+- Changes Made: Copied the apex favicon asset into the auth app's public assets and configured Next.js metadata to serve it.
+- Files: `public/favicon.svg`, `src/app/layout.tsx`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
 

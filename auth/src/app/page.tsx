@@ -58,6 +58,9 @@ export default function HomePage() {
 
   useEffect(() => { void loadSession(); }, []);
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("mode") === "sign-up") setMode("sign-up");
+  }, []);
+  useEffect(() => {
     if (resendCooldown <= 0) return;
     const timer = window.setInterval(() => setResendCooldown((value) => Math.max(0, value - 1)), 1000);
     return () => window.clearInterval(timer);

@@ -6,6 +6,8 @@ All notable changes to the authentication implementation are documented here.
 
 ### Added
 
+- Added the apex site's favicon to the auth service.
+- Added Better Auth's official multi-session plugin, environment-controlled session limits, account switching, and an add-account signup entry point.
 - Added initial authentication documentation and implementation guidance.
 - Added Resend email delivery with generated `no-reply@<domain>` sender addresses.
 - Added environment-controlled OTP signup/login (`AUTH_OTP_ENABLED`, enabled by default).

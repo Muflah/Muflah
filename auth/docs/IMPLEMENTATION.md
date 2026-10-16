@@ -140,6 +140,9 @@ Configuration rules:
 - Leave `AUTH_COOKIE_DOMAIN` unset for host-only cookies unless the deployment deliberately trusts the parent domain.
 - Keep the initial email connector mapped to Resend through `EMAIL_API_KEY`.
 - Use `AUTH_EMAIL_DOMAIN` only as the verified domain input for code-generated sender aliases.
+- Generate `hello@<AUTH_EMAIL_DOMAIN>` for welcome, signup verification, password recovery, and security messages.
+- Generate `noreply@<AUTH_EMAIL_DOMAIN>` for OTP messages.
+- Send the welcome email from the user-create hook after the account record is created.
 - Do not introduce a sender-alias environment variable.
 - Validate required variables at startup and fail clearly for unsafe or incomplete production configuration.
 - Document whether each variable is required, optional, secret, reloadable, or deployment-restart-only.

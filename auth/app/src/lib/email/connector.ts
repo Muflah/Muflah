@@ -2,6 +2,7 @@ import { config } from "../config";
 import { senderAddress } from "./aliases";
 
 export type TransactionalEmailType =
+  | "welcome"
   | "verification"
   | "otp"
   | "password-reset"

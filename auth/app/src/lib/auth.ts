@@ -9,6 +9,20 @@ export const auth = betterAuth({
   baseURL: config.authUrl,
   secret: config.secret,
   trustedOrigins: [config.authUrl],
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          await sendTransactionalEmail({
+            to: user.email,
+            type: "welcome",
+            subject: "Welcome to Muflah",
+            html: `<p>Welcome to Muflah, ${user.name}.</p><p>Your account has been created. We’re glad to have you here.</p>`,
+          });
+        },
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

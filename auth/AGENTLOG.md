@@ -143,3 +143,21 @@ Each entry contains:
 - Files: `app/src/app/page.tsx`, `app/src/app/globals.css`, `app/src/app/layout.tsx`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. The auth database tables `account`, `session`, `twoFactor`, `user`, and `verification` contain zero rows after the reset.
 
+# 2026-10-17T05:25:00+05:00 — Add Email Verification Step to Signup UX
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Investigate why the founder was stuck after reaching the create-account screen.
+- Changes Made: Identified that signup had no visible next step after the account request. Added a verification-code step, six-digit OTP input, resend-code action, verification endpoint integration, transition back to sign-in after successful verification, and a recovery path to use a different email. Kept the flow within the existing themed hosted UI.
+- Files: `app/src/app/page.tsx` and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. A real Resend delivery and live OTP entry remain to be tested with the pilot email account.
+
+# 2026-10-17T05:40:00+05:00 — Add Friendly Email Aliases and Reset Pilot Data
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Use clearer sender aliases, send a welcome email on account creation, and reset the database for another clean pilot test.
+- Changes Made: Changed code-generated sender aliases to `hello@<domain>` for welcome, verification, recovery, and security messages, and `noreply@<domain>` for OTP messages. Added the Better Auth user-create hook for the welcome email. Flushed only the five Better Auth tables after verifying their presence.
+- Files: `app/src/lib/email/aliases.ts`, `app/src/lib/email/connector.ts`, `app/src/lib/auth.ts`, `README.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `npm run build` passed. The five auth tables were reset successfully and are ready for a fresh test.
+

@@ -181,6 +181,15 @@ Each entry contains:
 - Files: `src/app/api/auth-flow/verify-signup-otp/route.ts`, `src/app/page.tsx`, `src/app/components/add-account-modal.tsx`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck` passed and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Use Better Auth Sign-In for Password Completion
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Correct passwords were rejected after existing-account email OTP verification.
+- Changes Made: Replaced the custom-session-dependent `verifyPassword` completion step with Better Auth's official `signInEmail` API, passing the verified email and password so Better Auth validates credentials and manages the resulting session.
+- Files: `src/app/api/auth-flow/verify-password/route.ts`, `src/app/page.tsx`, `src/app/components/add-account-modal.tsx`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` passed and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Guarantee Active-Tab Session Switch Reload
 
 - Agent: Codex
@@ -413,5 +422,14 @@ Each entry contains:
 - Prompt Summary: Use the same favicon in the auth service as the Muflah apex site.
 - Changes Made: Copied the apex favicon asset into the auth app's public assets and configured Next.js metadata to serve it.
 - Files: `public/favicon.svg`, `src/app/layout.tsx`, `CHANGELOG.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` and `git diff --check` passed.
+
+# 2026-10-16T00:00:00+05:00 — Delegate Authentication Flows to Better Auth
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Implement the auth UI using Better Auth's preferred methods and remove the parallel custom authentication implementation.
+- Changes Made: Reworked sign-in, signup, signup email verification, login 2FA OTP, resend, password reset, and add-account flows to use Better Auth's official client plugins and methods. Removed obsolete custom OTP/password wrapper routes. Kept only the profile status and profile completion endpoints, because platform profile fields are application-specific rather than Better Auth authentication behavior.
+- Files: `src/app/page.tsx`, `src/app/components/add-account-modal.tsx`, deleted `src/app/api/auth-flow/request-email-otp/route.ts`, deleted `src/app/api/auth-flow/verify-signup-otp/route.ts`, deleted `src/app/api/auth-flow/verify-password/route.ts`, deleted `src/app/api/auth-flow/finish-signup/route.ts`, and `docs/IMPLEMENTATION.md`.
 - Verification Status: `npm run typecheck` and `git diff --check` passed.
 

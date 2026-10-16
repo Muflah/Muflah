@@ -56,23 +56,16 @@ GET/POST /api/auth/[...all]
 
 The standard Better Auth JSON API, including sessions, password login, password reset, email OTP, and two-factor endpoints.
 
-```text
-POST /api/auth-flow/verify-signup-otp
-```
+The browser uses Better Auth's official client methods directly. The service does not add wrapper routes for authentication decisions:
 
-Email-first OTP verification. It verifies and consumes the OTP exactly once before branching to existing-account password login or new-account password creation, preserving existing credential accounts. The route must not call both `checkVerificationOTP` and `signInEmailOTP` for the same code.
+- `authClient.signIn.email({ email, password })` signs in with credentials.
+- `authClient.signUp.email({ email, password, name })` creates an account.
+- `authClient.emailOtp.verifyEmail({ email, otp })` verifies signup email ownership.
+- `authClient.twoFactor.sendOtp()` and `authClient.twoFactor.verifyOtp()` handle login step-up OTP.
+- `authClient.twoFactor.enable({ password, method: "otp" })` enables OTP protection after signup verification.
+- `authClient.requestPasswordReset()` starts the official password-reset flow.
 
-```text
-POST /api/auth-flow/request-email-otp
-```
-
-Requests the neutral email-first OTP for both registered and unregistered email addresses and returns a consistent JSON delivery error when the provider rejects the request.
-
-```text
-POST /api/auth-flow/finish-signup
-```
-
-Completes a verified signup by validating the password, creating the credential password, and enabling email OTP two-factor protection. This creates the account with onboarding incomplete; it does not collect profile fields.
+The UI asks the user to choose sign-in or signup before the password step. It never probes account existence to decide which Better Auth operation to call.
 
 ```text
 GET /api/auth-flow/status
@@ -86,23 +79,9 @@ POST /api/auth-flow/complete-profile
 
 Validates and saves the platform name, username, and date of birth, then marks onboarding complete.
 
-```text
-POST /api/auth-flow/verify-password
-```
+There are no custom password, signup-OTP, or email-OTP wrapper routes. This keeps credential validation, OTP consumption, session issuance, and error handling inside Better Auth.
 
-Verifies the password against the email-OTP-authenticated session. This prevents the email proof and password steps from immediately triggering a duplicate two-factor OTP challenge.
-
-```text
-/onboarding
-```
-
-The identity setup screen shown after authentication for new accounts and existing accounts with incomplete profiles. It collects the platform name, username, and date of birth.
-
-```text
-/<username>
-```
-
-The authenticated root shell for a completed account. It contains the current account card, account switcher, sign-out control, and profile summary. The username is displayed as profile data and does not determine navigation.
+The root auth screen contains the authenticated shell. It shows the current account card and profile state, and collects the platform name, username, and date of birth when onboarding is incomplete. The username is profile data; it is not used as an authentication route.
 
 The root shell uses Better Auth's official `multiSessionClient()` to list browser sessions and activate another account in place. The account switcher is a sidebar select with an add-account action. Add account is a popup flow; `/?mode=add-account` remains a compatibility entry point that opens the popup. Better Auth's own session client manages session refresh, focus refresh, and session state after `setActive`; the service does not add a second cross-tab session handler.
 

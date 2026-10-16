@@ -39,6 +39,8 @@ All notable changes to the authentication implementation are documented here.
 
 ### Changed
 
+- Reworked the browser flows to use Better Auth's official email/password, email OTP, two-factor OTP, password-reset, and multi-session client methods. Removed custom authentication wrapper routes; custom code now covers only platform-profile onboarding.
+
 - Clarified that this is a reusable authentication and session-system experiment, not the root website's authentication implementation.
 - Defined the initial scope around risk-based OTP, login and signup, account switching, multi-session support, JWTs, and domain-wide cookies from the `auth` subdomain.
 - Documented the self-hosted service model, Better Auth integration boundary, standard JSON API, cookie/JWT client paths, unversioned compatibility-first API policy, and rolling-release requirements.

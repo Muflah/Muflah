@@ -178,9 +178,8 @@ export default function HomePage() {
     const result = (await response.json()) as { error?: string };
     setBusy(false);
     if (!response.ok) { setMessage(result.error ?? "That code is invalid or expired. Please request a new one."); return; }
-    const statusResponse = await fetch("/api/auth-flow/status");
-    const status = (await statusResponse.json()) as { hasCredential?: boolean };
-    if (status.hasCredential) {
+    const hasCredential = response.headers.get("X-Auth-Has-Credential") === "true";
+    if (hasCredential) {
       setStage("login-password");
       setMessage("Email verified. Enter your password.");
     } else {

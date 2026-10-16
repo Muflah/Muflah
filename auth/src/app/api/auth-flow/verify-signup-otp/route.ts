@@ -18,6 +18,14 @@ export async function POST(request: Request) {
     `SELECT ${userIdColumn} AS id, ${verifiedColumn} AS email_verified FROM ${userTable} WHERE LOWER(${emailColumn}) = LOWER($1) LIMIT 1`,
     [email],
   );
+  let hasCredential = false;
+  if (existing.rowCount) {
+    const credential = await database.query(
+      `SELECT EXISTS(SELECT 1 FROM "account" WHERE "userId" = $1 AND "providerId" = 'credential') AS has_credential`,
+      [existing.rows[0].id],
+    );
+    hasCredential = credential.rows[0]?.has_credential === true;
+  }
 
   try {
     const response = await auth.api.signInEmailOTP({
@@ -37,6 +45,7 @@ export async function POST(request: Request) {
       );
     }
 
+    response.headers.set("X-Auth-Has-Credential", String(hasCredential));
     return response;
   } catch {
     return NextResponse.json({ error: "The verification code is invalid or expired." }, { status: 400 });

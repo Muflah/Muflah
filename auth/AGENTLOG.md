@@ -172,6 +172,15 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/app/layout.tsx`, `src/app/onboarding/page.tsx`, `src/app/api/auth-flow/status/route.ts`, deleted `src/app/session-sync.tsx`, deleted `src/app/[username]/page.tsx`, `docs/IMPLEMENTATION.md`, `docs/ARCHITECTURE.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck` passed and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Correct Existing-Account OTP Branching
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: An existing account was incorrectly shown the create-password step after email OTP verification.
+- Changes Made: The OTP verification route now determines credential existence from the verified email's account record and returns that result with the Better Auth response. The root flow and add-account popup use that result to choose password login versus password creation, instead of asking the active-session status endpoint about a potentially different account.
+- Files: `src/app/api/auth-flow/verify-signup-otp/route.ts`, `src/app/page.tsx`, `src/app/components/add-account-modal.tsx`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` passed and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Guarantee Active-Tab Session Switch Reload
 
 - Agent: Codex

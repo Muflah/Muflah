@@ -34,9 +34,9 @@ export default function AddAccountModal({ onClose, onComplete }: { onClose: () =
     const result = (await response.json()) as { error?: string };
     setBusy(false);
     if (!response.ok) { setMessage(result.error ?? "That code is invalid or expired."); return; }
-    const status = await fetch("/api/auth-flow/status").then((item) => item.json()) as { hasCredential?: boolean };
-    setStage(status.hasCredential ? "login-password" : "signup-password");
-    setMessage(status.hasCredential ? "Email verified. Enter your password." : "Email verified. Create your password.");
+    const hasCredential = response.headers.get("X-Auth-Has-Credential") === "true";
+    setStage(hasCredential ? "login-password" : "signup-password");
+    setMessage(hasCredential ? "Email verified. Enter your password." : "Email verified. Create your password.");
   }
 
   async function finishPassword(event: FormEvent<HTMLFormElement>) {

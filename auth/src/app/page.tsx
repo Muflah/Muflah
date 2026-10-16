@@ -2,11 +2,13 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { createAuthClient } from "better-auth/client";
-import { emailOTPClient, twoFactorClient, usernameClient } from "better-auth/client/plugins";
+import { emailOTPClient, multiSessionClient, twoFactorClient, usernameClient } from "better-auth/client/plugins";
 import { isStrongPassword, passwordRequirements } from "../config/password";
+import AddAccountModal from "./components/add-account-modal";
+import { announceSessionSwitch } from "./session-sync";
 
 const authClient = createAuthClient({
-  plugins: [emailOTPClient(), twoFactorClient(), usernameClient()],
+  plugins: [emailOTPClient(), multiSessionClient(), twoFactorClient(), usernameClient()],
 });
 
 function PasswordField({
@@ -55,11 +57,11 @@ export default function HomePage() {
   const [busy, setBusy] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [profileComplete, setProfileComplete] = useState(false);
+  const [accounts, setAccounts] = useState<Array<{ name: string; email: string; username: string | null; sessionToken?: string; active?: boolean }>>([]);
+  const [showAddAccount, setShowAddAccount] = useState(false);
 
   useEffect(() => { void loadSession(); }, []);
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("mode") === "add-account") setMode("sign-up");
-  }, []);
   useEffect(() => {
     if (resendCooldown <= 0) return;
     const timer = window.setInterval(() => setResendCooldown((value) => Math.max(0, value - 1)), 1000);
@@ -68,25 +70,37 @@ export default function HomePage() {
 
   async function loadSession() {
     const addingAccount = new URLSearchParams(window.location.search).get("mode") === "add-account";
-    if (addingAccount) {
-      setMode("sign-up");
-      setStage("email");
+    const result = await authClient.getSession({ query: { disableCookieCache: true } });
+    if (!result.data?.user) {
+      if (new URLSearchParams(window.location.search).get("mode") === "add-account") setMode("sign-up");
       return;
     }
-
-    const result = await authClient.getSession();
-    if (!result.data?.user) return;
+    const currentUser = result.data.user;
     const statusResponse = await fetch("/api/auth-flow/status");
     const status = (await statusResponse.json()) as { hasCredential?: boolean; onboardingComplete?: boolean; username?: string | null };
-    if (status.hasCredential && !status.onboardingComplete) {
-      window.location.replace("/onboarding");
-      return;
-    }
     if (!status.hasCredential) {
       setStage("signup-password");
       return;
     }
-    if (status.username) window.location.replace(`/${encodeURIComponent(status.username)}`);
+    setUser({ name: currentUser.name, email: currentUser.email });
+    setProfileComplete(status.onboardingComplete === true && Boolean(status.username));
+    const deviceSessions = await authClient.multiSession.listDeviceSessions();
+    const sessions = (deviceSessions.data ?? []).map((item) => ({
+      name: item.user.name,
+      email: item.user.email,
+      username: (item.user as typeof item.user & { username?: string | null }).username ?? null,
+      sessionToken: item.session.token,
+    }));
+    setAccounts([
+      { name: currentUser.name, email: currentUser.email, username: status.username ?? null, active: true },
+      ...sessions.filter((item) => item.email !== currentUser.email),
+    ]);
+    if (addingAccount) {
+      window.history.replaceState(null, "", "/");
+      setShowAddAccount(true);
+    } else {
+      setShowAddAccount(false);
+    }
   }
 
   function resetFlow(nextMode: Mode = mode) {
@@ -188,7 +202,7 @@ export default function HomePage() {
       window.clearTimeout(timeout);
       const result = (await response.json()) as { error?: string };
       if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
-      window.location.replace("/onboarding");
+      await loadSession();
     } catch { setMessage("We could not finish creating the account. Please try again."); }
     finally { setBusy(false); }
   }
@@ -206,6 +220,18 @@ export default function HomePage() {
     await loadSession();
   }
 
+  async function switchAccount(account: typeof accounts[number]) {
+    if (!account.sessionToken || account.active || busy) return;
+    setBusy(true); setMessage("");
+    const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
+    if (result.error) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
+    const activeSession = await authClient.getSession({ query: { disableCookieCache: true } });
+    if (activeSession.data?.user?.email !== account.email) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
+    announceSessionSwitch();
+    await loadSession();
+    setBusy(false);
+  }
+
   async function handlePasswordResetRequest() {
     setBusy(true); setMessage("");
     const result = await authClient.requestPasswordReset({ email, redirectTo: `${window.location.origin}/reset-password` });
@@ -221,10 +247,32 @@ export default function HomePage() {
   if (user) return (
     <main className="shell">
       <header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header>
-      <div className="auth-main"><section className="card" aria-labelledby="profile-title">
-        <p className="eyebrow">Signed in</p><h1 id="profile-title">{user.name}</h1><p className="profile-email">{user.email}</p>
-        <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
-      </section></div>
+      <div className="account-layout">
+        <aside className="sidebar card" aria-label="Account menu">
+          <p className="eyebrow">Current account</p><h2>{user.name}</h2><p className="profile-email">{user.email}</p>
+          <label className="account-select-label" htmlFor="account-switcher">Switch account</label>
+          <select id="account-switcher" value={accounts.find((account) => account.active)?.email ?? user.email} disabled={busy} onChange={(event) => { const account = accounts.find((item) => item.email === event.target.value); if (account) void switchAccount(account); }}>
+            {accounts.map((account) => <option key={account.email} value={account.email}>{account.username ? `@${account.username}` : account.email}{account.active ? " (current)" : ""}</option>)}
+          </select>
+          <button className="sidebar-action" type="button" disabled={busy} onClick={() => setShowAddAccount(true)}>Add account</button>
+          <button className="link-button" type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
+        </aside>
+        <section className="card account-content" aria-labelledby="profile-title">
+          <p className="eyebrow">{profileComplete ? "Signed in" : "Finish setup"}</p>
+          <h1 id="profile-title">{profileComplete ? user.name : "Your platform profile"}</h1>
+          {profileComplete ? <p className="profile-email">{user.email}</p> : <>
+            <p className="intro">Choose your name, username, and date of birth for your platform-wide profile.</p>
+            <form onSubmit={handleProfileSubmit}>
+              <label>Name<input name="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
+              <label>Username<input name="username" autoComplete="username" required pattern="[a-z0-9][a-z0-9._]{1,28}[a-z0-9]" value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label>
+              <label>Date of birth<input name="bday" type="date" autoComplete="bday" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label>
+              <button type="submit" disabled={busy}>{busy ? "Working…" : "Finish profile"}</button>
+            </form>
+          </>}
+          {message && <p className="message" role="status">{message}</p>}
+        </section>
+      </div>
+      {showAddAccount && <AddAccountModal onClose={() => setShowAddAccount(false)} onComplete={loadSession} />}
     </main>
   );
 

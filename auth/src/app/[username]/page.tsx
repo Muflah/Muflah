@@ -24,16 +24,12 @@ export default function UsernamePage() {
   useEffect(() => { void loadSession(); }, []);
 
   async function loadSession() {
-    const session = await authClient.getSession();
+    const session = await authClient.getSession({ query: { disableCookieCache: true } });
     if (!session.data?.user) { window.location.replace("/"); return; }
     const currentUser = session.data.user;
     const response = await fetch("/api/auth-flow/status");
     const status = (await response.json()) as { onboardingComplete?: boolean; username?: string | null };
     if (!status.onboardingComplete) { window.location.replace("/onboarding"); return; }
-    if (status.username && window.location.pathname.slice(1) !== status.username) {
-      window.location.replace(`/${encodeURIComponent(status.username)}`);
-      return;
-    }
     setUser({ name: currentUser.name, email: currentUser.email });
     const deviceSessions = await authClient.multiSession.listDeviceSessions();
     const otherAccounts = (deviceSessions.data ?? []).map((item) => ({
@@ -55,6 +51,12 @@ export default function UsernamePage() {
     const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
     if (result.error) {
       setMessage("We could not switch accounts. Please refresh and try again.");
+      setBusy(false);
+      return;
+    }
+    const activeSession = await authClient.getSession({ query: { disableCookieCache: true } });
+    if (activeSession.data?.user?.email !== account.email) {
+      setMessage("We could not switch accounts. Please try again.");
       setBusy(false);
       return;
     }

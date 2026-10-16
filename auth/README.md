@@ -8,7 +8,7 @@ Detailed documentation:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Technical implementation](docs/IMPLEMENTATION.md)
 
-The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, resumable platform profile onboarding, password-reset email links, dynamic username landing paths, a minimal signed-in screen, sign-out, and Better Auth multi-session account switching. The first Vercel login test and the first end-to-end OTP email test have passed.
+The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, resumable platform profile onboarding, password-reset email links, a minimal authenticated shell with a sidebar account switcher, an add-account popup, sign-out, and Better Auth multi-session account switching. The root auth route remains the stable authenticated shell; username paths are not force-loaded.
 
 The implemented flow is email-first with risk-based OTP: password login on a trusted device, and password plus OTP when the device is new or risky.
 
@@ -21,8 +21,8 @@ The implemented flow is email-first with risk-based OTP: password login on a tru
 5. For existing accounts, evaluate device/session risk after the password is accepted.
 6. On a trusted device, complete login without the additional risk OTP.
 7. On a new or risky device, verify the additional OTP and expire it after the configured lifetime.
-8. Ask new accounts for the platform name, unique username, and date of birth on `/onboarding`.
-9. Send completed accounts to their username path, such as `/muflah95`.
+8. Ask new accounts for the platform name, unique username, and date of birth in the authenticated root shell.
+9. Keep completed accounts in the authenticated root shell; the username remains platform profile data and is not used as a forced navigation route.
 10. If the user leaves after password creation, resume profile completion on the next login.
 
 If the user leaves after OTP verification but before creating a password, the verified signup session can resume while it is valid; otherwise the user starts the signup flow again. The auth service owns this platform-wide identity profile. Products add only their own product-specific profile fields.
@@ -133,7 +133,7 @@ Database changes should use expand-and-contract migrations. JWT claims, cookie b
 
 ## Status
 
-The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, resumable platform profile onboarding, dynamic username landing paths, the initial multi-session account switcher, and opt-in cross-subdomain cookies are implemented. JWT issuance, JWKS, explicit session revocation UI, and broader reusable policies remain future work.
+The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, resumable platform profile onboarding, the root authenticated shell with sidebar account switching and an add-account popup, and opt-in cross-subdomain cookies are implemented. JWT issuance, JWKS, explicit session revocation UI, and broader reusable policies remain future work.
 
 ## Local setup
 

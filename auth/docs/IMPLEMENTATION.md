@@ -78,7 +78,7 @@ Completes a verified signup by validating the password, creating the credential 
 GET /api/auth-flow/status
 ```
 
-Returns the authenticated signup/account state, including the persisted username, so the client can resume password creation or profile completion after an interrupted flow and redirect completed sessions to the correct dynamic username path. The onboarding guard requires the persisted completion flag and the platform name, username, and date of birth.
+Returns the authenticated signup/account state, including the persisted username, so the client can resume password creation or profile completion after an interrupted flow. The onboarding guard requires the persisted completion flag and the platform name, username, and date of birth.
 
 ```text
 POST /api/auth-flow/complete-profile
@@ -102,9 +102,9 @@ The identity setup screen shown after authentication for new accounts and existi
 /<username>
 ```
 
-The authenticated landing screen for a completed account, for example `/muflah95`. The root authentication flow redirects to the signed-in user's actual username path; it is not the signup or profile-completion screen.
+The authenticated root shell for a completed account. It contains the current account card, account switcher, sign-out control, and profile summary. The username is displayed as profile data and does not determine navigation.
 
-The page uses `multiSessionClient()` to list browser sessions and activate another account. “Add another account” links back to `/?mode=add-account`; the root page treats that query as an explicit add-account flow and bypasses the normal redirect for an already authenticated user. A global client-side session-sync component broadcasts account switches through `BroadcastChannel` with a `localStorage` fallback. The switching tab navigates only after `setActive` succeeds; other tabs refresh when they become visible. This prevents a cross-tab reload from canceling the active tab's session-switch request.
+The root shell uses Better Auth's official `multiSessionClient()` to list browser sessions and activate another account in place. The account switcher is a sidebar select with an add-account action. Add account is a popup flow; `/?mode=add-account` remains a compatibility entry point that opens the popup. A global client-side session-sync component broadcasts account switches through `BroadcastChannel` with a `localStorage` fallback. Other tabs refresh when they become visible, while the active tab stays on the root route.
 
 ```text
 GET /reset-password

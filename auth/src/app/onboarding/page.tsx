@@ -16,11 +16,11 @@ export default function OnboardingPage() {
   useEffect(() => { void checkOnboarding(); }, []);
 
   async function checkOnboarding() {
-    const session = await authClient.getSession();
+    const session = await authClient.getSession({ query: { disableCookieCache: true } });
     if (!session.data?.user) { window.location.replace("/"); return; }
     const response = await fetch("/api/auth-flow/status");
     const status = (await response.json()) as { onboardingComplete?: boolean; username?: string | null };
-    if (status.onboardingComplete && status.username) { window.location.replace(`/${encodeURIComponent(status.username)}`); return; }
+    if (status.onboardingComplete && status.username) { window.location.replace("/"); return; }
     setName(session.data.user.name === session.data.user.email.split("@")[0] ? "" : session.data.user.name);
     setEmail(session.data.user.email);
     setBusy(false);
@@ -33,7 +33,7 @@ export default function OnboardingPage() {
     });
     const result = (await response.json()) as { error?: string };
     if (!response.ok) { setMessage(result.error ?? "We could not save your profile."); setBusy(false); return; }
-    window.location.replace(`/${encodeURIComponent(username)}`);
+    window.location.replace("/");
   }
 
   return (

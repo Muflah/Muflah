@@ -9,6 +9,7 @@ These instructions apply to work inside `auth/`. This is a standalone experiment
 - Treat the initial scope in `README.md` as the baseline: risk-based OTP, login and signup, account switching, multi-session support, JWTs, and domain-wide cookies from the `auth` subdomain.
 - Treat this as a self-hosted service built on Better Auth, not as a library copied into each product.
 - Keep the Better Auth integration boundary separate from the reusable implementation and policy boundary.
+- If Better Auth already provides a capability, use and configure the official Better Auth capability; never implement a parallel custom solution for it.
 - Keep the initial Better Auth baseline limited to email/password signup and login until the next module is explicitly scoped.
 - Expose language-agnostic HTTP/JSON contracts; do not make product clients depend on internal Better Auth routes.
 - Keep the direct-access interface server-rendered and minimal; do not turn it into a product dashboard or duplicate product UI.

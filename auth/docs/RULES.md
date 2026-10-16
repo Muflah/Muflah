@@ -22,16 +22,16 @@ This document defines the product-neutral business rules and user experience for
 
 If the user leaves after OTP verification, the service keeps only a temporary verified signup session. If the user leaves after creating the password, the account remains valid but onboarding is incomplete. The next login resumes profile completion.
 
-The root URL handles the complete authentication flow: email, OTP, and password. After authentication, a new account or an existing account with an incomplete profile is sent to `/onboarding` to choose the platform identity. A completed account is sent to its username path, such as `/muflah95`, which is the authenticated landing screen for this auth service. Consuming products must enforce the same `onboardingComplete` check before opening their product shell.
+The root URL handles the complete authentication flow and the authenticated shell: email, OTP, password, profile completion, account switching, and adding another account. The auth service must not force-load a completed user into a username path. The username remains platform profile data. Consuming products must enforce the same `onboardingComplete` check before opening their product shell.
 
 The auth service owns this platform-wide identity profile. Consuming products own additional product-specific profile fields.
 
 Route rules:
 
 - `/` is the single authentication surface for email entry, OTP verification, password login, password creation, and password reset entry points.
-- `/onboarding` is used for new accounts and existing accounts whose platform profile is incomplete.
-- `/<username>` is the authenticated landing screen for a completed account, for example `/muflah95`.
-- A completed profile redirects to the user's actual username path, never to a literal `/username` path.
+- `/onboarding` remains available as a compatibility route for incomplete profiles, but the primary profile-completion experience is inside the authenticated root shell.
+- `/<username>` remains an optional direct route and is not used for forced navigation.
+- A completed profile remains at the root authenticated shell; the username is not a forced route.
 
 Username rules:
 
@@ -89,9 +89,9 @@ Password errors remain generic so they do not disclose whether an account exists
 - Valid values are whole numbers from 1 through 10. Empty, invalid, zero, negative, decimal, and larger values default to 1.
 - The account switcher must list only sessions available to the current browser and activate a selected session deliberately.
 - “Add another account” starts the normal signup flow without requiring the current account to be signed out first.
-- The add-account flow uses `/?mode=add-account` and must not redirect an already authenticated user back to the current username path before signup begins.
+- The add-account flow opens as a popup from the authenticated root shell. `/?mode=add-account` remains a compatibility entry point and must open the same popup for an already authenticated user.
 - If `AUTH_MAX_SESSIONS` is missing or invalid in a deployment, the service intentionally retains only one active session; deployments must set the variable explicitly when account switching is needed.
-- Switching accounts must redirect to the selected account's actual username path.
+- Switching accounts must update the active Better Auth session in place without changing the route.
 - Account switches must be broadcast across tabs. The tab performing the switch navigates after the server confirms success; other tabs refresh when they become visible. This avoids canceling the active tab's session-switch request with a competing reload.
 
 ## Cross-subdomain sessions

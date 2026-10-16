@@ -8,6 +8,7 @@ All notable changes to the authentication implementation are documented here.
 
 - Added the apex site's favicon to the auth service.
 - Added Better Auth's official multi-session plugin, environment-controlled session limits, account switching, and an add-account signup entry point.
+- Added a stable authenticated root shell with a sidebar account card, in-place account switching, and an add-account popup. Completed users are no longer forced to username routes.
 - Added opt-in cross-subdomain session cookies through `AUTH_COOKIE_DOMAIN`, defaulting to host-only cookies when empty.
 - Fixed add-account OTP verification so each code is consumed exactly once.
 - Renamed the add-account query mode from `sign-up` to `add-account` for clarity.

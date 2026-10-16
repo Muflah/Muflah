@@ -163,6 +163,15 @@ Each entry contains:
 - Files: `src/app/page.tsx`, `src/app/components/add-account-modal.tsx`, `src/app/globals.css`, `src/app/onboarding/page.tsx`, `src/app/[username]/page.tsx`, `README.md`, `docs/RULES.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck` passed and `git diff --check` passed.
 
+# 2026-10-16T00:00:00+05:00 — Delegate Session State to Better Auth
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Remove custom account-switching/session synchronization and rely on Better Auth's official multi-session behavior.
+- Changes Made: Removed the custom session-sync component, manual active-session verification, username-route account page, and custom cross-tab broadcast layer. The root UI now calls Better Auth's official multi-session methods and lets its session client handle refresh and focus behavior.
+- Files: `src/app/page.tsx`, `src/app/layout.tsx`, `src/app/onboarding/page.tsx`, `src/app/api/auth-flow/status/route.ts`, deleted `src/app/session-sync.tsx`, deleted `src/app/[username]/page.tsx`, `docs/IMPLEMENTATION.md`, `docs/ARCHITECTURE.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck` passed and `git diff --check` passed.
+
 # 2026-10-16T00:00:00+05:00 — Guarantee Active-Tab Session Switch Reload
 
 - Agent: Codex

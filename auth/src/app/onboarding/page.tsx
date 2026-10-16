@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { createAuthClient } from "better-auth/client";
+import { createAuthClient } from "better-auth/react";
 
 const authClient = createAuthClient();
 
@@ -16,7 +16,7 @@ export default function OnboardingPage() {
   useEffect(() => { void checkOnboarding(); }, []);
 
   async function checkOnboarding() {
-    const session = await authClient.getSession({ query: { disableCookieCache: true } });
+    const session = await authClient.getSession();
     if (!session.data?.user) { window.location.replace("/"); return; }
     const response = await fetch("/api/auth-flow/status");
     const status = (await response.json()) as { onboardingComplete?: boolean; username?: string | null };

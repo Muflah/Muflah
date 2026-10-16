@@ -104,7 +104,7 @@ The identity setup screen shown after authentication for new accounts and existi
 
 The authenticated root shell for a completed account. It contains the current account card, account switcher, sign-out control, and profile summary. The username is displayed as profile data and does not determine navigation.
 
-The root shell uses Better Auth's official `multiSessionClient()` to list browser sessions and activate another account in place. The account switcher is a sidebar select with an add-account action. Add account is a popup flow; `/?mode=add-account` remains a compatibility entry point that opens the popup. A global client-side session-sync component broadcasts account switches through `BroadcastChannel` with a `localStorage` fallback. Other tabs refresh when they become visible, while the active tab stays on the root route.
+The root shell uses Better Auth's official `multiSessionClient()` to list browser sessions and activate another account in place. The account switcher is a sidebar select with an add-account action. Add account is a popup flow; `/?mode=add-account` remains a compatibility entry point that opens the popup. Better Auth's own session client manages session refresh, focus refresh, and session state after `setActive`; the service does not add a second cross-tab session handler.
 
 ```text
 GET /reset-password

@@ -78,7 +78,7 @@ Roles and permissions are intentionally outside this service. Product applicatio
 
 ## Route boundary
 
-The root route owns authentication and the authenticated shell. It contains profile completion, the sidebar account switcher, and the add-account popup. `/onboarding` remains a compatibility route for incomplete profiles. The dynamic `/<username>` route is not used for forced navigation; usernames are profile data, not route state.
+The root route owns authentication and the authenticated shell. It contains profile completion, the sidebar account switcher, and the add-account popup. `/onboarding` remains a compatibility route for incomplete profiles. Usernames are profile data, not route state; there is no username route in the authenticated flow.
 
 ## Release approach
 

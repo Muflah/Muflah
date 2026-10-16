@@ -1,11 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { createAuthClient } from "better-auth/client";
+import { createAuthClient } from "better-auth/react";
 import { emailOTPClient, multiSessionClient, twoFactorClient, usernameClient } from "better-auth/client/plugins";
 import { isStrongPassword, passwordRequirements } from "../config/password";
 import AddAccountModal from "./components/add-account-modal";
-import { announceSessionSwitch } from "./session-sync";
 
 const authClient = createAuthClient({
   plugins: [emailOTPClient(), multiSessionClient(), twoFactorClient(), usernameClient()],
@@ -70,7 +69,7 @@ export default function HomePage() {
 
   async function loadSession() {
     const addingAccount = new URLSearchParams(window.location.search).get("mode") === "add-account";
-    const result = await authClient.getSession({ query: { disableCookieCache: true } });
+    const result = await authClient.getSession();
     if (!result.data?.user) {
       if (new URLSearchParams(window.location.search).get("mode") === "add-account") setMode("sign-up");
       return;
@@ -225,13 +224,7 @@ export default function HomePage() {
     setBusy(true); setMessage("");
     const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
     if (result.error) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
-    const switchedUser = result.data?.user;
-    if (!switchedUser || switchedUser.email !== account.email) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
-    const switchedProfile = switchedUser as typeof switchedUser & { username?: string | null; onboardingComplete?: boolean; dateOfBirth?: string | null };
-    setUser({ name: switchedUser.name, email: switchedUser.email });
-    setProfileComplete(Boolean(switchedProfile.username && switchedProfile.onboardingComplete && switchedProfile.dateOfBirth));
-    setAccounts((current) => current.map((item) => ({ ...item, active: item.email === switchedUser.email })));
-    announceSessionSwitch();
+    await loadSession();
     setBusy(false);
   }
 

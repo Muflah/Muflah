@@ -55,33 +55,45 @@ export default function HomePage() {
     }
   }
 
+  const isError = message.toLowerCase().includes("failed") || message.toLowerCase().includes("unable");
+
   return (
-    <main>
-      <section className="card" aria-live="polite">
-        <h1>{flow ? (flow === "sign-in" ? "Welcome back" : "Create your account") : "Continue to your account"}</h1>
-        <p>{flow ? `Continue with ${email}.` : "Enter your email to continue."}</p>
-        {!flow ? (
-          <form onSubmit={continueWithEmail}>
-            <label htmlFor="email">Email address</label>
-            <input id="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
-            <button disabled={busy}>{busy ? "Checking…" : "Continue"}</button>
-          </form>
-        ) : (
-          <form onSubmit={submitCredentials}>
-            {flow === "sign-up" && <>
-              <label htmlFor="name">Name</label>
-              <input id="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} />
-              <label htmlFor="username">Username</label>
-              <input id="username" autoComplete="username" required value={username} onChange={(event) => setUsername(event.target.value)} />
-            </>}
-            <label htmlFor="password">Password</label>
-            <input id="password" type="password" autoComplete={flow === "sign-in" ? "current-password" : "new-password"} required value={password} onChange={(event) => setPassword(event.target.value)} />
-            <button disabled={busy}>{busy ? "Working…" : flow === "sign-in" ? "Sign in" : "Create account"}</button>
-            <button type="button" onClick={() => setFlow(null)}>Use a different email</button>
-          </form>
-        )}
-        {message && <p className="error">{message}</p>}
-      </section>
-    </main>
+    <div className="auth-shell">
+      <header className="auth-header">
+        <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+        <span className="auth-label">Secure account access</span>
+      </header>
+      <main className="auth-main">
+        <section className="auth-card" aria-live="polite">
+          <p className="micro">Muflah account</p>
+          <h1>{flow ? (flow === "sign-in" ? "Welcome back." : "Create your account.") : "Continue to your account."}</h1>
+          <p className="intro">{flow ? `Continue with ${email}.` : "Enter your email and we’ll take you to the right place."}</p>
+          {!flow ? (
+            <form className="auth-form" onSubmit={continueWithEmail}>
+              <label htmlFor="email">Email address</label>
+              <input id="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
+              <div className="auth-actions"><button className="auth-button" disabled={busy}>{busy ? "Checking…" : "Continue ↗"}</button></div>
+            </form>
+          ) : (
+            <form className="auth-form" onSubmit={submitCredentials}>
+              {flow === "sign-up" && <>
+                <label htmlFor="name">Name</label>
+                <input id="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} />
+                <label htmlFor="username">Username</label>
+                <input id="username" autoComplete="username" required value={username} onChange={(event) => setUsername(event.target.value)} />
+              </>}
+              <label htmlFor="password">Password</label>
+              <input id="password" type="password" autoComplete={flow === "sign-in" ? "current-password" : "new-password"} required value={password} onChange={(event) => setPassword(event.target.value)} />
+              <div className="auth-actions">
+                <button className="auth-button" disabled={busy}>{busy ? "Working…" : flow === "sign-in" ? "Sign in ↗" : "Create account ↗"}</button>
+                <button className="auth-button secondary" type="button" onClick={() => setFlow(null)}>Use a different email</button>
+              </div>
+            </form>
+          )}
+          {message && <p className={`notice${isError ? " error" : ""}`}>{message}</p>}
+        </section>
+      </main>
+      <footer className="auth-footer"><p>© 2026 Muflah Ul Furqan.</p><p>Authentication service</p></footer>
+    </div>
   );
 }

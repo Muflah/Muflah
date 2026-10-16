@@ -126,3 +126,20 @@ Each entry contains:
 - Changes Made: Verified that the database contained only the Better Auth tables `account`, `session`, `twoFactor`, `user`, and `verification`, then truncated only those tables. No database, schema, or non-auth tables were removed. Added Vercel deployment settings to the README.
 - Verification Status: All five auth tables contain zero rows after the reset. The local production build and runtime smoke test remain passing. Vercel deployment requires the `auth` directory as the project Root Directory and the documented environment variables configured in Vercel.
 
+# 2026-10-17T04:50:00+05:00 — Align Nested Next.js Build Output with Vercel
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Diagnose the Vercel deployment failure caused by the nested `auth/app/` Next.js project layout.
+- Changes Made: Configured Next.js with `distDir: "../.next"` so the source can remain under `auth/app/` while the production build emits `auth/.next/routes-manifest.json`, which Vercel expects when `auth` is the project Root Directory.
+- Verification Status: `npm run build` passed, the root routes manifest was present, and `npm start` served `/api/health` successfully with status `200`.
+
+# 2026-10-17T05:10:00+05:00 — Refresh Pilot Data and Match Site Visual System
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Reset the pilot auth data and make the hosted login experience visually consistent with the main site.
+- Changes Made: Verified the five Better Auth tables before clearing them again for a fresh pilot test. Rebuilt the hosted auth page around the site’s teal/pine, mint, Inter, Space Grotesk, DM Mono, rounded-card, responsive, and system light/dark theme conventions. Added matching typography loading, focus states, reduced-motion behavior, mobile layout, and dark-theme surface/contrast rules while keeping the UI thin and auth-specific.
+- Files: `app/src/app/page.tsx`, `app/src/app/globals.css`, `app/src/app/layout.tsx`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. The auth database tables `account`, `session`, `twoFactor`, `user`, and `verification` contain zero rows after the reset.
+

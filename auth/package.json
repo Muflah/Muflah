@@ -1,27 +1,29 @@
 {
-  "name": "muflah-auth",
+  "name": "reusable-auth-service",
   "private": true,
-  "type": "module",
   "version": "0.1.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "db:migrate": "auth migrate --config src/better-auth/auth.ts"
+    "dev": "next dev app",
+    "build": "next build app",
+    "start": "next start app",
+    "typecheck": "tsc -p app/tsconfig.json --noEmit",
+    "lint": "next lint app",
+    "db:migrate": "npx auth@latest migrate --config app/src/lib/auth.ts --yes",
+    "db:check": "npx auth@latest check --config app/src/lib/auth.ts"
   },
   "dependencies": {
     "better-auth": "^1.7.10",
-    "next": "^16.4.1",
-    "pg": "^8.16.3",
+    "dotenv": "^17.2.3",
+    "next": "^16.4.2",
+    "pg": "^8.23.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "auth": "^1.7.10",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "typescript": "^5.9.3"
   }

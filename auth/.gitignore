@@ -1,11 +1,7 @@
 node_modules/
 .next/
-.tsbuildinfo
-tsconfig.tsbuildinfo
-.vercel/
 out/
-.env
-.env.local
-.env.*.local
+coverage/
+*.log
+.env*
 !.env.example
-npm-debug.log*

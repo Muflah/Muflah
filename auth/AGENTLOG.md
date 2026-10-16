@@ -10,77 +10,14 @@ Each entry contains:
 - `Files`: files created, modified, or removed.
 - `Verification Status`: checks performed, their results, and anything still pending.
 
-# 2026-10-16T00:00:00+05:00 — Add OTP and Resend Email Delivery
+# 2026-10-17T00:00:00+05:00 — Reset Auth Workspace for Fresh Start
 
 - Agent: Codex
 - Model: GPT-5
-- Prompt Summary: Add OTP signup/login, Resend delivery, and password-reset links.
-- Changes Made: Added Better Auth email OTP support, Resend delivery with generated sender alias, password-reset email delivery, and test UI flows. Added environment variables for email domain, Resend API key, and OTP enablement.
-- Files: `src/better-auth/auth.ts`, `src/integrations/email/resend.ts`, `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
-- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
-
-# 2026-10-16T00:00:00+05:00 — Require Explicit Resend Sender
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Remove the email-domain fallback and fail when sender configuration is missing.
-- Changes Made: Replaced derived `AUTH_EMAIL_DOMAIN` sender configuration with required `AUTH_EMAIL_FROM`. Missing sender configuration now produces a clear delivery error; Resend handles invalid or unverified domains.
-- Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
-- Verification Status: `npm run typecheck` and `git diff --check` passed. The previous production build also passed; this change only tightens email configuration validation.
-
-# 2026-10-16T00:00:00+05:00 — Keep Domain Configuration Separate from Aliases
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Configure only the Resend domain and generate sender aliases in application code.
-- Changes Made: Replaced `AUTH_EMAIL_FROM` with required `AUTH_EMAIL_DOMAIN`. The email module now generates `no-reply@<domain>` by default and supports purpose-specific aliases without adding alias variables to `.env`.
-- Files: `src/integrations/email/resend.ts`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
-- Verification Status: `npm run typecheck` and `git diff --check` passed.
-
-# 2026-10-16T00:00:00+05:00 — Record OTP Test and Email-First Flow
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Record the successful OTP test and define the next signup/login journey.
-- Changes Made: Documented the email-first flow, neutral OTP messaging, existing-account versus new-account handling, password validation stage, and minute-based OTP expiry configuration with a 3-minute target default. Listed standard security controls still required before implementation.
-- Files: `README.md`, `.env.example`, `CHANGELOG.md`, and `AGENTLOG.md`.
-- Verification Status: Documentation-only change; implementation of the new flow is pending.
-
-# 2026-10-16T00:00:00+05:00 — Clarify Risk-Based OTP Behavior
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Clarify that OTP is required only when a device is not trusted or the login is risky.
-- Changes Made: Updated the planned flow to use password-only login for trusted devices, password plus OTP for new or risky devices, and a password-creation step for new accounts. Documented the need for revocable trusted-device tokens rather than browser fingerprinting alone.
-- Files: `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
-- Verification Status: Documentation-only change; trusted-device implementation is pending.
-
-# 2026-10-16T00:00:00+05:00 — Implement Email-First Risk-Based Authentication
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Implement the agreed email-first signup/login flow with risk-based OTP.
-- Changes Made: Added Better Auth two-factor OTP with trusted-device cookies, configurable OTP expiry and attempts, email-first UI, signup OTP followed by password creation, password complexity validation, a server-side signup completion route, and consistent reset-password validation. Migrated the database for the two-factor schema and enabled the policy for one existing user.
-- Files: `src/better-auth/auth.ts`, `src/config/password.ts`, `src/integrations/email/resend.ts`, `src/app/page.tsx`, `src/app/reset-password/page.tsx`, `src/app/api/auth-flow/finish-signup/route.ts`, `src/app/globals.css`, `.env`, `.env.example`, `README.md`, `CHANGELOG.md`.
-- Verification Status: `npm run typecheck`, `npm run build`, `npm run db:migrate -- --yes`, database backfill, and `git diff --check` passed. Build emitted the existing PostgreSQL SSL-mode compatibility warning only.
-
-# 2026-10-16T00:00:00+05:00 — Format Environment Files
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Improve `.env` readability using the existing `friink/api/.env` section style.
-- Changes Made: Grouped database/Better Auth, Resend email, and authentication behavior variables with section comments and spacing. Preserved all local secret values.
-- Files: `.env`, `.env.example`.
-- Verification Status: `git diff --check` passed.
-
-# 2026-10-16T00:00:00+05:00 — Use Provider-Neutral Email API Key
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Rename the Resend-specific API key variable to `EMAIL_API_KEY`.
-- Changes Made: Updated the local environment, example environment, email integration, and documentation. No provider selector was added; the implementation continues to use Resend.
-- Files: `.env`, `.env.example`, `src/integrations/email/resend.ts`, `README.md`, and `CHANGELOG.md`.
-- Verification Status: `npm run typecheck` and `git diff --check` passed.
+- Prompt Summary: Clean the auth service so only project documentation and the local environment file remain.
+- Changes Made: Removed the Better Auth implementation, Next.js configuration, dependency files and installed dependencies, generated output, migrations, tests, and empty planned module directories. Preserved `.env` and the project documentation.
+- Files: Preserved `README.md`, `AGENTS.md`, `AGENTLOG.md`, `CHANGELOG.md`, and `.env`; removed all other files under `auth/`.
+- Verification Status: Confirmed that only the four project documents and `.env` remain. No application or test code remains to run.
 
 # 2026-10-15T18:18:33Z — Define Initial Authentication Scope
 
@@ -117,15 +54,6 @@ Each entry contains:
 - Changes Made: Added session loading on page entry and after authentication. Added a minimal signed-in screen displaying the user's name and email, plus sign-out for repeat testing.
 - Files: `src/app/page.tsx`, `src/app/globals.css`, `CHANGELOG.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. The build emitted the existing PostgreSQL SSL-mode compatibility warning.
-
-# 2026-10-16T01:03:11+05:00 — Verify First Vercel Login
-
-- Agent: Codex
-- Model: GPT-5
-- Prompt Summary: Record the user's successful first login test on the Vercel deployment.
-- Changes Made: Updated the auth status and change history to record successful remote login verification for the vanilla Better Auth signup/login baseline.
-- Files: `README.md`, `CHANGELOG.md`, and `AGENTLOG.md`.
-- Verification Status: The user confirmed the first Vercel login test passed. No additional code changes were made.
 
 # 2026-10-15T18:59:23Z — Add Planned Module Placeholders
 
@@ -171,4 +99,30 @@ Each entry contains:
 - Changes Made: Added placeholder web template and static-style directories. Documented a minimal server-rendered interface for signup, login, OTP entry, logout, and status/error pages, while keeping product integrations on the JSON API.
 - Files: `README.md`, `AGENTS.md`, `CHANGELOG.md`, `AGENTLOG.md`, `src/web/templates/.gitkeep`, and `src/web/static/.gitkeep`.
 - Verification Status: `git diff --check` passed. No implementation code or automated tests were run.
+
+# 2026-10-17T03:55:00+05:00 — Establish Reusable Auth Repository Layout
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Confirm the reusable auth application's modular-monolith structure, keep Markdown documentation in `docs/`, and place implementation files under `app/`.
+- Changes Made: Created the initial `auth/app/` directory skeleton for configuration, migrations, source code, hosted UI routes, Better Auth boundaries, email templates, application registration, security helpers, and test layers. Confirmed that `package.json` and `package-lock.json` will remain at the `auth/` root while other implementation files remain under `auth/app/`. Documented the purpose of `package-lock.json`, the application overview, V1 scope, current environment variable names, and current implementation status.
+- Files: `README.md`, `AGENTLOG.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, and the new directories under `app/`.
+- Verification Status: `git diff --check` passed. No implementation code or dependency manifests were created yet.
+
+# 2026-10-17T04:15:00+05:00 — Start V1 Foundation
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Start building the reusable V1 auth service after confirming the architecture, stack, environment contract, and repository layout.
+- Changes Made: Added the root npm manifest and generated lockfile, installed the Better Auth/Next.js/PostgreSQL/React dependency set, created the application configuration and database boundaries, configured Better Auth with email/password, username, email OTP, multi-session support, and password recovery, added the Resend transactional connector with code-generated sender aliases, added the thin identifier-first hosted UI, added auth, health, and identity-lookup routes, and added safe ignore/environment-example files.
+- Files: `package.json`, `package-lock.json`, `.gitignore`, `app/.env.example`, `app/next.config.ts`, `app/tsconfig.json`, `app/src/`, and `app/config/applications.example.json`.
+- Verification Status: `npm run typecheck` passed, `npm run build` passed, `npm run db:migrate` reported no migrations needed, and `npm run db:check` passed against the configured database. A local runtime smoke test returned `200` from `/api/health` and `/` returned `200`. The build and CLI emitted PostgreSQL's existing SSL-mode compatibility warning. No real email-delivery or reference-application SSO flow was executed yet.
+
+# 2026-10-17T04:35:00+05:00 — Reset Auth Database for Pilot Testing
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Empty the configured auth database before the founder begins pilot testing and confirm Vercel deployment readiness.
+- Changes Made: Verified that the database contained only the Better Auth tables `account`, `session`, `twoFactor`, `user`, and `verification`, then truncated only those tables. No database, schema, or non-auth tables were removed. Added Vercel deployment settings to the README.
+- Verification Status: All five auth tables contain zero rows after the reset. The local production build and runtime smoke test remain passing. Vercel deployment requires the `auth` directory as the project Root Directory and the documented environment variables configured in Vercel.
 

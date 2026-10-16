@@ -225,10 +225,13 @@ export default function HomePage() {
     setBusy(true); setMessage("");
     const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken });
     if (result.error) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
-    const activeSession = await authClient.getSession({ query: { disableCookieCache: true } });
-    if (activeSession.data?.user?.email !== account.email) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
+    const switchedUser = result.data?.user;
+    if (!switchedUser || switchedUser.email !== account.email) { setMessage("We could not switch accounts. Please try again."); setBusy(false); return; }
+    const switchedProfile = switchedUser as typeof switchedUser & { username?: string | null; onboardingComplete?: boolean; dateOfBirth?: string | null };
+    setUser({ name: switchedUser.name, email: switchedUser.email });
+    setProfileComplete(Boolean(switchedProfile.username && switchedProfile.onboardingComplete && switchedProfile.dateOfBirth));
+    setAccounts((current) => current.map((item) => ({ ...item, active: item.email === switchedUser.email })));
     announceSessionSwitch();
-    await loadSession();
     setBusy(false);
   }
 

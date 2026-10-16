@@ -1,34 +1,176 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { createAuthClient } from "better-auth/react";
-import { emailOTPClient, multiSessionClient, twoFactorClient, usernameClient } from "better-auth/client/plugins";
-import AddAccountModal from "./components/add-account-modal";
+import { createAuthClient } from "better-auth/client";
+import { emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
+import { isStrongPassword, passwordRequirements } from "../config/password";
 
-const authClient = createAuthClient({ plugins: [emailOTPClient(), multiSessionClient(), twoFactorClient(), usernameClient()] });
+const authClient = createAuthClient({
+  plugins: [emailOTPClient(), twoFactorClient()],
+});
+
 type Mode = "sign-in" | "sign-up";
-type Stage = "email" | "password" | "otp";
-type Account = { name: string; email: string; username?: string | null; sessionToken?: string; active?: boolean };
-
-function Password({ value, onChange, current }: { value: string; onChange: (value: string) => void; current?: boolean }) {
-  return <input name="password" type="password" autoComplete={current ? "current-password" : "new-password"} required value={value} onChange={(event) => onChange(event.target.value)} />;
-}
+type Stage = "email" | "login-password" | "login-otp" | "signup-otp" | "signup-password";
 
 export default function HomePage() {
-  const [mode, setMode] = useState<Mode>("sign-in"); const [stage, setStage] = useState<Stage>("email"); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [confirmation, setConfirmation] = useState(""); const [otp, setOtp] = useState(""); const [message, setMessage] = useState(""); const [busy, setBusy] = useState(false); const [user, setUser] = useState<{ name: string; email: string } | null>(null); const [profileComplete, setProfileComplete] = useState(false); const [accounts, setAccounts] = useState<Account[]>([]); const [showAddAccount, setShowAddAccount] = useState(false); const [name, setName] = useState(""); const [username, setUsername] = useState(""); const [dateOfBirth, setDateOfBirth] = useState("");
+  const [mode, setMode] = useState<Mode>("sign-in");
+  const [stage, setStage] = useState<Stage>("email");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [otp, setOtp] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => { void loadSession(); }, []);
-  async function loadSession() { const result = await authClient.getSession(); if (!result.data?.user) { setUser(null); return; } const current = result.data.user; const status = await fetch("/api/auth-flow/status").then((response) => response.json()) as { onboardingComplete?: boolean; username?: string | null }; setUser({ name: current.name, email: current.email }); setProfileComplete(status.onboardingComplete === true && Boolean(status.username)); const sessions = await authClient.multiSession.listDeviceSessions(); setAccounts([{ name: current.name, email: current.email, username: status.username, active: true }, ...(sessions.data ?? []).filter((item) => item.user.email !== current.email).map((item) => ({ name: item.user.name, email: item.user.email, username: (item.user as typeof item.user & { username?: string }).username, sessionToken: item.session.token }))]); }
-  function reset() { setStage("email"); setEmail(""); setPassword(""); setConfirmation(""); setOtp(""); setMessage(""); }
-  async function submitEmail(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setStage("password"); setMessage(""); }
-  async function submitPassword(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setBusy(true); setMessage(""); const result = mode === "sign-in" ? await authClient.signIn.email({ email, password }) : await authClient.signUp.email({ email, password, name: email.split("@")[0] }); if (result.error) { setMessage(result.error.message ?? "We could not complete this request."); setBusy(false); return; } if (mode === "sign-up") { setStage("otp"); setMessage("We have sent you an email."); setBusy(false); return; } if (result.data && "twoFactorRedirect" in result.data) { const sent = await authClient.twoFactor.sendOtp(); if (sent.error) setMessage(sent.error.message ?? "We could not send the verification email."); else { setStage("otp"); setMessage("We have sent you an email."); } setBusy(false); return; } await loadSession(); setBusy(false); }
-  async function verifyOtp(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setBusy(true); const result = mode === "sign-up" ? await authClient.emailOtp.verifyEmail({ email, otp }) : await authClient.twoFactor.verifyOtp({ code: otp, trustDevice: true }); if (result.error) setMessage(result.error.message ?? "That code is invalid or expired."); else await loadSession(); setBusy(false); }
-  async function resendOtp() { setBusy(true); const result = mode === "sign-up" ? await authClient.emailOtp.sendVerificationOtp({ email, type: "email-verification" }) : await authClient.twoFactor.sendOtp(); setMessage(result.error ? result.error.message ?? "We could not send the email." : "We have sent you a new email."); setBusy(false); }
-  async function completeProfile(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setBusy(true); const response = await fetch("/api/auth-flow/complete-profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, username, dateOfBirth }) }); const result = await response.json() as { error?: string }; if (!response.ok) setMessage(result.error ?? "We could not save your profile."); else await loadSession(); setBusy(false); }
-  async function switchAccount(account: Account) { if (!account.sessionToken || account.active) return; setBusy(true); const result = await authClient.multiSession.setActive({ sessionToken: account.sessionToken }); if (result.error) setMessage(result.error.message ?? "We could not switch accounts."); else await loadSession(); setBusy(false); }
-  async function signOut() { setBusy(true); await authClient.signOut(); setBusy(false); setUser(null); reset(); }
 
-  if (user) return <main className="shell"><header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header><div className="account-layout"><aside className="sidebar card"><p className="eyebrow">Current account</p><h2>{user.name}</h2><p className="profile-email">{user.email}</p><label htmlFor="account-switcher">Switch account</label><select id="account-switcher" value={user.email} onChange={(event) => { const account = accounts.find((item) => item.email === event.target.value); if (account) void switchAccount(account); }}>{accounts.map((account) => <option key={account.email} value={account.email}>{account.username ? `@${account.username}` : account.email}{account.active ? " (current)" : ""}</option>)}</select><button className="sidebar-action" type="button" onClick={() => setShowAddAccount(true)}>Add account</button><button className="link-button" type="button" onClick={signOut}>Sign out</button></aside><section className="card account-content"><p className="eyebrow">{profileComplete ? "Signed in" : "Finish setup"}</p><h1>{profileComplete ? user.name : "Your platform profile"}</h1>{profileComplete ? <p className="profile-email">{user.email}</p> : <form onSubmit={completeProfile}><label>Name<input required value={name} onChange={(event) => setName(event.target.value)} /></label><label>Username<input required value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} /></label><label>Date of birth<input type="date" required value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)} /></label><button type="submit" disabled={busy}>Finish profile</button></form>}{message && <p className="message" role="status">{message}</p>}</section></div>{showAddAccount && <AddAccountModal onClose={() => setShowAddAccount(false)} onComplete={loadSession} />}</main>;
+  async function loadSession() {
+    const result = await authClient.getSession();
+    if (result.data?.user) setUser({ name: result.data.user.name, email: result.data.user.email });
+  }
 
-  return <main className="shell"><header className="auth-header"><a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a><p className="auth-label">Muflah auth</p></header><div className="auth-main"><section className="card"><p className="eyebrow">Auth service</p><h1>{mode === "sign-in" ? "Sign in" : "Create account"}</h1><p className="intro">{stage === "email" ? "Enter your email to continue." : stage === "password" ? "Enter your password." : "We have sent you an email."}</p>{stage !== "email" && <p className="email-context">Continuing with <strong>{email}</strong></p>}{stage === "email" && <form onSubmit={submitEmail}><label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value.trim().toLowerCase())} /></label><button type="submit">Next</button></form>}{stage === "password" && <form onSubmit={submitPassword}><label>Email<input type="email" autoComplete="username" readOnly value={email} /></label><label>Password<Password value={password} onChange={setPassword} current={mode === "sign-in"} /></label>{mode === "sign-up" && <label>Confirm password<Password value={confirmation} onChange={setConfirmation} /></label>}<button type="submit" disabled={busy}>{busy ? "Working…" : mode === "sign-up" ? "Create account" : "Sign in"}</button></form>}{stage === "otp" && <form onSubmit={verifyOtp}><label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label><button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button></form>}{stage === "otp" && <button className="link-button" type="button" disabled={busy} onClick={resendOtp}>Didn’t receive it? Resend code</button>}{message && <p className="message" role="status">{message}</p>}<button className="link-button" type="button" onClick={() => { setMode(mode === "sign-in" ? "sign-up" : "sign-in"); reset(); }}>{mode === "sign-in" ? "Don’t have an account? Create one" : "Already have an account? Sign in"}</button></section></div></main>;
+  function resetFlow(nextMode: Mode = mode) {
+    setMode(nextMode);
+    setStage("email");
+    setPassword("");
+    setPasswordConfirmation("");
+    setOtp("");
+    setMessage("");
+  }
+
+  async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+
+    if (mode === "sign-up") {
+      const result = await authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" });
+      setBusy(false);
+      if (result.error) { setMessage("We could not send the email. Please try again."); return; }
+      setStage("signup-otp");
+      setMessage("We have sent you an email.");
+      return;
+    }
+
+    setBusy(false);
+    setStage("login-password");
+  }
+
+  async function handleLoginPassword(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+    const result = await authClient.signIn.email({ email, password });
+    setBusy(false);
+
+    if (result.error) { setMessage("We could not sign you in with those details."); return; }
+    if ((result.data as { twoFactorRedirect?: boolean } | undefined)?.twoFactorRedirect) {
+      const otpResult = await authClient.twoFactor.sendOtp();
+      if (otpResult.error) { setMessage("We could not send the email. Please try again."); return; }
+      setStage("login-otp");
+      setMessage("We have sent you an email.");
+      return;
+    }
+    await loadSession();
+  }
+
+  async function handleLoginOtp(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+    const result = await authClient.twoFactor.verifyOtp({ code: otp, trustDevice: true });
+    setBusy(false);
+    if (result.error) { setMessage("That code is invalid or expired. Please request a new one."); return; }
+    await loadSession();
+  }
+
+  async function handleSignupOtp(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+    const result = await authClient.signIn.emailOtp({ email, otp });
+    setBusy(false);
+    if (result.error) { setMessage("That code is invalid or expired. Please request a new one."); return; }
+    setStage("signup-password");
+    setMessage("Email verified. Create your password.");
+  }
+
+  async function handleSignupPassword(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setBusy(true); setMessage("");
+    if (!isStrongPassword(password)) { setBusy(false); setMessage(passwordRequirements); return; }
+    if (password !== passwordConfirmation) { setBusy(false); setMessage("The passwords do not match."); return; }
+
+    const response = await fetch("/api/auth-flow/finish-signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, password }),
+    });
+    const result = (await response.json()) as { error?: string };
+    setBusy(false);
+    if (!response.ok) { setMessage(result.error ?? "We could not finish creating the account."); return; }
+    await loadSession();
+  }
+
+  async function handlePasswordResetRequest() {
+    setBusy(true); setMessage("");
+    const result = await authClient.requestPasswordReset({ email, redirectTo: `${window.location.origin}/reset-password` });
+    setBusy(false);
+    if (result.error) { setMessage("We could not send the email. Please try again."); return; }
+    setMessage("If that email exists, a password reset link has been sent.");
+  }
+
+  async function handleSignOut() {
+    setBusy(true); await authClient.signOut(); setUser(null); setBusy(false); resetFlow();
+  }
+
+  if (user) return (
+    <main className="shell"><section className="card" aria-labelledby="profile-title">
+      <p className="eyebrow">Signed in</p><h1 id="profile-title">{user.name}</h1><p className="profile-email">{user.email}</p>
+      <button type="button" disabled={busy} onClick={handleSignOut}>{busy ? "Signing out…" : "Sign out"}</button>
+    </section></main>
+  );
+
+  return (
+    <main className="shell"><section className="card" aria-labelledby="page-title">
+      <p className="eyebrow">Auth service</p>
+      <h1 id="page-title">{mode === "sign-in" ? "Sign in" : "Create account"}</h1>
+      <p className="intro">
+        {stage === "email" && "Enter your email to continue."}
+        {stage === "login-password" && "Enter your password."}
+        {stage === "login-otp" && "We have sent you an email."}
+        {stage === "signup-otp" && "We have sent you an email."}
+        {stage === "signup-password" && "Create a password for your account."}
+      </p>
+
+      {stage === "email" && <form onSubmit={handleEmailSubmit}>
+        <label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value.trim().toLowerCase())} /></label>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Next"}</button>
+      </form>}
+
+      {stage === "login-password" && <form onSubmit={handleLoginPassword}>
+        <label>Password<input type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Continue"}</button>
+      </form>}
+
+      {stage === "login-otp" && <form onSubmit={handleLoginOtp}>
+        <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
+      </form>}
+
+      {stage === "signup-otp" && <form onSubmit={handleSignupOtp}>
+        <label>Verification code<input inputMode="numeric" autoComplete="one-time-code" required value={otp} onChange={(event) => setOtp(event.target.value)} /></label>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Verify code"}</button>
+      </form>}
+
+      {stage === "signup-password" && <form onSubmit={handleSignupPassword}>
+        <label>Name<input autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} /></label>
+        <label>Password<input type="password" autoComplete="new-password" required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
+        <label>Confirm password<input type="password" autoComplete="new-password" required value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} /></label>
+        <p className="hint">{passwordRequirements}</p>
+        <button type="submit" disabled={busy}>{busy ? "Working…" : "Create account"}</button>
+      </form>}
+
+      {stage === "login-password" && <button className="link-button" type="button" disabled={busy} onClick={handlePasswordResetRequest}>Forgot password?</button>}
+      {message && <p className="message" role="status">{message}</p>}
+
+      {stage === "email" && <button className="link-button" type="button" onClick={() => resetFlow(mode === "sign-in" ? "sign-up" : "sign-in")}>
+        {mode === "sign-in" ? "Don’t have an account? Create one" : "Already have an account? Sign in"}
+      </button>}
+      {stage !== "email" && <button className="link-button" type="button" onClick={() => resetFlow()}>Start over</button>}
+    </section></main>
+  );
 }

@@ -2,30 +2,20 @@
 
 This directory contains an experiment to design and build an authentication and session system that can be reused across future products.
 
-Detailed documentation:
-
-- [Business rules and UX](docs/RULES.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Technical implementation](docs/IMPLEMENTATION.md)
-
-The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, resumable platform profile onboarding, password-reset email links, a minimal authenticated shell with a sidebar account switcher, an add-account popup, sign-out, and Better Auth multi-session account switching. The root auth route remains the stable authenticated shell; username paths are not force-loaded.
+The current baseline includes email-first signup/login, OTP signup verification, password login, risk-based OTP with trusted-device cookies, password-reset email links, a minimal signed-in screen, and sign-out. The first Vercel login test and the first end-to-end OTP email test have passed.
 
 The implemented flow is email-first with risk-based OTP: password login on a trusted device, and password plus OTP when the device is new or risky.
 
 ## Email-first signup/login flow
 
 1. Ask only for the email address and show a single `Next` action.
-2. Send the same neutral OTP challenge for every address.
-3. Keep the interface neutral about whether the address already exists.
-4. After the email is proven, ask existing accounts for their password; ask new accounts to create a password twice.
-5. For existing accounts, evaluate device/session risk after the password is accepted.
-6. On a trusted device, complete login without the additional risk OTP.
-7. On a new or risky device, verify the additional OTP and expire it after the configured lifetime.
-8. Ask new accounts for the platform name, unique username, and date of birth in the authenticated root shell.
-9. Keep completed accounts in the authenticated root shell; the username remains platform profile data and is not used as a forced navigation route.
-10. If the user leaves after password creation, resume profile completion on the next login.
-
-If the user leaves after OTP verification but before creating a password, the verified signup session can resume while it is valid; otherwise the user starts the signup flow again. The auth service owns this platform-wide identity profile. Products add only their own product-specific profile fields.
+2. Keep the interface neutral about whether the address already exists.
+3. Send an OTP with a neutral message such as “We have sent you an email.” The email copy explains whether the user is signing in or creating an account without exposing account existence in the browser.
+4. For an existing account, ask for the password.
+5. Evaluate the device/session risk after the password is accepted.
+6. On a trusted device, complete login without OTP.
+7. On a new or risky device, verify the OTP and expire it after the configured lifetime.
+8. For a new account, verify the OTP, ask for a password twice, validate it, and create the account.
 
 The OTP lifetime will be configured in minutes with `AUTH_OTP_EXPIRES_IN_MINUTES`; the default target is 3 minutes. The Better Auth integration converts this value to the seconds expected by its OTP plugin.
 
@@ -41,15 +31,10 @@ The auth service sends email through Resend. The domain is configured explicitly
 AUTH_EMAIL_DOMAIN=mail.muflah.com
 EMAIL_API_KEY=your_resend_api_key
 AUTH_OTP_ENABLED=true
-AUTH_OTP_EXPIRES_IN_MINUTES=3
 AUTH_OTP_MAX_ATTEMPTS=3
-AUTH_MAX_SESSIONS=4
-AUTH_COOKIE_DOMAIN=muflah.com
 ```
 
 `AUTH_EMAIL_DOMAIN` is required and must be a verified Resend sending domain. There is no apex or `BETTER_AUTH_URL` fallback. OTP is enabled unless `AUTH_OTP_ENABLED=false`. A missing configuration or rejected Resend request returns a clear email-delivery error.
-
-`AUTH_COOKIE_DOMAIN` is optional. Set it to `muflah.com` to share the secure HTTP-only auth cookie across trusted Muflah subdomains; leave it empty for host-only cookies.
 
 OTP verifies new signups and challenges password logins on new or risky devices. Password reset sends a link to `/reset-password`, where the user can choose a new password.
 
@@ -117,7 +102,7 @@ This interface is a simple fallback and authentication surface, not a product da
 
 ## Public API
 
-The service will expose standard HTTP and JSON APIs so browser, mobile, desktop, and backend clients can integrate without depending on a specific programming language or framework. The current implementation also uses Better Auth's official multi-session plugin for account switching in the same browser.
+The service will expose standard HTTP and JSON APIs so browser, mobile, desktop, and backend clients can integrate without depending on a specific programming language or framework.
 
 Core operations will include signup, login, OTP request and verification, logout, session inspection, account listing, account switching, and session management. The exact routes and schemas will be documented before implementation.
 
@@ -133,7 +118,7 @@ Database changes should use expand-and-contract migrations. JWT claims, cookie b
 
 ## Status
 
-The email-first signup/login baseline, OTP verification, risk-based login OTP, trusted devices, resumable platform profile onboarding, the root authenticated shell with sidebar account switching and an add-account popup, and opt-in cross-subdomain cookies are implemented. JWT issuance, JWKS, explicit session revocation UI, and broader reusable policies remain future work.
+The vanilla Better Auth signup/login baseline is implemented and has passed its first Vercel login test. OTP, risk rules, account switching, JWT issuance, and the broader reusable policies remain future work.
 
 ## Local setup
 
@@ -141,10 +126,10 @@ The email-first signup/login baseline, OTP verification, risk-based login OTP, t
 2. Set `BETTER_AUTH_SECRET` to a high-entropy value.
 3. Set `DATABASE_URL` to the dedicated PostgreSQL database.
 4. Run `npm install`.
-5. Run `npm run db:migrate` to create or update the Better Auth tables.
+5. Run `npm run db:migrate` to create the Better Auth tables.
 6. Run `npm run dev` and open `http://localhost:3000`.
 
-The test surface supports the email-first OTP signup flow, password login, risk-based login OTP, profile onboarding, password reset, and sign-out.
+The initial test surface supports email/password signup and login. It is intentionally smaller than the final scope and does not yet configure OTP or risk-based verification.
 
 ## Initial scope
 

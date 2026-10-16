@@ -6,13 +6,6 @@ All notable changes to the authentication implementation are documented here.
 
 ### Added
 
-- Added the apex site's favicon to the auth service.
-- Added Better Auth's official multi-session plugin, environment-controlled session limits, account switching, and an add-account signup entry point.
-- Added a stable authenticated root shell with a sidebar account card, in-place account switching, and an add-account popup. Completed users are no longer forced to username routes.
-- Added opt-in cross-subdomain session cookies through `AUTH_COOKIE_DOMAIN`, defaulting to host-only cookies when empty.
-- Fixed add-account OTP verification so each code is consumed exactly once.
-- Renamed the add-account query mode from `sign-up` to `add-account` for clarity.
-- Added cross-tab account-switch synchronization. The switching tab navigates after the session switch succeeds; other tabs refresh when they become visible, avoiding canceled switch requests.
 - Added initial authentication documentation and implementation guidance.
 - Added Resend email delivery with generated `no-reply@<domain>` sender addresses.
 - Added environment-controlled OTP signup/login (`AUTH_OTP_ENABLED`, enabled by default).
@@ -25,21 +18,8 @@ All notable changes to the authentication implementation are documented here.
 - Implemented the email-first signup/login flow with password validation, risk-based OTP, trusted-device support, and server-side signup completion.
 - Added `AUTH_OTP_EXPIRES_IN_MINUTES` and `AUTH_OTP_MAX_ATTEMPTS` handling.
 - Renamed the provider-specific `RESEND_API_KEY` configuration to provider-neutral `EMAIL_API_KEY`.
-- Fixed signup OTP verification so it does not use the login-OTP path or remove an existing credential account.
-- Added `docs/RULES.md`, `docs/ARCHITECTURE.md`, and `docs/IMPLEMENTATION.md` for the business rules, system architecture, and technical implementation details.
-- Added resumable platform onboarding: OTP verification, password creation, then platform name, username, and date-of-birth profile completion.
-- Added `/onboarding` for new and incomplete profiles, and dynamic `/<username>` paths such as `/muflah95` as completed authenticated landing screens.
-- Changed the email entry flow to send a neutral OTP before branching to existing-account login or new-account signup, preventing new users from being shown a misleading password screen.
-- Routed the initial email OTP request through a server JSON route so delivery failures are handled consistently for new and existing addresses.
-- Added resend-OTP actions with a 30-second client cooldown to the email verification and risk-based login screens.
-- Added a welcome/account-creation email from `hello@<AUTH_EMAIL_DOMAIN>` after platform profile completion; security emails now use the `auth@` alias.
-- Removed the duplicate post-password OTP challenge when the same login already completed email OTP verification.
-- Fixed the onboarding guard to require actual platform profile fields, so legacy accounts without a username are redirected to `/onboarding`.
-- Kept email, OTP, and password at the root auth URL; authenticated users now go to `/onboarding` when profile setup is incomplete and to their actual username path when it is complete.
 
 ### Changed
-
-- Reworked the browser flows to use Better Auth's official email/password, email OTP, two-factor OTP, password-reset, and multi-session client methods. Removed custom authentication wrapper routes; custom code now covers only platform-profile onboarding.
 
 - Clarified that this is a reusable authentication and session-system experiment, not the root website's authentication implementation.
 - Defined the initial scope around risk-based OTP, login and signup, account switching, multi-session support, JWTs, and domain-wide cookies from the `auth` subdomain.

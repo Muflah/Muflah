@@ -19,7 +19,7 @@ Detailed app documentation lives in `web/docs/ARCHITECTURE.md` and `web/docs/IMP
 
 The web app does not import code from `auth/app` or maintain a second identity/session store. It is a product template, not a replacement for the Accounts app.
 
-The Auth-maintained shared `packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—so this app and future products using another stack can load the same element:
+The Auth-maintained shared `packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—revalidates the session when the tab becomes active, and dispatches an account-change event so each product can update without a hard reload. This app and future products using another stack can load the same element:
 
 ```html
 <script type="module" src="@muflah/account-switcher"></script>

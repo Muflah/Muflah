@@ -14,7 +14,7 @@ The shared switcher uses Auth multi-session endpoints for device-session listing
 
 ## Cross-tab behavior
 
-Session changes publish non-sensitive events through `BroadcastChannel` with a `localStorage` fallback. Visible Accounts tabs reload after account switching, logout, or session revocation. Events contain no session tokens.
+Session changes publish non-sensitive events through `BroadcastChannel` with a `localStorage` fallback. When an Accounts tab becomes visible, receives focus, or returns from the browser back/forward cache, the shared switcher revalidates `/auth-api/get-session` with a no-store request. If the active account changed, it updates the switcher, shows the account-change toast, dispatches `muflah:active-account-changed`, and Accounts performs a soft refresh rather than a hard browser reload. Events contain no session tokens.
 
 ## Configuration and deployment
 

@@ -75,7 +75,7 @@ accounts/
 
 Detailed app documentation lives in `accounts/docs/ARCHITECTURE.md` and `accounts/docs/IMPLEMENTATION.md`.
 
-The pilot includes the account shell, profile/settings surfaces, account switching, logout, cross-tab session refresh, and active-session management.
+The pilot includes the account shell, profile/settings surfaces, account switching, logout, cross-tab session refresh, active-tab session revalidation, and active-session management.
 
 ## Shared account header
 
@@ -89,12 +89,15 @@ Auth validates return origins against `AUTH_TRUSTED_ORIGINS`. The accounts origi
 
 ## Account and session behavior
 
-The accounts app will render its own account switcher UI, backed by auth-owned multi-session endpoints:
+The accounts app mounts the shared Auth-maintained account switcher web component, backed by auth-owned multi-session endpoints:
 
 - List device sessions/accounts.
 - Activate a selected session.
 - Revoke the selected account session for account-specific logout.
 - Add another account through the auth authentication flow.
+- Revalidate the active session when the tab becomes visible, receives focus, or returns from browser history.
+- Show `You’re now using @username (full@email.com).` after another tab changes the active account.
+- Soft-refresh Accounts data through `muflah:active-account-changed` without a hard browser reload.
 
 The switcher must preserve the auth app's semantics: incomplete accounts route to onboarding, account logout must not globally sign out unrelated accounts, and session changes should refresh other open tabs.
 

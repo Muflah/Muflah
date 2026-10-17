@@ -16,7 +16,7 @@ This application is intentionally UI-only. The auth service remains authoritativ
 
 When no active session is available, accounts redirects to `AUTH_URL` with a validated `returnTo` URL. Auth completes the flow and returns the user to the exact accounts route they originally requested. The **Add account** action uses the same full-page auth flow with `intent=login` so an already-active account does not bypass the additional login.
 
-Logout revokes only the selected account session and then sends the user to auth. Account switching activates an auth-owned session and preserves the current accounts page. Cross-tab session changes are refreshed through `BroadcastChannel` with a `localStorage` fallback.
+Logout revokes only the selected account session and then sends the user to auth. Account switching activates an auth-owned session and preserves the current accounts page. Same-origin changes use `BroadcastChannel` with a `localStorage` fallback; when a tab becomes active, the shared switcher revalidates Auth, shows `You’re now using @username (full@email.com).` if needed, and Accounts performs a soft refresh if the active account changed.
 
 The reusable switcher is not owned by this app. Accounts consumes the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package, maintained by Auth; other products may consume the same component without depending on Accounts.
 

@@ -30,7 +30,9 @@ The package also exports `publishSessionEvent` for consumers that need to notify
 - Activates another account through Auth.
 - Starts the add-account login flow with a validated return target.
 - Revokes only the selected account session when logging out through the switcher.
-- Refreshes across tabs through `BroadcastChannel` with a `localStorage` fallback.
+- Notifies same-origin tabs through `BroadcastChannel` with a `localStorage` fallback.
+- Revalidates the Auth session when a tab becomes visible, receives focus, or returns from the browser back/forward cache.
+- Shows an accessible account-change toast and dispatches `muflah:active-account-changed` so consuming apps can soft-refresh their own data.
 
 The component does not store credentials, own session state, access the Auth database, or implement product-specific account settings.
 

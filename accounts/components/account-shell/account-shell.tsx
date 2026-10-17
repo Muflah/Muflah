@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import "@muflah/account-switcher";
 import { buildAuthUrl, getSession, type AuthUser } from "@/lib/auth-client";
@@ -14,6 +15,7 @@ const navigation = [
 ];
 
 export default function AccountShell({ authUrl, activePage = "Overview", children }: { authUrl: string; activePage?: string; children?: React.ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,6 +32,26 @@ export default function AccountShell({ authUrl, activePage = "Overview", childre
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    const onAccountChanged = (event: Event) => {
+      const nextUser = (event as CustomEvent<{ user?: AuthUser }>).detail?.user;
+      if (nextUser) {
+        setUser(nextUser);
+        router.refresh();
+      }
+    };
+    const onSessionInvalidated = () => {
+      setUser(null);
+      window.location.assign(buildAuthUrl(authUrl));
+    };
+    window.addEventListener("muflah:active-account-changed", onAccountChanged);
+    window.addEventListener("muflah:session-invalidated", onSessionInvalidated);
+    return () => {
+      window.removeEventListener("muflah:active-account-changed", onAccountChanged);
+      window.removeEventListener("muflah:session-invalidated", onSessionInvalidated);
+    };
+  }, [authUrl, router]);
 
   const firstName = useMemo(() => user?.name?.split(" ")[0] || "there", [user?.name]);
 

@@ -21,10 +21,14 @@ small { color: #716c64; font-size: .7rem; }
 em { color: #8a8378; font-size: .68rem; font-style: normal; }
 .action { margin-top: .2rem; border-top: 1px solid rgba(27,25,22,.08); border-radius: 0; color: #4d6d46; font-size: .8rem; }
 .error { margin: .5rem .65rem .25rem; color: #a33d32; font-size: .72rem; }
+.toast { position: fixed; z-index: 100; top: 1rem; right: 1rem; width: min(24rem, calc(100vw - 2rem)); padding: .85rem 2.25rem .85rem .95rem; border: 1px solid rgba(27,25,22,.12); border-radius: .85rem; background: #fffdf8; box-shadow: 0 1rem 3rem rgba(27,25,22,.18); color: #1b1916; font-size: .8rem; line-height: 1.4; }
+.toast strong { display: block; margin-bottom: .15rem; font-size: .8rem; }
+.toast button { position: absolute; top: .5rem; right: .5rem; width: 1.5rem; height: 1.5rem; border: 0; border-radius: 50%; background: transparent; color: #716c64; cursor: pointer; }
+.toast button:hover, .toast button:focus-visible { background: #f1eee7; outline: none; }
 `;
 
 function authRequest(path, init) {
-  return fetch(`/auth-api/${path}`, { ...init, credentials: "include", headers: { "Content-Type": "application/json", ...(init?.headers || {}) } }).then((response) => {
+  return fetch(`/auth-api/${path}`, { ...init, cache: "no-store", credentials: "include", headers: { "Content-Type": "application/json", ...(init?.headers || {}) } }).then((response) => {
     if (!response.ok) throw new Error(`Auth request failed (${response.status})`);
     return response.json();
   });
@@ -59,28 +63,69 @@ const ElementBase = typeof HTMLElement === "undefined" ? class {} : HTMLElement;
 export class AccountSwitcher extends ElementBase {
   connectedCallback() {
     this.render();
-    this.load();
+    this.load(false);
     this.channel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(CHANNEL_NAME) : null;
     this.channel?.addEventListener("message", (event) => this.refreshFromEvent(event.data));
     this.onStorage = (event) => { if (event.key === STORAGE_KEY && event.newValue) { try { this.refreshFromEvent(JSON.parse(event.newValue)); } catch { /* Ignore malformed events. */ } } };
     window.addEventListener("storage", this.onStorage);
+    this.onVisibility = () => { if (document.visibilityState === "visible") this.checkActiveSession(); };
+    this.onFocus = () => this.checkActiveSession();
+    this.onPageShow = () => this.checkActiveSession();
+    document.addEventListener("visibilitychange", this.onVisibility);
+    window.addEventListener("focus", this.onFocus);
+    window.addEventListener("pageshow", this.onPageShow);
   }
 
-  disconnectedCallback() { this.channel?.close(); window.removeEventListener("storage", this.onStorage); }
+  disconnectedCallback() {
+    this.channel?.close();
+    window.removeEventListener("storage", this.onStorage);
+    document.removeEventListener("visibilitychange", this.onVisibility);
+    window.removeEventListener("focus", this.onFocus);
+    window.removeEventListener("pageshow", this.onPageShow);
+    window.clearTimeout(this.refreshTimer);
+    window.clearTimeout(this.toastTimer);
+  }
 
   render() {
     this.shadowRoot?.replaceChildren();
     const root = this.attachShadow({ mode: "open" });
-    root.innerHTML = `<style>${styles}</style><div class="switcher"><button class="trigger" type="button" aria-expanded="false"><span class="avatar">?</span><span class="summary"><strong>Account</strong><small>Loading…</small></span><span class="chevron">⌄</span></button><div class="menu" hidden><p class="label">Available accounts</p><div class="accounts"></div><button class="action add" type="button">＋ Add account</button><button class="action logout" type="button">Log out account ↗</button><p class="error" hidden></p></div></div>`;
+    root.innerHTML = `<style>${styles}</style><div class="switcher"><button class="trigger" type="button" aria-expanded="false"><span class="avatar">?</span><span class="summary"><strong>Account</strong><small>Loading…</small></span><span class="chevron">⌄</span></button><div class="menu" hidden><p class="label">Available accounts</p><div class="accounts"></div><button class="action add" type="button">＋ Add account</button><button class="action logout" type="button">Log out account ↗</button><p class="error" hidden></p></div><div class="toast" role="status" aria-live="polite" hidden><strong>Account changed</strong><span class="toast-copy"></span><button class="toast-close" type="button" aria-label="Dismiss">×</button></div></div>`;
     this.root = root;
     root.querySelector(".trigger").addEventListener("click", () => { const menu = root.querySelector(".menu"); menu.hidden = !menu.hidden; root.querySelector(".trigger").setAttribute("aria-expanded", String(!menu.hidden)); });
     root.querySelector(".add").addEventListener("click", () => window.location.assign(authUrl(this.getAttribute("auth-url"), "login")));
     root.querySelector(".logout").addEventListener("click", () => this.logout());
+    root.querySelector(".toast-close").addEventListener("click", () => this.hideToast());
   }
 
-  async load() {
-    try { const [session, deviceSessions] = await Promise.all([authRequest("get-session"), authRequest("multi-session/list-device-sessions")]); this.user = session?.user; this.token = session?.session?.token; this.accounts = accountsFrom(deviceSessions); this.update(); } catch { this.showError("We could not load your account list."); }
+  async load(announce = false) {
+    try {
+      const [session, deviceSessions] = await Promise.all([authRequest("get-session"), authRequest("multi-session/list-device-sessions")]);
+      const previousUser = this.user;
+      this.user = session?.user;
+      this.token = session?.session?.token;
+      this.accounts = accountsFrom(deviceSessions);
+      this.update();
+      if (announce && previousUser && this.user && this.accountKey(previousUser) !== this.accountKey(this.user)) this.accountChanged(this.user);
+      if (!this.user && previousUser) window.dispatchEvent(new CustomEvent("muflah:session-invalidated"));
+    } catch { this.showError("We could not load your account list."); }
   }
+
+  accountKey(user) { return user?.id || user?.email?.toLowerCase() || ""; }
+  checkActiveSession() {
+    if (this.refreshInFlight || document.visibilityState !== "visible") return;
+    window.clearTimeout(this.refreshTimer);
+    this.refreshTimer = window.setTimeout(async () => { this.refreshInFlight = true; try { await this.load(true); } finally { this.refreshInFlight = false; } }, 100);
+  }
+  accountChanged(user) {
+    window.dispatchEvent(new CustomEvent("muflah:active-account-changed", { detail: { user } }));
+    const label = user.username ? `@${user.username}` : user.name || user.email;
+    const toast = this.root.querySelector(".toast");
+    this.root.querySelector(".toast-copy").textContent = `You’re now using ${label} (${user.email}).`;
+    toast.hidden = false;
+    window.clearTimeout(this.toastTimer);
+    this.toastTimer = window.setTimeout(() => this.hideToast(), 8000);
+  }
+  hideToast() { this.root.querySelector(".toast").hidden = true; }
 
   update() {
     if (!this.user) return;
@@ -91,10 +136,10 @@ export class AccountSwitcher extends ElementBase {
     root.querySelector(".accounts").replaceChildren(...this.accounts.map((account) => { const button = document.createElement("button"); button.className = "account"; button.type = "button"; button.innerHTML = `<span class="avatar">${account.name.slice(0, 1).toUpperCase()}</span><span><strong></strong><small></small></span><em></em>`; button.querySelector("strong").textContent = account.name; button.querySelector("small").textContent = `${account.username ? `@${account.username} · ` : ""}${account.email}`; button.querySelector("em").textContent = account.email.toLowerCase() === this.user.email.toLowerCase() ? "Current" : account.onboardingComplete ? "Switch" : "Finish setup"; button.disabled = !account.sessionToken; button.addEventListener("click", () => this.switchAccount(account)); return button; }));
   }
 
-  async switchAccount(account) { if (!account.sessionToken || account.email.toLowerCase() === this.user.email.toLowerCase()) return; try { await authRequest("multi-session/set-active", { method: "POST", body: JSON.stringify({ sessionToken: account.sessionToken }) }); publishSessionEvent("account-switched"); window.location.reload(); } catch { this.showError("That account session is no longer available."); } }
+  async switchAccount(account) { if (!account.sessionToken || account.email.toLowerCase() === this.user.email.toLowerCase()) return; try { await authRequest("multi-session/set-active", { method: "POST", body: JSON.stringify({ sessionToken: account.sessionToken }) }); publishSessionEvent("account-switched"); await this.load(true); } catch { this.showError("That account session is no longer available."); } }
   async logout() { if (!this.token) return; try { await authRequest("multi-session/revoke", { method: "POST", body: JSON.stringify({ sessionToken: this.token }) }); publishSessionEvent("account-logged-out"); window.location.assign(authUrl(this.getAttribute("auth-url"))); } catch { this.showError("Unable to sign out. Please try again."); } }
   showError(message) { const error = this.root.querySelector(".error"); error.textContent = message; error.hidden = false; }
-  refreshFromEvent(event) { if (event?.id && document.visibilityState === "visible") window.location.reload(); }
+  refreshFromEvent(event) { if (event?.id && document.visibilityState === "visible") this.checkActiveSession(); }
 }
 
 if (typeof customElements !== "undefined" && !customElements.get("account-switcher")) customElements.define("account-switcher", AccountSwitcher);

@@ -19,6 +19,23 @@ export default function CalculatorApp({ authUrl }: { authUrl: string }) {
     getSession().then((result) => { setUser(result?.user ?? null); }).catch(() => setError("We could not reach the auth service.")).finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const onAccountChanged = (event: Event) => {
+      const nextUser = (event as CustomEvent<{ user?: AuthUser }>).detail?.user;
+      if (nextUser) setUser(nextUser);
+    };
+    const onSessionInvalidated = () => {
+      setUser(null);
+      window.location.assign(buildAuthUrl(authUrl));
+    };
+    window.addEventListener("muflah:active-account-changed", onAccountChanged);
+    window.addEventListener("muflah:session-invalidated", onSessionInvalidated);
+    return () => {
+      window.removeEventListener("muflah:active-account-changed", onAccountChanged);
+      window.removeEventListener("muflah:session-invalidated", onSessionInvalidated);
+    };
+  }, [authUrl]);
+
   function press(key: string) {
     setError("");
     if (key === "C") { setValue("0"); setStored(null); setOperator(null); setFresh(true); return; }

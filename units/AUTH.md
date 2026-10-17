@@ -447,7 +447,7 @@ Complete account         -> /<username> compatibility account route or consuming
 
 The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, and product shell. Auth maintains the reusable account-switcher implementation, delivered as the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package; consuming apps only mount it. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
 
-Existing active sessions are honored when the auth site is opened in a new tab. Cross-tab events use `BroadcastChannel` with a `storage` fallback. Events contain only event type, ID, and timestamp; they never contain session tokens.
+Existing active sessions are honored when the auth site is opened in a new tab. The shared account switcher uses `BroadcastChannel` with a `storage` fallback for same-origin notifications and revalidates the Auth session when a consuming-app tab becomes visible, receives focus, or returns from the browser back/forward cache. Account changes dispatch a non-sensitive `muflah:active-account-changed` event; consuming apps update their UI without a hard reload. Events contain only event type, ID, and timestamp; they never contain session tokens.
 
 ## Authentication flows
 

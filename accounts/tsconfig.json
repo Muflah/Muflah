@@ -23,11 +23,7 @@
       }
     ],
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "react": ["./node_modules/@types/react/index.d.ts"],
-      "react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime.d.ts"]
-    }
+    "paths": { "@/*": ["./*"] }
   },
   "include": [
     "next-env.d.ts",

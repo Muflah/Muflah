@@ -142,7 +142,7 @@ Configuration rules:
 - Use `AUTH_EMAIL_DOMAIN` only as the verified domain input for code-generated sender aliases.
 - Generate `hello@<AUTH_EMAIL_DOMAIN>` for welcome, signup verification, password recovery, and security messages.
 - Generate `noreply@<AUTH_EMAIL_DOMAIN>` for OTP messages.
-- Send the welcome email from the user-create hook after the account record is created.
+- Send the welcome email only after onboarding is complete, not merely when the account row is created.
 - Do not introduce a sender-alias environment variable.
 - Validate required variables at startup and fail clearly for unsafe or incomplete production configuration.
 - Document whether each variable is required, optional, secret, reloadable, or deployment-restart-only.

@@ -9,17 +9,18 @@ export const auth = betterAuth({
   baseURL: config.authUrl,
   secret: config.secret,
   trustedOrigins: [config.authUrl],
-  databaseHooks: {
-    user: {
-      create: {
-        after: async (user) => {
-          await sendTransactionalEmail({
-            to: user.email,
-            type: "welcome",
-            subject: "Welcome to Muflah",
-            html: `<p>Welcome to Muflah, ${user.name}.</p><p>Your account has been created. We’re glad to have you here.</p>`,
-          });
-        },
+  user: {
+    additionalFields: {
+      onboardingStatus: {
+        type: "string",
+        required: true,
+        input: false,
+        defaultValue: "pending",
+      },
+      onboardingCompletedAt: {
+        type: "date",
+        required: false,
+        input: false,
       },
     },
   },

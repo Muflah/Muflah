@@ -10,8 +10,8 @@ export default function HomePage() {
   const [flow, setFlow] = useState<Flow | null>(null);
   const [step, setStep] = useState<Step>("identifier");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -42,7 +42,7 @@ export default function HomePage() {
     setBusy(true);
     setMessage("");
     const endpoint = flow === "sign-in" ? "/api/auth/sign-in/email" : "/api/auth/sign-up/email";
-    const body = flow === "sign-in" ? { email, password } : { email, password, name, username };
+    const body = flow === "sign-in" ? { email, password } : { email, password, name };
     try {
       const response = await fetch(endpoint, {
         method: "POST",
@@ -61,7 +61,10 @@ export default function HomePage() {
         setStep("verify");
         setMessage("We sent a verification code to your email.");
       } else {
-        setMessage("You are signed in.");
+        const destination = result.user?.onboardingStatus === "complete" && result.user?.username
+          ? `/${encodeURIComponent(result.user.username)}`
+          : "/onboarding";
+        window.location.assign(destination);
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Authentication failed");
@@ -148,11 +151,18 @@ export default function HomePage() {
               {flow === "sign-up" && <>
                 <label htmlFor="name">Name</label>
                 <input id="name" autoComplete="name" required value={name} onChange={(event) => setName(event.target.value)} />
-                <label htmlFor="username">Username</label>
-                <input id="username" autoComplete="username" required value={username} onChange={(event) => setUsername(event.target.value)} />
               </>}
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" autoComplete={flow === "sign-in" ? "current-password" : "new-password"} required value={password} onChange={(event) => setPassword(event.target.value)} />
+              <div className="password-field">
+                <input id="password" type={passwordVisible ? "text" : "password"} autoComplete={flow === "sign-in" ? "current-password" : "new-password"} required value={password} onChange={(event) => setPassword(event.target.value)} />
+                <button className="password-toggle" type="button" aria-label={passwordVisible ? "Hide password" : "Show password"} aria-pressed={passwordVisible} onClick={() => setPasswordVisible((visible) => !visible)}>
+                  {passwordVisible ? (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.8 10.8 0 0 1 12 5c5.2 0 9 5.5 9 7s-1.1 3-3.2 4.8M6.1 6.1C3.5 7.8 2 10.7 2 12c0 1.5 3.8 7 10 7 1.2 0 2.3-.2 3.3-.6" /></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+                  )}
+                </button>
+              </div>
               <div className="auth-actions">
                 <button className="auth-button" disabled={busy}>{busy ? "Working…" : flow === "sign-in" ? "Sign in ↗" : "Create account ↗"}</button>
                 <button className="auth-button secondary" type="button" disabled={busy} onClick={() => { setStep("identifier"); setFlow(null); setMessage(""); }}>Use a different email</button>

@@ -88,6 +88,14 @@ Deferred capabilities must not compromise the V1 interfaces or require product-s
 ### Signup and login
 
 - Signup must verify ownership of the email address.
+- Email verification alone must not complete onboarding.
+- If the user abandons before a password is created, only an expiring pending-signup record may remain; no permanent user account is created.
+- After password creation, the account may exist with `onboardingStatus = pending` and `onboardingCompletedAt = null`.
+- A pending account must complete the required username setup before receiving product access through SSO.
+- The service must redirect an authenticated but incomplete account to `/onboarding` and resume the original application request after completion.
+- Store `onboardingStatus` and `onboardingCompletedAt`; do not store a redundant boolean completion field.
+- Expose `onboardingComplete` as a derived API value when consuming applications need a simple boolean.
+- Send the welcome email only after onboarding is complete.
 - The service must not reveal whether an email address already exists through noticeably different error messages.
 - Passwords must meet the configured minimum and maximum length requirements.
 - A known, low-risk client may sign in without OTP after satisfying the primary authentication requirement.

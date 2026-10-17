@@ -161,3 +161,30 @@ Each entry contains:
 - Files: `app/src/lib/email/aliases.ts`, `app/src/lib/email/connector.ts`, `app/src/lib/auth.ts`, `README.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck` and `npm run build` passed. The five auth tables were reset successfully and are ready for a fresh test.
 
+# 2026-10-17T05:55:00+05:00 — Choose Timestamp-Based Onboarding State
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Decide whether onboarding should use a separate boolean flag in addition to its completion timestamp.
+- Changes Made: Chose `onboardingStatus` plus nullable `onboardingCompletedAt` as the persisted state. A simple `onboardingComplete` boolean may be derived for API consumers, but no redundant boolean database field will be stored. Documented that incomplete accounts must complete username setup before product SSO access and that the welcome email is sent only after onboarding completion.
+- Files: `docs/ARCHITECTURE.md`, `docs/REQUIREMENTS.md`, `docs/IMPLEMENTATION.md`, `README.md`, and `AGENTLOG.md`.
+- Verification Status: `git diff --check` passed. The implementation changes for pending-signup/onboarding enforcement and post-onboarding welcome delivery remain the next build step.
+
+# 2026-10-17T06:15:00+05:00 — Implement Onboarding, Account Home, and Session Management
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Implement the agreed onboarding state, username route, thin account home, and active-session management for the pilot.
+- Changes Made: Added persisted `onboardingStatus` and nullable `onboardingCompletedAt` fields to the Better Auth user model; moved username collection into `/onboarding`; added onboarding completion validation and post-completion welcome email delivery; added canonical `/<username>` account home with profile sidebar and logout; added `/security/sessions` with active-session listing and individual revocation; added responsive light/dark styles matching the main site.
+- Files: `app/src/lib/auth.ts`, `app/src/app/page.tsx`, `app/src/app/onboarding/`, `app/src/app/[username]/`, `app/src/app/security/sessions/`, `app/src/app/api/onboarding/`, `app/src/components/auth/`, and `app/src/app/globals.css`.
+- Verification Status: The live schema check passed after migration. `npm run typecheck`, `npm run build`, and `git diff --check` passed. The build now includes `/onboarding`, `/<username>`, `/security/sessions`, and `/api/onboarding/complete`. A real Resend email, cross-application SSO, and a true pre-account pending-signup record are not yet end-to-end tested.
+
+# 2026-10-17T06:25:00+05:00 — Add Password Visibility Control
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Make password entry easier to verify during sign-in and signup.
+- Changes Made: Added an accessible eye-button toggle to the hosted password field, with show/hide labels, pressed state, inline SVG icons, and matching light/dark styling.
+- Files: `app/src/app/page.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
+

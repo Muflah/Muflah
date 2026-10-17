@@ -195,6 +195,19 @@ Email is the private login and recovery identifier. A username or handle is a se
 
 The username must not be treated as proof of email ownership and should not be permanently derived from the email address.
 
+## Onboarding state
+
+Email verification and account creation are separate milestones. A user may verify an email address without completing the required account setup.
+
+The user record should store:
+
+- `onboardingStatus`: the current onboarding state, initially `pending` and later `complete`.
+- `onboardingCompletedAt`: the timestamp at which required onboarding finished, or `null` while incomplete.
+
+Do not store a second boolean completion flag. APIs may expose a derived `onboardingComplete` boolean for convenience, but the service must treat onboarding as complete only when the status, timestamp, and required identity fields—especially the username—are consistent.
+
+An incomplete account may authenticate to continue setup, but it must not receive product access through SSO until onboarding is complete. The auth service redirects the user to `/onboarding` and resumes the original application request after completion. The welcome email is sent only after onboarding completes.
+
 ## Session model
 
 Every successful login creates or refreshes a separately revocable session. A session represents one signed-in browser, mobile installation, or client context.
@@ -240,7 +253,7 @@ Email address
   ├── Existing identity → password or approved sign-in method
   │                         → risk check → OTP if required → session
   └── New identity      → email verification → username/password
-                            → session
+                            → account creation → onboarding → session
 ```
 
 The same flow is used from the main sign-in screen, the account switcher, web clients, and mobile clients. The UI may differ by platform, but the underlying API states and security rules remain consistent.

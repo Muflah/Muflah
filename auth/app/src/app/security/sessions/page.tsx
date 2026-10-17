@@ -29,7 +29,7 @@ export default async function SessionsPage() {
         <p className="micro">Security</p>
         <h1>Active sessions.</h1>
         <p className="account-lede">Review where your account is signed in and revoke access you no longer recognize.</p>
-        <SessionList sessions={sessions.map((item) => ({ ...item.session, updatedAt: item.session.updatedAt.toISOString() }))} currentToken={current.session.token} />
+        <SessionList sessions={sessions.map((item) => ({ ...item.session, updatedAt: item.session.updatedAt.toISOString(), expiresAt: item.session.expiresAt.toISOString() }))} currentToken={current.session.token} />
       </main>
     </div>
   );

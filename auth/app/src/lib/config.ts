@@ -26,6 +26,10 @@ function integer(name: string, fallback: number, fallbackOnInvalid = false): num
   return parsed;
 }
 
+function daysInSeconds(name: string, fallbackDays: number): number {
+  return integer(name, fallbackDays) * 24 * 60 * 60;
+}
+
 function origins(name: string, requiredOrigin: string): string[] {
   const configured = process.env[name]
     ?.split(",")
@@ -43,6 +47,8 @@ export const config = {
   emailApiKey: required("EMAIL_API_KEY"),
   cookieDomain: process.env.AUTH_COOKIE_DOMAIN?.trim() || undefined,
   maxSessions: integer("AUTH_MAX_SESSIONS", 4, true),
+  sessionExpiresInSeconds: daysInSeconds("AUTH_SESSION_EXPIRES_IN_DAYS", 7),
+  sessionUpdateAgeSeconds: daysInSeconds("AUTH_SESSION_UPDATE_AGE_DAYS", 1),
   otpEnabled: process.env.AUTH_OTP_ENABLED !== "false",
   otpExpiresInSeconds: integer("AUTH_OTP_EXPIRES_IN_MINUTES", 10) * 60,
   otpMaxAttempts: integer("AUTH_OTP_MAX_ATTEMPTS", 5),

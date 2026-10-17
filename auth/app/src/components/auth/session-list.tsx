@@ -7,6 +7,7 @@ type SessionItem = {
   id: string;
   token: string;
   updatedAt: string;
+  expiresAt: string;
   ipAddress?: string | null;
   userAgent?: string | null;
 };
@@ -37,6 +38,7 @@ export default function SessionList({ sessions, currentToken }: { sessions: Sess
             <strong>{session.userAgent || "Unknown device"}</strong>
             <span>{session.ipAddress || "IP unavailable"}</span>
             <small>Last active {new Date(session.updatedAt).toLocaleString()}</small>
+            <small>Session expires {new Date(session.expiresAt).toLocaleString()}</small>
           </div>
           <button className="session-revoke" type="button" onClick={() => revoke(session.token)} disabled={busy === session.token}>
             {busy === session.token ? "Revoking…" : session.token === currentToken ? "Revoke this session" : "Revoke"}

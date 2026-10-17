@@ -123,6 +123,7 @@ The hosted routes are:
 
 - `/login` — email, password, then sign-in OTP
 - `/signup` — email verification OTP, password, and confirmation
+- `/start` — neutral email entry that hands off to login or signup
 - `/forgot-password` — password-reset request
 - `/onboarding` — username setup after account creation
 

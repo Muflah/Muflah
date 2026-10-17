@@ -124,6 +124,7 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - The current pilot requires a password and email OTP for every existing-account login.
 - Signup verifies email ownership with an OTP before accepting a password and creating the account.
 - `/login`, `/signup`, and `/forgot-password` are the explicit hosted entry routes; the root route remains compatible for direct visits and consuming-app handoffs.
+- `/start` is a separate neutral identifier entry point; it routes existing emails to `/login` and new emails to `/signup` without changing the existing route UX.
 - Risk-based OTP selection and trusted-device suppression are deferred.
 - OTP is also required for selected sensitive actions, such as changing email, changing password, disabling security protections, or recovering an account.
 - Failed or abusive attempts must be rate-limited by multiple signals, including email, IP, and client context.
@@ -316,8 +317,8 @@ The implementation must document and validate these configuration variables. Sec
 | `AUTH_BRAND_NAME` | Hosted UI and email brand name | Required |
 | `AUTH_SUPPORT_EMAIL` | User support and recovery contact | Required |
 | `AUTH_EMAIL_TEMPLATE_DIR` | Managed template source directory | Required when templates are file-based |
-| `AUTH_SESSION_EXPIRES_IN_SECONDS` | Session lifetime | Required when explicitly configured |
-| `AUTH_SESSION_UPDATE_AGE_SECONDS` | Session renewal interval | Required when explicitly configured |
+| `AUTH_SESSION_EXPIRES_IN_DAYS` | Session inactivity lifetime in days; converted to Better Auth seconds | Optional; defaults to `7` |
+| `AUTH_SESSION_UPDATE_AGE_DAYS` | Minimum age in days before active use refreshes session expiry; converted to Better Auth seconds | Optional; defaults to `1` |
 | `AUTH_LOGOUT_SIGNING_KEY_REFERENCE` | Secret-manager reference for signed logout events | Deferred with back-channel logout |
 | `AUTH_KEY_STORE_REFERENCE` | Secret-manager or KMS reference | Deferred with full key management |
 | `AUTH_KEY_ROTATION_INTERVAL_SECONDS` | Key rotation policy | Deferred unless required by the deployment |

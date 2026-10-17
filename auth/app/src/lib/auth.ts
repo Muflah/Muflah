@@ -9,6 +9,10 @@ export const auth = betterAuth({
   baseURL: config.authUrl,
   secret: config.secret,
   trustedOrigins: config.trustedOrigins,
+  session: {
+    expiresIn: config.sessionExpiresInSeconds,
+    updateAge: config.sessionUpdateAgeSeconds,
+  },
   ...(config.cookieDomain
     ? {
         advanced: {

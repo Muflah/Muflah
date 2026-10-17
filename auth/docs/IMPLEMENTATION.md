@@ -14,6 +14,7 @@ The current pilot and planned integrations are:
 - Username support.
 - Multi-session support.
 - Password followed by email OTP on every login attempt in the current pilot policy.
+- Session lifetime and refresh interval are configured with `AUTH_SESSION_EXPIRES_IN_DAYS` and `AUTH_SESSION_UPDATE_AGE_DAYS`, with Better Auth-compatible day-to-second conversion and defaults.
 - Two-factor or OTP support.
 - Trusted-device support.
 - Standard session listing and revocation.
@@ -262,6 +263,7 @@ Current hosted routes and screens:
 
 ```text
 /                         identifier-first compatibility entry
+/start                    neutral email entry that hands off to login or signup
 /login                    email → password → email OTP login
 /signup                   email → email OTP → password and confirmation signup
 /account                  account selection and switching

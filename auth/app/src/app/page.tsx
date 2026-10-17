@@ -28,9 +28,15 @@ export default function HomePage() {
     setReturnTo(requestedReturnTo);
     const path = window.location.pathname;
     const requestedFlow = path.endsWith("/signup") ? "sign-up" : path.endsWith("/login") ? "sign-in" : null;
-    const intent = new URLSearchParams(window.location.search).get("intent");
+    const params = new URLSearchParams(window.location.search);
+    const intent = params.get("intent");
+    const emailFromStart = params.get("email");
     if (requestedFlow || intent === "login" || intent === "signup") {
       setFlow(requestedFlow ?? (intent === "signup" ? "sign-up" : "sign-in"));
+      if (emailFromStart) {
+        setEmail(emailFromStart);
+        setStep((requestedFlow ?? intent) === "signup" ? "verify" : "credentials");
+      }
       setCheckingSession(false);
       return;
     }
@@ -120,6 +126,7 @@ export default function HomePage() {
   const isError = /failed|unable|not valid|error|match|find|already/i.test(message);
   const title = step === "verify" ? "Check your email." : flow ? (flow === "sign-in" ? "Welcome back." : "Create your account.") : "Continue to your account.";
   const intro = step === "verify" ? `Enter the code we sent to ${email}.` : flow ? `Continue with ${email}.` : "Enter your email and we’ll take you to the right place.";
+  const signupHref = returnTo ? `/signup?returnTo=${encodeURIComponent(returnTo)}` : "/signup";
 
   if (checkingSession) return <div className="auth-shell"><main className="auth-main"><p className="micro">Checking your session…</p></main></div>;
   if (sessionCheckError) return <div className="auth-shell"><main className="auth-main"><section className="auth-card"><p className="micro">Session check</p><h1>Let’s try that again.</h1><p className="intro">{sessionCheckError} Your account has not been signed out.</p><div className="auth-actions"><button className="auth-button" type="button" onClick={() => { setSessionCheckError(""); setCheckingSession(true); setSessionCheckAttempt((attempt) => attempt + 1); }}>Retry ↗</button></div></section></main></div>;
@@ -133,6 +140,7 @@ export default function HomePage() {
         {flow === "sign-up" && <><label htmlFor="confirm-password">Confirm password</label><div className="password-field"><input id="confirm-password" type={confirmPasswordVisible ? "text" : "password"} autoComplete="new-password" required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} /><button className="password-toggle" type="button" aria-label={confirmPasswordVisible ? "Hide confirmation password" : "Show confirmation password"} aria-pressed={confirmPasswordVisible} onClick={() => setConfirmPasswordVisible((visible) => !visible)}>{confirmPasswordVisible ? "◉" : "◌"}</button></div></>}
         <div className="auth-actions"><button className="auth-button" disabled={busy}>{busy ? "Working…" : flow === "sign-in" ? "Continue to verification ↗" : "Create account ↗"}</button><button className="auth-button secondary" type="button" disabled={busy} onClick={() => { setStep("identifier"); setFlow(null); setMessage(""); }}>Use a different email</button></div>
       </form>}
+      {flow === "sign-in" && <p className="auth-switch">Don’t have an account? <a href={signupHref}>Sign up</a></p>}
       {message && <p className={`notice${isError ? " error" : ""}`}>{message}</p>}
     </section></main><footer className="auth-footer"><p>© 2026 Muflah Ul Furqan.</p><p>Authentication service</p></footer>
   </div>;

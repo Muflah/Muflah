@@ -44,6 +44,8 @@ a { color: inherit; }
 .auth-button.secondary:hover { border-color: var(--muted); background: transparent; color: var(--ink); }
 .auth-button.secondary { display: grid; place-items: center; text-decoration: none; }
 .notice { margin: 20px 0 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.auth-switch { margin: 22px 0 0; color: var(--muted); font-size: 14px; text-align: center; }
+.auth-switch a { color: var(--teal); font-weight: 600; }
 .notice.error { border-color: #efb4b4; color: #9b2424; }
 .auth-footer { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); color: var(--muted); }
 .auth-footer p { margin: 0; font-size: 10px; }

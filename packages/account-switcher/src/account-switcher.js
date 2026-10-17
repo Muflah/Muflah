@@ -35,7 +35,7 @@ function authRequest(path, init) {
 }
 
 function authUrl(value, intent) {
-  const url = new URL(value);
+  const url = new URL("/login", value);
   url.searchParams.set("returnTo", window.location.href);
   if (intent) url.searchParams.set("intent", intent);
   return url.toString();
@@ -104,6 +104,9 @@ export class AccountSwitcher extends ElementBase {
       this.user = session?.user;
       this.token = session?.session?.token;
       this.accounts = accountsFrom(deviceSessions);
+      if (this.user?.email && !this.accounts.some((account) => account.email.toLowerCase() === this.user.email.toLowerCase())) {
+        this.accounts.unshift({ id: this.user.id || this.user.email, name: this.user.name || this.user.email, email: this.user.email, username: this.user.username || "", onboardingComplete: this.user.onboardingStatus === undefined || this.user.onboardingStatus === "complete" || this.user.onboardingStatus === "completed", sessionToken: this.token });
+      }
       this.update();
       if (announce && previousUser && this.user && this.accountKey(previousUser) !== this.accountKey(this.user)) this.accountChanged(this.user);
       if (!this.user && previousUser) window.dispatchEvent(new CustomEvent("muflah:session-invalidated"));
@@ -137,7 +140,22 @@ export class AccountSwitcher extends ElementBase {
   }
 
   async switchAccount(account) { if (!account.sessionToken || account.email.toLowerCase() === this.user.email.toLowerCase()) return; try { await authRequest("multi-session/set-active", { method: "POST", body: JSON.stringify({ sessionToken: account.sessionToken }) }); publishSessionEvent("account-switched"); await this.load(true); } catch { this.showError("That account session is no longer available."); } }
-  async logout() { if (!this.token) return; try { await authRequest("multi-session/revoke", { method: "POST", body: JSON.stringify({ sessionToken: this.token }) }); publishSessionEvent("account-logged-out"); window.location.assign(authUrl(this.getAttribute("auth-url"))); } catch { this.showError("Unable to sign out. Please try again."); } }
+  async logout() {
+    if (!this.token) return;
+    try {
+      await authRequest("multi-session/revoke", { method: "POST", body: JSON.stringify({ sessionToken: this.token }) });
+    } catch {
+      // Older sessions may not have a multi-session cookie. Revoke the authoritative session directly.
+      try {
+        await authRequest("revoke-session", { method: "POST", body: JSON.stringify({ token: this.token }) });
+      } catch {
+        this.showError("Unable to sign out. Please try again.");
+        return;
+      }
+    }
+    publishSessionEvent("account-logged-out");
+    window.location.assign(authUrl(this.getAttribute("auth-url")));
+  }
   showError(message) { const error = this.root.querySelector(".error"); error.textContent = message; error.hidden = false; }
   refreshFromEvent(event) { if (event?.id && document.visibilityState === "visible") this.checkActiveSession(); }
 }

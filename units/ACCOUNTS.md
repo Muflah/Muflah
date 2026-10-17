@@ -64,17 +64,22 @@ accounts/
 ├── lib/
 │   ├── auth-client.ts
 │   └── auth-types.ts
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── IMPLEMENTATION.md
 ├── public/
 ├── .env.example
 ├── package.json
 └── tsconfig.json
 ```
 
+Detailed app documentation lives in `accounts/docs/ARCHITECTURE.md` and `accounts/docs/IMPLEMENTATION.md`.
+
 The pilot includes the account shell, profile/settings surfaces, account switching, logout, cross-tab session refresh, and active-session management.
 
 ## Shared account header
 
-The reusable account switcher is owned by Auth and lives in `auth/packages/account-switcher` as the framework-neutral `@muflah/account-switcher` web component. Accounts is only one consumer. It contains only HTML templates, CSS, and browser JavaScript. Any product stack can load the component and use `<account-switcher auth-url="...">`; it calls only the consuming app's `/auth-api` proxy and does not own identity or session state.
+The reusable account switcher is maintained by Auth and lives in the shared root `packages/account-switcher` package as the framework-neutral `@muflah/account-switcher` web component. Accounts is only one consumer. It contains only HTML templates, CSS, and browser JavaScript. Any product stack can load the component and use `<account-switcher auth-url="...">`; it calls only the consuming app's `/auth-api` proxy and does not own identity or session state.
 
 ## Authentication handoff
 

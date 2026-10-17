@@ -1,6 +1,6 @@
-# Release Plan
+# Repository Release Notes and Plan
 
-This is a roadmap and closure-criteria document. Its MVP/V1 sections describe target milestones, not the current pilot’s shipped capability set. See `../../AUTH.md` for current status.
+This is the repository-level roadmap and release-notes document. Its MVP/V1 sections describe target milestones, not the current pilot’s shipped capability set. See `units/AUTH.md` for current Auth status and requirements.
 
 ## Purpose
 

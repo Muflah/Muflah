@@ -1,6 +1,6 @@
 # Architecture
 
-This document describes the target reusable architecture. It is intentionally broader than the current hosted pilot; use `../../AUTH.md` for the implementation-status truth and current handoff context.
+This document describes the target reusable architecture. It is intentionally broader than the current hosted pilot; use `../../units/AUTH.md` for the requirements and current implementation-status truth.
 
 ## Purpose
 
@@ -53,7 +53,6 @@ The initial repository is intentionally small, but its boundaries are set up for
 ```text
 auth/
 ├── .env                         # Local secrets and deployment values; never commit
-├── AGENTLOG.md                  # Project history and operating notes
 ├── package.json                 # Root project manifest and scripts
 ├── package-lock.json            # Root dependency lockfile
 ├── docs/                        # Product, architecture, release, and implementation docs
@@ -353,7 +352,7 @@ V1 requires managed secrets, ownership, purpose, access controls, basic rotation
 
 ## Hosted web routing and tab coordination
 
-The hosted web app has a primary **Hosted Auth Screen** plus onboarding and compatibility security routes. The root route resolves the server-validated session state: no valid session shows auth, an incomplete account shows `/onboarding`, and a complete account may show its canonical username route for direct auth-domain visits. Consuming applications such as `accounts/` provide the product-facing account shell. Auth also owns the reusable framework-neutral account switcher at `auth/packages/account-switcher`; consuming apps mount it rather than reimplementing account switching. They start auth with a validated `returnTo` URL; add-account flows use explicit login intent so an existing active session does not short-circuit the flow.
+The hosted web app has a primary **Hosted Auth Screen** plus onboarding and compatibility security routes. The root route resolves the server-validated session state: no valid session shows auth, an incomplete account shows `/onboarding`, and a complete account may show its canonical username route for direct auth-domain visits. Consuming applications such as `accounts/` provide the product-facing account shell. Auth maintains the reusable framework-neutral account switcher in the shared root package `packages/account-switcher`; consuming apps mount it rather than reimplementing account switching. They start auth with a validated `returnTo` URL; add-account flows use explicit login intent so an existing active session does not short-circuit the flow.
 
 The resolver checks the current session and valid Better Auth multi-session cookies. If the current session is unavailable but another account remains active, it activates the next valid session. Session-check failures show retry rather than falsely treating the user as signed out. Protected account routes revalidate server-side.
 

@@ -6,6 +6,8 @@
 
 The pilot is a calculator. It owns only its product UI and calculator state. Auth owns identity, authentication, cookies, sessions, and logout.
 
+Detailed app documentation lives in `web/docs/ARCHITECTURE.md` and `web/docs/IMPLEMENTATION.md`.
+
 ## Authentication flow
 
 1. A visitor opens the web app.
@@ -17,7 +19,7 @@ The pilot is a calculator. It owns only its product UI and calculator state. Aut
 
 The web app does not import code from `auth/app` or maintain a second identity/session store. It is a product template, not a replacement for the Accounts app.
 
-The Auth-owned `auth/packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—so this app and future products using another stack can load the same element:
+The Auth-maintained shared `packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—so this app and future products using another stack can load the same element:
 
 ```html
 <script type="module" src="@muflah/account-switcher"></script>
@@ -34,7 +36,7 @@ Configure a separate Vercel project:
 - Framework preset: Next.js
 - Environment variable: `AUTH_URL`
 - Add the deployed web origin to auth's `AUTH_TRUSTED_ORIGINS`
-- Install the Auth-owned `@muflah/account-switcher` package from `auth/packages/account-switcher`
+- Install the shared `@muflah/account-switcher` package from `packages/account-switcher`; Auth maintains its API and behavior.
 
 Example local configuration:
 

@@ -1,6 +1,6 @@
 # Implementation
 
-This document combines current implementation rules with the planned V1 integration boundary. Current pilot behavior and known gaps are summarized in `../../AUTH.md`; roadmap statements below are not claims that every V1 capability is already shipped.
+This document combines current implementation rules with the planned V1 integration boundary. Current pilot behavior, known gaps, and requirements are summarized in `../../units/AUTH.md`; roadmap statements below are not claims that every V1 capability is already shipped.
 
 ## Better Auth usage
 
@@ -24,7 +24,7 @@ The current pilot and planned integrations are:
 
 The implementation should follow the repository boundaries defined in `ARCHITECTURE.md`:
 
-The top-level `auth/` directory is a documentation, deployment, dependency, and reusable-client container. The hosted service implementation lives under `auth/app/`. The Auth-owned framework-neutral account switcher lives under `auth/packages/account-switcher` and is deliberately independent of React and Next.js. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
+The top-level `auth/` directory is a documentation and hosted-service container. The hosted service implementation lives under `auth/app/`. The Auth-maintained framework-neutral account switcher lives in the shared root package `packages/account-switcher` and is deliberately independent of React and Next.js. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
 
 | Area | Responsibility | Must not contain |
 | --- | --- | --- |
@@ -46,7 +46,6 @@ The first-level layout is therefore:
 ```text
 auth/
 ├── .env
-├── AGENTLOG.md
 ├── package.json
 ├── package-lock.json
 ├── docs/
@@ -57,7 +56,7 @@ auth/
     └── tests/
 ```
 
-Only the deployment `.env`, documentation, and project-history files belong directly under `auth/`. The `.env.example` belongs under `auth/app/` beside the implementation project so it documents the runnable application without adding another top-level project file.
+Only the deployment `.env` and Auth documentation belong directly under `auth/`. The repository-level `AGENTLOG.md` and `CHANGELOG.md` live at the workspace root. The `.env.example` belongs under `auth/app/` beside the implementation project so it documents the runnable application without adding another top-level project file.
 
 ### Node project manifests
 

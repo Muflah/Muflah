@@ -41,23 +41,26 @@ Applications remain responsible for their own organizations, memberships, roles,
 ## Repository layout
 
 ```text
-auth/
-├── .env                  # Local deployment secrets; never commit
-├── AGENTLOG.md           # Chronological implementation history
-├── README.md             # This overview
-├── AGENTS.md             # Repository instructions
-├── CHANGELOG.md          # Release history
-├── docs/                 # Architecture and product documentation
-├── packages/             # Auth-owned framework-neutral client components
-│   └── account-switcher/ # Plain JS/HTML/CSS account switcher web component
-└── app/                  # Application implementation
-    ├── config/
-    ├── migrations/
-    ├── src/
-    └── tests/
+repository/
+├── packages/
+│   └── account-switcher/ # Auth-maintained plain JS/HTML/CSS web component
+├── auth/
+│   ├── .env              # Local deployment secrets; never commit
+│   ├── README.md         # This overview
+│   ├── AGENTS.md         # Auth-specific repository instructions
+│   ├── docs/             # Auth architecture and implementation docs
+│   └── app/              # Auth application implementation
+│       ├── config/
+│       ├── migrations/
+│       ├── src/
+│       └── tests/
 ```
 
+The repository-level [AGENTLOG.md](../AGENTLOG.md) contains chronological implementation history, and [CHANGELOG.md](../CHANGELOG.md) contains release history.
+
 `package.json` and `package-lock.json` will live directly under `auth/` because they define the dependency graph and project commands. Other implementation files remain under `auth/app/`.
+
+The shared [account-switcher package](../packages/account-switcher/README.md) is maintained by Auth but lives at the repository root so Accounts, Web, and future products can consume it without depending on the Accounts application.
 
 ## Configuration
 
@@ -103,11 +106,10 @@ Add the variables listed above to the Vercel project environment for the require
 
 ## Documentation
 
-- [Auth handoff context](../AUTH.md)
+- [Auth requirements, status, and handoff](../units/AUTH.md)
 - [Architecture](docs/ARCHITECTURE.md)
-- [Requirements](docs/REQUIREMENTS.md)
 - [Implementation](docs/IMPLEMENTATION.md)
-- [Release scope](docs/RELEASE.md)
+- [Repository release notes and scope](../RELEASE.md)
 
 ## Current status
 

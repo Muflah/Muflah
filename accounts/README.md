@@ -18,7 +18,7 @@ When no active session is available, accounts redirects to `AUTH_URL` with a val
 
 Logout revokes only the selected account session and then sends the user to auth. Account switching activates an auth-owned session and preserves the current accounts page. Cross-tab session changes are refreshed through `BroadcastChannel` with a `localStorage` fallback.
 
-The reusable switcher is not owned by this app. Accounts consumes Auth's framework-neutral `@muflah/account-switcher` web component from `auth/packages/account-switcher`; other products may consume the same component without depending on Accounts.
+The reusable switcher is not owned by this app. Accounts consumes the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package, maintained by Auth; other products may consume the same component without depending on Accounts.
 
 ## Configuration
 
@@ -30,5 +30,11 @@ AUTH_URL=https://auth.mydomain.com
 
 For deployment, configure the Vercel project root directory as `accounts`, use the Next.js framework preset, and keep the real `.env` file out of git.
 
-See [../ACCOUNTS.md](../ACCOUNTS.md) for the integration boundary, deployment plan, and auth app structure.
+See [../units/ACCOUNTS.md](../units/ACCOUNTS.md) for the integration boundary, deployment plan, and auth app structure.
+
+Detailed documentation:
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Implementation](docs/IMPLEMENTATION.md)
+- [Shared account-switcher package](../packages/account-switcher/README.md)
 

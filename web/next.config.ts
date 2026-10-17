@@ -6,7 +6,7 @@ if (!authUrl) throw new Error("AUTH_URL must be configured for the web app");
 
 const nextConfig: NextConfig = {
   turbopack: { root: path.resolve(process.cwd(), "..") },
-    transpilePackages: ["@muflah/account-switcher"],
+  transpilePackages: ["@muflah/account-switcher"],
   async rewrites() {
     return [{ source: "/auth-api/:path*", destination: `${authUrl}/api/auth/:path*` }];
   },

@@ -1,0 +1,49 @@
+# Muflah Account Switcher
+
+`@muflah/account-switcher` is the shared, framework-neutral account switcher for Muflah products.
+
+Auth maintains the component and remains authoritative for identity, sessions, account activation, account-level logout, and account APIs. The package lives in the repository-level `packages/` directory so current and future applications can consume it without depending on the Accounts app.
+
+## Runtime
+
+The component uses browser-native HTML, CSS, and JavaScript. It has no React, Next.js, or framework runtime dependency.
+
+```html
+<account-switcher auth-url="https://auth.example.com"></account-switcher>
+```
+
+The `auth-url` attribute is the configured Auth origin. Applications should normally call the component through their local `/auth-api` proxy so the Auth origin remains deployment-configurable.
+
+## JavaScript usage
+
+Framework applications import the package to register the custom element:
+
+```js
+import "@muflah/account-switcher";
+```
+
+The package also exports `publishSessionEvent` for consumers that need to notify other open tabs after an Auth-owned session change.
+
+## Supported behavior
+
+- Loads the current Auth session and available account sessions.
+- Activates another account through Auth.
+- Starts the add-account login flow with a validated return target.
+- Revokes only the selected account session when logging out through the switcher.
+- Refreshes across tabs through `BroadcastChannel` with a `localStorage` fallback.
+
+The component does not store credentials, own session state, access the Auth database, or implement product-specific account settings.
+
+## Local package consumption
+
+The current monorepo applications use a file dependency:
+
+```json
+"@muflah/account-switcher": "file:../packages/account-switcher"
+```
+
+The consuming app must include `@muflah/account-switcher` in its framework transpilation configuration when required by the framework. Next.js consumers use `transpilePackages`.
+
+## Ownership boundary
+
+Changes to session semantics, Auth endpoints, account activation, logout behavior, or security rules must be made in Auth first. This package should remain a presentation and browser-integration layer over those authoritative APIs.

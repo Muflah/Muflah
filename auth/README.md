@@ -1,6 +1,6 @@
 # Reusable Authentication Service
 
-This directory contains the reusable authentication and single sign-on service for current and future applications. The current hosted pilot implements the web identity, onboarding, multi-account, session-management, and cross-tab foundations; the target V1 SSO and mobile capabilities remain separately identified below.
+This directory contains the reusable authentication and single sign-on service for current and future applications. The current hosted pilot implements the web identity, onboarding, multi-account, session-management, redirect handoff, and cross-tab foundations; the target V1 SSO and mobile capabilities remain separately identified below.
 
 ## Application details
 
@@ -83,6 +83,8 @@ AUTH_OTP_RESENT_IN_SECONDS
 
 Set `AUTH_COOKIE_DOMAIN` to the shared parent domain, such as `.example.com`, to enable Better Auth cross-subdomain cookies. Set `AUTH_TRUSTED_ORIGINS` to a comma-separated list of full approved origins, such as `https://app.example.com,https://admin.example.com`; `BETTER_AUTH_URL` is always included automatically.
 
+`AUTH_TRUSTED_ORIGINS` also controls browser return redirects. Every consuming product, including the accounts app, must be listed as a full origin. Auth rejects a `returnTo` value whose origin is not in this allowlist.
+
 The V1 sender policy uses `hello@<AUTH_EMAIL_DOMAIN>` for welcome, signup verification, password recovery, and security emails. OTP messages use `noreply@<AUTH_EMAIL_DOMAIN>`. The welcome email is sent only after onboarding is complete.
 
 ## Vercel deployment
@@ -107,7 +109,7 @@ Add the variables listed above to the Vercel project environment for the require
 
 ## Current status
 
-The pilot foundation is implemented: the modular-monolith layout is in place, Better Auth is configured against PostgreSQL, the live schema passes Better Auth's check, the Resend connector boundary is wired, the identifier-first signup/sign-in/OTP flow is available, onboarding completion and username routing are available, and the hosted pilot includes account home, multi-account switching, selected-account session management, selected-account logout, and cross-tab synchronization. Reference-application SSO callbacks, real email-delivery verification, trusted-device persistence, and a fully staged pre-account signup record remain follow-up work.
+The pilot foundation is implemented: the modular-monolith layout is in place, Better Auth is configured against PostgreSQL, the live schema passes Better Auth's check, the Resend connector boundary is wired, the identifier-first signup/sign-in/OTP flow is available, onboarding completion and username routing are available, and the thin auth UI supports redirect handoff to consuming applications. The `accounts/` app is the product-facing account shell and consumes auth-owned sessions, account switching, logout, and active-session management. Reference-application SSO callbacks, real email-delivery verification, trusted-device persistence, and a fully staged pre-account signup record remain follow-up work.
 
 ## Web routing model
 
@@ -116,9 +118,9 @@ The root route resolves the session state:
 ```text
 No valid active session  → Hosted Auth Screen
 Incomplete account       → /onboarding
-Complete account         → /<username> Account Shell
+Complete account         → /<username> compatibility route or consuming-app return target
 ```
 
-The Hosted Auth Screen is public and appears only when no active session exists, except when the user deliberately opens the add-account flow. The Account Shell contains the account switcher, account home, security sessions, and account logout. Existing active sessions are honored when the auth domain is opened in a new tab.
+The Hosted Auth Screen is a thin auth surface. Consuming applications such as `accounts/` start auth with a validated `returnTo` URL; auth completes login, signup, verification, or onboarding and returns the user to that application. The auth root also resolves existing sessions for direct visits, while the product-facing account shell lives in the consuming application. Existing active sessions are honored when the auth domain is opened in a new tab unless the caller supplies explicit add-account intent.
 
 The pilot requires an email OTP for every existing-account login. Signup uses password creation, email verification, and onboarding. Logging out revokes only the selected account’s Better Auth multi-session device session through `/multi-session/revoke`; it does not call the global `/sign-out` endpoint, so other account identities remain available. Cross-tab account changes, logout, and session revocation refresh visible tabs immediately and refresh hidden tabs when they become active.

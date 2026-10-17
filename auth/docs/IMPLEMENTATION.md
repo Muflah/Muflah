@@ -75,7 +75,7 @@ The first vertical slice should be implemented in this order:
 1. Validate the existing environment contract and establish the database connection.
 2. Create one Better Auth server instance and its database schema.
 3. Add the identifier-first email entry and verification journey.
-4. Add the thin account screen, account switching, and active-session management.
+4. Add the thin auth screen and validate the first consuming account UI (`accounts/`) through the redirect handoff.
 5. Add the Resend connector and code-generated sender aliases.
 6. Add application registration and the SSO redirect/callback boundary without assuming a reference application yet.
 7. Add contract and end-to-end tests for the stable, unversioned flows.
@@ -271,6 +271,8 @@ Recommended hosted routes or screens:
 /logout                   sign-out result
 /error                    safe error and expired-flow states
 ```
+
+The auth UI is a protocol companion, not the product account dashboard. Consuming applications start it with a trusted `returnTo` URL. The auth screen completes login, signup, verification, password recovery, or onboarding and then returns to that URL. The accounts app owns the account overview, profile/settings presentation, account switcher presentation, logout control, and active-session UI while auth remains authoritative for all state changes.
 
 The exact route names may change, but the responsibilities should remain separate and understandable.
 
@@ -485,7 +487,7 @@ The account switcher should be an application-facing experience backed by auth s
 7. Add the resulting session to the switcher.
 8. Mark the selected account as active.
 
-The hosted pilot provides the profile-card dropdown, add-account modal, persisted Better Auth multi-session identities, and selected-session activation. The switcher only presents an account as available when its multi-session entry is present and valid. Account-level logout uses Better Auth `/multi-session/revoke` with the selected session token; the global `/sign-out` endpoint is reserved for global sign-out semantics and must not be used by the switcher.
+The `accounts/` consuming app provides the profile-card dropdown and add-account entry point while Better Auth provides the persisted multi-session identities and selected-session activation. The consuming UI only presents an account as available when its multi-session entry is present and valid. Account-level logout uses Better Auth `/multi-session/revoke` with the selected session token; the global `/sign-out` endpoint is reserved for global sign-out semantics and must not be used by the switcher.
 
 The account record retained by the switcher must include its onboarding state. After a modal signup creates an account, abandoning setup marks the entry as `Onboarding incomplete`. Selecting that entry activates its session and routes to `/onboarding`; completing the username changes the entry to ready and permits the normal `/<username>` app-shell route.
 
@@ -589,8 +591,8 @@ Before production use, test:
 
 ## Pilot web routing implementation
 
-The root resolver checks the current session and then Better Auth multi-session cookies. It routes complete accounts to `/<username>`, incomplete accounts to `/onboarding`, and signed-out users to the Hosted Auth Screen. If the current session is absent but a valid multi-session cookie remains, it activates the next available session. Explicit add-account intent remains inside the Account Shell modal.
+The root resolver checks the current session and then Better Auth multi-session cookies. It routes complete accounts to `/<username>`, incomplete accounts to `/onboarding`, and signed-out users to the Hosted Auth Screen. If the current session is absent but a valid multi-session cookie remains, it activates the next available session. A consuming application can pass `returnTo`; the value is accepted only when its origin is in `AUTH_TRUSTED_ORIGINS`. The accounts app uses this handoff for initial login and for its full-page add-account flow with `intent=login`.
 
-The Account Shell validates sessions server-side. Its switcher consumes the multi-session list, its security page filters sessions to the selected user, and its logout action sends the current session token to Better Auth’s `/multi-session/revoke` endpoint. This revokes only the selected account’s device session and lets Better Auth activate another remaining account session. The global `/sign-out` endpoint is intentionally not used for account switching because it revokes all multi-session cookies on the client.
+The product account shell validates its session through the auth HTTP boundary. The accounts app consumes the multi-session list, activates selected sessions, renders active-session management, and sends the current session token to Better Auth’s `/multi-session/revoke` endpoint for account-specific logout. This revokes only the selected account’s device session and lets Better Auth activate another remaining account session. The global `/sign-out` endpoint is intentionally not used for account switching because it revokes all multi-session cookies on the client.
 
 `src/components/auth/session-sync.tsx` provides cross-tab freshness using `BroadcastChannel` and a `storage` fallback. It publishes only event type, ID, and timestamp. Visible tabs reload immediately; hidden tabs reload on focus. Existing-account login uses a sign-in email OTP on every login in the current pilot policy.

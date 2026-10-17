@@ -55,11 +55,15 @@ accounts/
 │   ├── page.tsx
 │   ├── profile/page.tsx
 │   ├── security/page.tsx
-│   │   └── security/sessions/page.tsx
+│   ├── security/sessions/page.tsx
 │   └── settings/page.tsx
 ├── components/
 │   ├── account-shell/
-│   └── account-switcher/
+│   ├── account-switcher/
+│   ├── account-actions.tsx
+│   ├── session-list.tsx
+│   ├── session-sync.tsx
+│   └── sessions-page.tsx
 ├── lib/
 │   ├── auth-client.ts
 │   └── auth-types.ts
@@ -77,7 +81,7 @@ When an unauthenticated user opens an accounts route, the accounts app sends the
 
 Auth validates return origins against `AUTH_TRUSTED_ORIGINS`. The accounts origin must be included there.
 
-## Account switcher
+## Account and session behavior
 
 The accounts app will render its own account switcher UI, backed by auth-owned multi-session endpoints:
 
@@ -87,6 +91,16 @@ The accounts app will render its own account switcher UI, backed by auth-owned m
 - Add another account through the auth authentication flow.
 
 The switcher must preserve the auth app's semantics: incomplete accounts route to onboarding, account logout must not globally sign out unrelated accounts, and session changes should refresh other open tabs.
+
+Unauthenticated routes use this handoff:
+
+```text
+accounts route -> AUTH_URL?returnTo=<validated accounts URL>
+             -> auth login/signup/verification/onboarding
+             -> original accounts route
+```
+
+The add-account action also sends `intent=login` so auth presents the login flow even when another account is already active.
 
 ## Auth app reference
 

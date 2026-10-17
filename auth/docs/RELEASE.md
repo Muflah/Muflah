@@ -158,9 +158,9 @@ The V1 implementation should additionally define names and ownership for applica
 The pilot web experience is accepted only when:
 
 - The root route shows the Hosted Auth Screen only when no valid active session exists.
-- A valid complete account opens the Account Shell at `/<username>`.
+- A valid complete account can return to the requesting consuming application; the auth-domain `/<username>` route remains a compatibility route for direct visits.
 - An incomplete account opens `/onboarding` and cannot access the product shell.
-- The Account Shell account switcher opens login/signup inside a modal.
+- Consuming applications can open login/signup through the thin auth UI using a validated return URL.
 - Existing-account login requires email OTP on every login.
 - Available accounts can be selected through Better Auth multi-session state.
 - Security sessions are scoped to the selected account.

@@ -117,7 +117,7 @@ The hosted UI should be:
 - Independent of any consuming product's navigation, dashboard, or design system.
 - Safe to use during SSO redirects and account-selection flows.
 
-Most product experiences use the HTTP/JSON APIs or an application SDK. The hosted UI exists for direct visits to the auth domain, browser redirects from applications, account recovery, OTP entry, and security-management actions.
+Most product experiences use the HTTP/JSON APIs or an application SDK. The hosted UI exists for direct visits to the auth domain, browser redirects from applications, account recovery, OTP entry, and onboarding. Product account dashboards and account-management shells belong to consuming applications such as `accounts/`.
 
 The service should allow web and mobile applications to use the same identity while keeping each application free to define its own resources, roles, permissions, and business rules.
 
@@ -244,11 +244,11 @@ The account switcher must support two entry points:
 - Switch to an account that is already available to the user.
 - Add an existing account or create a new account using the same identifier-first authentication flow as the main sign-in experience.
 
-For the hosted pilot UI, the profile card is the switcher trigger. It opens a dropdown containing the active identity and available identities, plus an “Add account” action. “Add account” opens a modal with separate choices for logging in to an existing account or creating a new one.
+For a consuming account UI such as `accounts/`, the profile card is the switcher trigger. It opens a dropdown containing the active identity and available identities, plus an “Add account” action. “Add account” starts a full-page auth flow with an explicit login intent and a validated return target.
 
 An account added through the switcher retains its onboarding state. If signup/password creation succeeds but onboarding is abandoned, the switcher may show that identity with an `Onboarding incomplete` state. Selecting it routes to `/onboarding`; the identity must not receive product access until onboarding is complete.
 
-Adding an account must create or select a separately authenticated session. It must not silently merge accounts, link identities, or grant access to an application account without the application's membership check.
+Adding an account must create or select a separately authenticated session. It must not silently merge accounts, link identities, or grant access to an application account without the application's membership check. The auth service owns the session transition; the consuming UI owns only the presentation and navigation.
 
 ## Identifier-first authentication
 
@@ -353,7 +353,7 @@ V1 requires managed secrets, ownership, purpose, access controls, basic rotation
 
 ## Hosted web routing and tab coordination
 
-The hosted web app has two primary surfaces: the public **Hosted Auth Screen** and the authenticated **Account Shell** at `/<username>`. The root route resolves the server-validated session state: no valid session shows auth, an incomplete account shows `/onboarding`, and a complete account shows its canonical username route. The add-account flow is an intentional exception and opens inside a modal in the Account Shell.
+The hosted web app has a primary **Hosted Auth Screen** plus onboarding and compatibility security routes. The root route resolves the server-validated session state: no valid session shows auth, an incomplete account shows `/onboarding`, and a complete account may show its canonical username route for direct auth-domain visits. Consuming applications such as `accounts/` provide the product-facing account shell. They start auth with a validated `returnTo` URL; add-account flows use explicit login intent so an existing active session does not short-circuit the flow.
 
 The resolver checks the current session and valid Better Auth multi-session cookies. If the current session is unavailable but another account remains active, it activates the next valid session. Session-check failures show retry rather than falsely treating the user as signed out. Protected account routes revalidate server-side.
 

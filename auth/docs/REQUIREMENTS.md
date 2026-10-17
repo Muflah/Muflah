@@ -144,7 +144,7 @@ Deferred capabilities must not compromise the V1 interfaces or require product-s
 
 - The auth service UI must remain a thin hosted layer, not a product dashboard.
 - Product navigation, product data, product feeds, and product-specific settings do not belong in the auth UI.
-- The hosted UI must support direct auth visits, SSO redirects, account selection, OTP entry, recovery, logout, and security-session management.
+- The hosted UI must support direct auth visits, consuming-application redirects, OTP entry, recovery, and onboarding. Product account selection, logout, and security-session management belong to the consuming application UI while auth remains authoritative for the underlying state.
 - The UI should work with minimal JavaScript and degrade gracefully when practical.
 - The UI must be responsive in a desktop browser and a mobile system browser.
 - Branding should be configurable without embedding a consuming application's visual design system.
@@ -345,11 +345,11 @@ The first release is not complete until a user can:
 
 ### Pilot web routing policy
 
-- The root route must resolve to the Hosted Auth Screen, onboarding, or Account Shell based on validated active-session state.
+- The root route must resolve to the Hosted Auth Screen, onboarding, or a validated consuming-application return target based on active-session state.
 - No valid active session shows the Hosted Auth Screen.
-- A complete active account opens its `/<username>` Account Shell, including in a new tab.
+- A complete active account returns to the requesting consuming application; direct auth-domain visits may use the compatibility `/<username>` route.
 - An incomplete active account opens `/onboarding` and cannot receive product access.
-- Account Shell navigation must not unnecessarily send a valid user to the public auth screen.
+- Consuming-application navigation must not unnecessarily send a valid user to the public auth screen.
 - Loading, invalid-session, and session-check failure states must remain distinct.
 - A network failure must not be treated as a confirmed logout.
 - Account switching, logout, and session revocation must synchronize other tabs.

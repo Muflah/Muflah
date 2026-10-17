@@ -48,7 +48,7 @@ export default function OnboardingPage() {
   return (
     <div className="auth-shell">
       <header className="auth-header">
-        <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+        <a className="brand" href="/" aria-label="Muflah home">m</a>
         <span className="auth-label">Account setup</span>
       </header>
       <main className="auth-main">

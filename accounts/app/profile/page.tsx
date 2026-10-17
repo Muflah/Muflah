@@ -1,5 +1,7 @@
 import AccountShell from "@/components/account-shell/account-shell";
 
 export default function ProfilePage() {
-  return <AccountShell authUrl={process.env.AUTH_URL ?? "http://localhost:3000"} activePage="Profile" />;
+  const authUrl = process.env.AUTH_URL;
+  if (!authUrl) throw new Error("AUTH_URL must be configured for the accounts app");
+  return <AccountShell authUrl={authUrl} activePage="Profile" />;
 }

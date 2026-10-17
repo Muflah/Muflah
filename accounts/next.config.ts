@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
-const authUrl = process.env.AUTH_URL ?? "http://localhost:3000";
+const authUrl = process.env.AUTH_URL;
+
+if (!authUrl) throw new Error("AUTH_URL must be configured for the accounts app");
 
 const nextConfig: NextConfig = {
   async rewrites() {

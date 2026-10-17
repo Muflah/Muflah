@@ -71,16 +71,10 @@ The root route resolves the current state:
 ```text
 No valid active session  -> Hosted Auth Screen
 Incomplete account       -> /onboarding
-Complete account         -> /<username> Account Shell
+Complete account         -> /<username> compatibility account route or consuming-app return target
 ```
 
-The Hosted Auth Screen is public only when no valid active session exists, except when the user explicitly opens the add-account flow. The Account Shell contains:
-
-- Account home.
-- Account switcher.
-- Add-account modal.
-- Security/session listing.
-- Account-level logout.
+The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, account switcher presentation, active-session UI, and account-level logout. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
 
 Existing active sessions are honored when the auth site is opened in a new tab. Cross-tab events use `BroadcastChannel` with a `storage` fallback. Events contain only event type, ID, and timestamp; they never contain session tokens.
 
@@ -122,7 +116,7 @@ The security page filters the visible session list by the selected user ID. Indi
 | `app/src/lib/auth.ts` | Single Better Auth configuration, plugins, trusted origins, and cross-subdomain cookie setup. |
 | `app/src/lib/config.ts` | Environment loading, strict integer parsing, trusted-origin parsing, and runtime defaults. |
 | `app/src/app/api/auth/[...all]/route.ts` | Forwards Better Auth endpoints through Next.js. |
-| `app/src/app/page.tsx` | Hosted auth screen and active-session/root resolver. |
+| `app/src/app/page.tsx` | Thin hosted auth screen, return-target handoff, and active-session/root resolver. |
 | `app/src/app/[username]/page.tsx` | Complete-account home shell. |
 | `app/src/app/security/sessions/page.tsx` | Selected-account security/session view. |
 | `app/src/components/auth/account-switcher.tsx` | Account list, switching, and add-account modal. |

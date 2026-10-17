@@ -5,6 +5,10 @@ import SessionSync from "@/components/session-sync";
 export const metadata: Metadata = {
   title: "Account settings | Muflah",
   description: "Manage your Muflah account.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

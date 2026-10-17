@@ -23,7 +23,7 @@ export default async function SessionsPage() {
   return (
     <div className="account-shell">
       <aside className="account-sidebar">
-        <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+        <a className="brand" href="/" aria-label="Muflah home">m</a>
         <AccountSwitcher name={current.user.name} username={current.user.username} email={current.user.email} availableAccounts={availableAccounts} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>

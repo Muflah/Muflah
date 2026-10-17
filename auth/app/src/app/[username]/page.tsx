@@ -23,7 +23,7 @@ export default async function AccountHome({ params }: { params: Promise<{ userna
   return (
     <div className="account-shell">
       <aside className="account-sidebar">
-        <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
+        <a className="brand" href="/" aria-label="Muflah home">m</a>
         <AccountSwitcher name={session.user.name} username={session.user.username} email={session.user.email} availableAccounts={availableAccounts} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(session.user.username)}`} aria-current="page">Account home</a>

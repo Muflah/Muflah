@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { activateSession, type SessionAccount } from "@/lib/auth-client";
+import { publishSessionEvent } from "@/components/session-sync";
 
 export default function AccountSwitcher({ authUrl, currentEmail, accounts }: { authUrl: string; currentEmail: string; accounts: SessionAccount[] }) {
   const [open, setOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function AccountSwitcher({ authUrl, currentEmail, accounts }: { a
     setMessage("");
     try {
       await activateSession(account.sessionToken);
+      publishSessionEvent("account-switched");
       window.location.reload();
     } catch {
       setMessage("That account session is no longer available.");

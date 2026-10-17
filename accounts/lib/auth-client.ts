@@ -11,6 +11,9 @@ export type AuthSession = {
   token?: string;
   user?: AuthUser;
   expiresAt?: string;
+  updatedAt?: string;
+  ipAddress?: string | null;
+  userAgent?: string | null;
 };
 
 export type SessionAccount = {
@@ -77,7 +80,11 @@ export function normalizeAccounts(value: unknown, currentUser?: AuthUser): Sessi
       email,
       username: typeof user.username === "string" ? user.username : "",
       onboardingComplete: user.onboardingStatus === "complete" || user.onboardingStatus === "completed" || user.onboardingStatus === undefined,
-      sessionToken: typeof entry.sessionToken === "string" ? entry.sessionToken : undefined,
+      sessionToken: typeof entry.sessionToken === "string"
+        ? entry.sessionToken
+        : entry.session && typeof entry.session === "object" && typeof (entry.session as Record<string, unknown>).token === "string"
+          ? (entry.session as Record<string, unknown>).token as string
+          : undefined,
     }];
   });
 

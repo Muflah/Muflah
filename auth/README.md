@@ -25,6 +25,7 @@ The planned first release includes:
 - Email/password authentication
 - Email verification and password recovery
 - OTP verification with expiry, attempt, resend, and rate limits
+- OTP sign-in on every login attempt in the current pilot policy
 - Trusted-device handling for reduced repeated OTP prompts
 - Multiple active sessions, including multiple accounts on one client
 - Account switching, adding an existing account, and creating a new account

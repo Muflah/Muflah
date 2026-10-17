@@ -224,6 +224,15 @@ Each entry contains:
 - Files: `app/src/app/page.tsx` and `AGENTLOG.md`.
 - Verification Status: Typecheck, production build, and diff validation are required after this change.
 
+# 2026-10-17T08:00:00+05:00 — Repair Hosted Logout Action
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the account-shell logout button not ending the current session.
+- Changes Made: Added explicit same-origin credentials, JSON request body, no-store behavior, response validation, and visible failure feedback to the logout action. The button now navigates away only after Better Auth confirms sign-out.
+- Files: `app/src/components/auth/account-actions.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
+
 # 2026-10-17T07:20:00+05:00 — Embed Add-Account Authentication in the Modal
 
 - Agent: Codex
@@ -241,4 +250,13 @@ Each entry contains:
 - Changes Made: Documented that the switcher must retain onboarding state, visibly mark incomplete accounts, and route a selected incomplete account to `/onboarding` instead of granting product access.
 - Files: `docs/REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
 - Verification Status: Documentation-only change; no runtime behavior was changed in this step.
+
+# 2026-10-17T07:45:00+05:00 — Enable OTP Login and Wire Available Account Sessions
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Require OTP on every login and make previous accounts appear and switch correctly.
+- Changes Made: Existing-account login now sends a `sign-in` OTP on every attempt and authenticates through Better Auth’s `sign-in/email-otp` endpoint. The account switcher now consumes Better Auth’s multi-session device list, displays available identities, activates a selected session, and routes an incomplete selected identity to `/onboarding`.
+- Files: `app/src/app/page.tsx`, `app/src/app/[username]/page.tsx`, `app/src/app/security/sessions/page.tsx`, `app/src/components/auth/account-switcher.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation are required after this change.
 

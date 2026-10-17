@@ -11,6 +11,7 @@ The planned integrations are:
 - Email verification and password recovery.
 - Username support.
 - Multi-session support.
+- Email OTP sign-in on every login attempt in the current pilot policy.
 - Two-factor or OTP support.
 - Trusted-device support.
 - Standard session listing and revocation.

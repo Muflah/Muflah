@@ -1,20 +1,44 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-type AccountSwitcherProps = { name: string; username: string; email: string };
+type StoredAccount = { name: string; username: string; email: string; onboardingComplete: boolean; sessionToken?: string };
+type AccountSwitcherProps = { name: string; username: string; email: string; onboardingComplete?: boolean; availableAccounts?: StoredAccount[] };
 
-export default function AccountSwitcher({ name, username, email }: AccountSwitcherProps) {
+export default function AccountSwitcher({ name, username, email, onboardingComplete = true, availableAccounts = [] }: AccountSwitcherProps) {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [step, setStep] = useState<"identifier" | "credentials" | "verify">("identifier");
   const [flow, setFlow] = useState<"sign-in" | "sign-up">("sign-in");
+  const [verificationMode, setVerificationMode] = useState<"email-verification" | "sign-in">("email-verification");
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [accounts, setAccounts] = useState<StoredAccount[]>([]);
+
+  useEffect(() => {
+    const current: StoredAccount = { name, username, email, onboardingComplete };
+    const merged = [current, ...availableAccounts.filter((account) => account.email.toLowerCase() !== email.toLowerCase())];
+    setAccounts(merged);
+  }, [availableAccounts, email, name, onboardingComplete, username]);
+
+  function rememberAccount(account: Partial<StoredAccount> & { email: string }) {
+    const next: StoredAccount = { name: account.name ?? account.email, username: account.username ?? "", email: account.email, onboardingComplete: account.onboardingComplete ?? false };
+    setAccounts((current) => {
+      return [next, ...current.filter((item) => item.email.toLowerCase() !== next.email.toLowerCase())];
+    });
+  }
+
+  async function selectAccount(account: StoredAccount) {
+    if (account.email.toLowerCase() === email.toLowerCase() || !account.sessionToken) return;
+    setOpen(false);
+    const response = await fetch("/api/auth/multi-session/set-active", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionToken: account.sessionToken }) });
+    if (!response.ok) { setMessage("That account session is no longer available."); return; }
+    window.location.assign(account.onboardingComplete && account.username ? `/${encodeURIComponent(account.username)}` : "/onboarding");
+  }
 
   function openModal() {
     setOpen(false);
@@ -31,8 +55,19 @@ export default function AccountSwitcher({ name, username, email }: AccountSwitch
       const response = await fetch("/api/identity/lookup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: emailValue }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error ?? "Unable to continue");
-      setFlow(result.exists ? "sign-in" : "sign-up");
-      setStep("credentials");
+      if (result.exists) {
+        const otpResponse = await fetch("/api/auth/email-otp/send-verification-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: emailValue, type: "sign-in" }) });
+        const otpResult = await otpResponse.json().catch(() => ({}));
+        if (!otpResponse.ok) throw new Error(otpResult.message ?? "Unable to send a sign-in code");
+        setFlow("sign-in");
+        setVerificationMode("sign-in");
+        setStep("verify");
+        setMessage("We sent a sign-in code to your email.");
+      } else {
+        setFlow("sign-up");
+        setVerificationMode("email-verification");
+        setStep("credentials");
+      }
     } catch (error) { setMessage(error instanceof Error ? error.message : "Unable to continue"); }
     finally { setBusy(false); }
   }
@@ -48,7 +83,7 @@ export default function AccountSwitcher({ name, username, email }: AccountSwitch
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.message ?? "Authentication failed");
       if (flow === "sign-up") { setStep("verify"); setMessage("We sent a verification code to your email."); }
-      else { setMessage("Account authenticated. Refreshing your account list…"); setModalOpen(false); window.location.reload(); }
+      else { rememberAccount(result.user ?? { email: emailValue }); setMessage("Account authenticated. Refreshing your account list…"); setModalOpen(false); window.location.reload(); }
     } catch (error) { setMessage(error instanceof Error ? error.message : "Authentication failed"); }
     finally { setBusy(false); }
   }
@@ -58,13 +93,21 @@ export default function AccountSwitcher({ name, username, email }: AccountSwitch
     setBusy(true);
     setMessage("");
     try {
-      const response = await fetch("/api/auth/email-otp/verify-email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: emailValue, otp }) });
+      const endpoint = verificationMode === "sign-in" ? "/api/auth/sign-in/email-otp" : "/api/auth/email-otp/verify-email";
+      const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: emailValue, otp }) });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || result.status === false) throw new Error(result.message ?? "That code is not valid");
-      setStep("credentials");
-      setFlow("sign-in");
-      setOtp("");
-      setMessage("Email verified. Sign in with your password to continue.");
+      if (verificationMode === "sign-in") {
+        rememberAccount(result.user ?? { email: emailValue });
+        setMessage("Account authenticated. Refreshing your account list…");
+        setModalOpen(false);
+        window.location.reload();
+      } else {
+        rememberAccount({ name: nameValue, email: emailValue, onboardingComplete: false });
+        setMessage("Email verified. Continue to onboarding.");
+        setModalOpen(false);
+        window.location.assign("/onboarding");
+      }
     } catch (error) { setMessage(error instanceof Error ? error.message : "That code is not valid"); }
     finally { setBusy(false); }
   }
@@ -80,11 +123,11 @@ export default function AccountSwitcher({ name, username, email }: AccountSwitch
         {open && (
           <div className="account-switcher-menu" role="menu">
             <p className="account-switcher-heading">Available accounts</p>
-            <div className="account-switcher-account" role="menuitem" aria-current="true">
-              <span className="profile-avatar profile-avatar-small" aria-hidden="true">{name.slice(0, 1).toUpperCase()}</span>
-              <span><strong>{name}</strong><small>@{username} · {email}</small></span>
-              <span className="account-switcher-current">Current</span>
-            </div>
+            {accounts.map((account) => <button className="account-switcher-account" role="menuitem" key={account.email} aria-current={account.email.toLowerCase() === email.toLowerCase() ? "true" : undefined} onClick={() => selectAccount(account)}>
+              <span className="profile-avatar profile-avatar-small" aria-hidden="true">{account.name.slice(0, 1).toUpperCase()}</span>
+              <span><strong>{account.name}</strong><small>{account.username ? `@${account.username} · ` : ""}{account.email}</small></span>
+              <span className="account-switcher-current">{account.email.toLowerCase() === email.toLowerCase() ? "Current" : account.onboardingComplete ? "Available" : "Finish setup"}</span>
+            </button>)}
             <button className="account-switcher-add" type="button" onClick={openModal}>＋ Add account</button>
           </div>
         )}

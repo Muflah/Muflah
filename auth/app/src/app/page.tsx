@@ -13,6 +13,7 @@ export default function HomePage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [name, setName] = useState("");
   const [otp, setOtp] = useState("");
+  const [verificationMode, setVerificationMode] = useState<"email-verification" | "sign-in">("email-verification");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
@@ -57,8 +58,19 @@ export default function HomePage() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error ?? "Unable to continue");
-      setFlow(result.exists ? "sign-in" : "sign-up");
-      setStep("credentials");
+      if (result.exists) {
+        const otpResponse = await fetch("/api/auth/email-otp/send-verification-otp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, type: "sign-in" }) });
+        const otpResult = await otpResponse.json().catch(() => ({}));
+        if (!otpResponse.ok) throw new Error(otpResult.message ?? "Unable to send a sign-in code");
+        setFlow("sign-in");
+        setVerificationMode("sign-in");
+        setStep("verify");
+        setMessage("We sent a sign-in code to your email.");
+      } else {
+        setFlow("sign-up");
+        setVerificationMode("email-verification");
+        setStep("credentials");
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to continue");
     } finally {
@@ -107,17 +119,22 @@ export default function HomePage() {
     setBusy(true);
     setMessage("");
     try {
-      const response = await fetch("/api/auth/email-otp/verify-email", {
+      const endpoint = verificationMode === "sign-in" ? "/api/auth/sign-in/email-otp" : "/api/auth/email-otp/verify-email";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || result.status === false) throw new Error(result.message ?? "That code is not valid");
-      setFlow("sign-in");
-      setStep("credentials");
-      setOtp("");
-      setMessage("Email verified. Sign in with your password to continue.");
+      if (verificationMode === "sign-in") {
+        const destination = result.user?.onboardingStatus === "complete" && result.user?.username ? `/${encodeURIComponent(result.user.username)}` : "/onboarding";
+        window.location.assign(destination);
+      } else {
+        setOtp("");
+        setMessage("Email verified. Continue to onboarding.");
+        window.location.assign("/onboarding");
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "That code is not valid");
     } finally {
@@ -132,7 +149,7 @@ export default function HomePage() {
       const response = await fetch("/api/auth/email-otp/send-verification-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, type: "email-verification" }),
+        body: JSON.stringify({ email, type: verificationMode }),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.message ?? "Unable to send a new code");

@@ -12,11 +12,18 @@ export default async function SessionsPage() {
   if (current.user.onboardingStatus !== "complete" || !current.user.username) redirect("/onboarding");
 
   const sessions = await auth.api.listDeviceSessions({ headers: requestHeaders });
+  const availableAccounts = sessions.map((item) => ({
+    name: item.user.name,
+    username: (item.user as typeof item.user & { username?: string | null }).username ?? "",
+    email: item.user.email,
+    onboardingComplete: (item.user as typeof item.user & { onboardingStatus?: string }).onboardingStatus === "complete",
+    sessionToken: item.session.token,
+  }));
   return (
     <div className="account-shell">
       <aside className="account-sidebar">
         <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
-        <AccountSwitcher name={current.user.name} username={current.user.username} email={current.user.email} />
+        <AccountSwitcher name={current.user.name} username={current.user.username} email={current.user.email} availableAccounts={availableAccounts} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>
           <a href="/security/sessions" aria-current="page">Sessions &amp; security</a>

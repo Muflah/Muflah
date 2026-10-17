@@ -63,7 +63,8 @@ a { color: inherit; }
 .account-switcher-chevron { color: var(--muted); font-size: 20px; line-height: 1; }
 .account-switcher-menu { position: absolute; z-index: 10; top: calc(100% + 10px); left: 0; width: min(340px, calc(100vw - 40px)); padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 18px 45px rgb(18 52 59 / 14%); }
 .account-switcher-heading { margin: 4px 8px 10px; color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
-.account-switcher-account { display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 9px; background: var(--canvas); }
+.account-switcher-account { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 8px; border: 0; border-radius: 9px; background: var(--canvas); color: var(--ink); cursor: pointer; text-align: left; }
+.account-switcher-account:hover { outline: 2px solid var(--teal); outline-offset: -2px; }
 .profile-avatar-small { width: 32px; height: 32px; border-radius: 9px; font-size: 15px; }
 .account-switcher-account > span:nth-child(2) { min-width: 0; display: grid; flex: 1; gap: 2px; }
 .account-switcher-account strong, .account-switcher-account small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -82,8 +83,10 @@ a { color: inherit; }
 .account-nav { display: grid; gap: 7px; margin-top: 48px; }
 .account-nav a { padding: 10px 12px; border-radius: 8px; color: var(--muted); font-family: var(--mono); font-size: 11px; text-decoration: none; }
 .account-nav a:hover, .account-nav a[aria-current="page"] { background: var(--surface); color: var(--ink); }
-.account-logout { width: calc(100% - 22px); min-height: 45px; margin-top: auto; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-family: var(--mono); font-size: 11px; text-align: left; }
+.account-logout-wrap { margin-top: auto; width: calc(100% - 22px); }
+.account-logout { width: 100%; min-height: 45px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-family: var(--mono); font-size: 11px; text-align: left; }
 .account-logout:hover { border-color: var(--muted); color: var(--ink); }
+.account-logout-error { display: block; margin-top: 8px; color: #b42318; font-size: 11px; line-height: 1.4; }
 .account-content { align-self: center; padding: 60px 0; }
 .account-content h1 { max-width: 640px; margin: 0 0 20px; color: var(--ink); font-family: var(--display); font-size: clamp(48px, 7vw, 86px); font-weight: 500; letter-spacing: -.075em; line-height: .98; }
 .account-lede { max-width: 540px; margin: 0; color: var(--muted); line-height: 1.75; }
@@ -109,7 +112,7 @@ a { color: inherit; }
   .account-sidebar { min-height: auto; padding: 20px 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .account-switcher { margin-top: 28px; }
   .account-nav { margin-top: 24px; }
-  .account-logout { width: 100%; margin-top: 22px; }
+  .account-logout-wrap { width: 100%; margin-top: 22px; }
   .account-content { padding: 48px 0; }
   .session-item { align-items: flex-start; flex-direction: column; }
 }

@@ -276,6 +276,8 @@ Current hosted routes and screens:
 
 The auth UI is a protocol companion, not the product account dashboard. Consuming applications start it with a trusted `returnTo` URL. The auth screen completes login, signup, verification, password recovery, or onboarding and then returns to that URL. The accounts app owns the account overview, profile/settings presentation, and active-session UI while Auth owns the reusable framework-neutral account switcher and remains authoritative for all state changes.
 
+The login screen includes a “Don’t have an account? Sign up” link. It preserves the validated `returnTo` value but does not alter the existing login steps.
+
 The root route remains compatible for direct visits and consuming-app handoffs. The current pilot does not implement passkeys, trusted-device suppression, risk-based OTP, TOTP, or backup codes.
 
 The hosted UI must:

@@ -75,6 +75,13 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - Deferred: Passkeys, trusted devices, risk-based OTP, TOTP, backup codes, and new session-management behavior.
 - Verification: Auth typecheck passes after the flow change.
 
+### 2026-10-18T04:09:36+05:00 — Add signup navigation to login
+
+- Status: Added a signup link to the existing login flow without changing its authentication steps.
+- UX: The login screen now offers “Don’t have an account? Sign up”.
+- Continuation: The link preserves the validated `returnTo` destination.
+- Verification: Auth typecheck passes.
+
 ## Unversioned rolling-release policy
 
 - All normal API and browser URLs are unversioned.
@@ -173,6 +180,7 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - The UI must be responsive in a desktop browser and a mobile system browser.
 - Branding should be configurable without embedding a consuming application's visual design system.
 - The initial email screen should have one clear action, such as “Continue.”
+- The login screen should provide a clear signup path, such as “Don’t have an account? Sign up”, while preserving the validated continuation target.
 - The UI should explain the next step without exposing internal account-state terminology.
 - Existing-account and new-account paths should feel like one continuous journey.
 - Error messages should help the user recover without exposing account existence, secrets, or internal details.

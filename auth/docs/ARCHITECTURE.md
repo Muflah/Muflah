@@ -262,6 +262,8 @@ Email address
 
 The same flow is used from the main sign-in screen, the account switcher, web clients, and mobile clients. The UI may differ by platform, but the underlying API states and security rules remain consistent. Trusted devices and adaptive risk checks are intentionally deferred in the current pilot.
 
+The hosted login screen provides a direct signup link while preserving the application continuation target.
+
 ## Cloneability
 
 The repository must be product-neutral. Domains, branding, email providers, application registrations, redirect URIs, token issuers, and security policy values must be configuration or integration points rather than hard-coded implementation details.

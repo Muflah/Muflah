@@ -35,7 +35,7 @@ export default function HomePage() {
       setFlow(requestedFlow ?? (intent === "signup" ? "sign-up" : "sign-in"));
       if (emailFromStart) {
         setEmail(emailFromStart);
-        setStep((requestedFlow ?? intent) === "signup" ? "verify" : "credentials");
+        setStep(requestedFlow === "sign-up" || intent === "signup" ? "verify" : "credentials");
       }
       setCheckingSession(false);
       return;

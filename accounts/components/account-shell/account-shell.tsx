@@ -52,7 +52,7 @@ export default function AccountShell({ authUrl, activePage = "Overview" }: { aut
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <Link className="brand" href="/">muflah<span>•</span></Link>
+        <Link className="brand" href="/" aria-label="Muflah home">m</Link>
         <div className="sidebar-caption">Account center</div>
         <nav aria-label="Account navigation">
           {navigation.map((item) => <Link className={item.label === activePage ? "nav-link active" : "nav-link"} href={item.href} key={item.href}>{item.label}</Link>)}

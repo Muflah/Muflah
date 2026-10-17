@@ -129,6 +129,8 @@ Deferred capabilities must not compromise the V1 interfaces or require product-s
 - Switching must not grant access to an account for which the application has not confirmed membership.
 - Signing out of one account must not silently sign out unrelated accounts unless the user chooses “sign out everywhere.”
 - The switcher must offer “Add account” or “Create account.”
+- The switcher should open from the profile card as a dropdown showing the active account and available accounts.
+- “Add account” should open a modal with explicit choices to log in to an existing account or create a new account.
 - “Add account” must start the identifier-first email flow.
 - A new account must use the normal signup, email verification, username, password, OTP, and trusted-device rules.
 - Adding an account must not merge two identities unless a separate, explicit account-linking flow is designed and confirmed.

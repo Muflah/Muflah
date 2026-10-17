@@ -242,6 +242,8 @@ The account switcher must support two entry points:
 - Switch to an account that is already available to the user.
 - Add an existing account or create a new account using the same identifier-first authentication flow as the main sign-in experience.
 
+For the hosted pilot UI, the profile card is the switcher trigger. It opens a dropdown containing the active identity and available identities, plus an “Add account” action. “Add account” opens a modal with separate choices for logging in to an existing account or creating a new one.
+
 Adding an account must create or select a separately authenticated session. It must not silently merge accounts, link identities, or grant access to an application account without the application's membership check.
 
 ## Identifier-first authentication

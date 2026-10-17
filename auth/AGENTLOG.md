@@ -188,3 +188,12 @@ Each entry contains:
 - Files: `app/src/app/page.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
 
+# 2026-10-17T06:40:00+05:00 — Add Account Switcher Dropdown and Modal UX
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add an account switcher opened from the profile card, with account-add actions presented in a modal.
+- Changes Made: Added a reusable client-side account switcher to the account home and sessions pages. The profile card now opens a dropdown showing the active account, and “Add account” opens a modal with separate login and create-account choices that return to the existing email-first flow. Added responsive, light/dark styling and documented the UX contract.
+- Files: `app/src/components/auth/account-switcher.tsx`, `app/src/app/[username]/page.tsx`, `app/src/app/security/sessions/page.tsx`, `app/src/app/globals.css`, `docs/REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Persisted multi-identity session activation remains separate follow-up work; the pilot UI does not falsely present unavailable identities as switchable.
+

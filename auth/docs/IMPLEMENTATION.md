@@ -475,6 +475,8 @@ The account switcher should be an application-facing experience backed by auth s
 7. Add the resulting session to the switcher.
 8. Mark the selected account as active.
 
+The hosted pilot now provides the profile-card dropdown and add-account modal. The current account is displayed and the modal routes into the existing identifier-first auth screen. Persisting multiple identity sessions in the browser and activating a selected session remains the next integration step; the UI must not claim an account is switchable until that session is actually available and valid.
+
 The service must not automatically merge two users merely because the same person controls both email addresses. Account linking requires a separate explicit design with reauthentication and clear user confirmation.
 
 The active account context should be sent to the consuming application only after that application has verified the user's membership. Product roles and permissions must not be inferred solely from the auth service session.

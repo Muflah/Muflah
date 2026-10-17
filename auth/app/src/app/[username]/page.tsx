@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import AccountActions from "@/components/auth/account-actions";
+import AccountSwitcher from "@/components/auth/account-switcher";
 
 export default async function AccountHome({ params }: { params: Promise<{ username: string }> }) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -15,10 +16,7 @@ export default async function AccountHome({ params }: { params: Promise<{ userna
     <div className="account-shell">
       <aside className="account-sidebar">
         <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
-        <div className="account-profile">
-          <span className="profile-avatar" aria-hidden="true">{session.user.name.slice(0, 1).toUpperCase()}</span>
-          <div><strong>{session.user.name}</strong><span>@{session.user.username}</span><small>{session.user.email}</small></div>
-        </div>
+        <AccountSwitcher name={session.user.name} username={session.user.username} email={session.user.email} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(session.user.username)}`} aria-current="page">Account home</a>
           <a href="/security/sessions">Sessions &amp; security</a>

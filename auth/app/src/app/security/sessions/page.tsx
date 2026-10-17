@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import AccountActions from "@/components/auth/account-actions";
+import AccountSwitcher from "@/components/auth/account-switcher";
 import SessionList from "@/components/auth/session-list";
 
 export default async function SessionsPage() {
@@ -15,10 +16,7 @@ export default async function SessionsPage() {
     <div className="account-shell">
       <aside className="account-sidebar">
         <a className="brand" href="https://muflah.com/" aria-label="Muflah home">m</a>
-        <div className="account-profile">
-          <span className="profile-avatar" aria-hidden="true">{current.user.name.slice(0, 1).toUpperCase()}</span>
-          <div><strong>{current.user.name}</strong><span>@{current.user.username}</span><small>{current.user.email}</small></div>
-        </div>
+        <AccountSwitcher name={current.user.name} username={current.user.username} email={current.user.email} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>
           <a href="/security/sessions" aria-current="page">Sessions &amp; security</a>

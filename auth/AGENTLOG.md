@@ -197,3 +197,12 @@ Each entry contains:
 - Files: `app/src/components/auth/account-switcher.tsx`, `app/src/app/[username]/page.tsx`, `app/src/app/security/sessions/page.tsx`, `app/src/app/globals.css`, `docs/REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Persisted multi-identity session activation remains separate follow-up work; the pilot UI does not falsely present unavailable identities as switchable.
 
+# 2026-10-17T06:50:00+05:00 — Redirect Existing Sessions to the App Shell
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Ensure an already signed-in user does not see the login screen again.
+- Changes Made: Added a session check when the root auth page loads. Completed users are redirected to their canonical `/<username>` account shell, while incomplete users are redirected to `/onboarding`; only signed-out users continue to the identifier-first login screen.
+- Files: `app/src/app/page.tsx` and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation remain required after this change.
+

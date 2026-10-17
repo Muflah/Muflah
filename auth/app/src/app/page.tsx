@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type Flow = "sign-in" | "sign-up";
 type Step = "identifier" | "credentials" | "verify";
@@ -15,6 +15,30 @@ export default function HomePage() {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/auth/get-session", { credentials: "include" })
+      .then((response) => response.json())
+      .then((result) => {
+        if (!active) return;
+        const user = result?.user;
+        if (user?.onboardingStatus === "complete" && user.username) {
+          window.location.replace(`/${encodeURIComponent(user.username)}`);
+          return;
+        }
+        if (user) {
+          window.location.replace("/onboarding");
+          return;
+        }
+        setCheckingSession(false);
+      })
+      .catch(() => {
+        if (active) setCheckingSession(false);
+      });
+    return () => { active = false; };
+  }, []);
 
   async function continueWithEmail(event: FormEvent) {
     event.preventDefault();
@@ -118,6 +142,10 @@ export default function HomePage() {
   const isError = /failed|unable|not valid|error/i.test(message);
   const title = step === "verify" ? "Check your email." : flow ? (flow === "sign-in" ? "Welcome back." : "Create your account.") : "Continue to your account.";
   const intro = step === "verify" ? `Enter the code we sent to ${email}.` : flow ? `Continue with ${email}.` : "Enter your email and we’ll take you to the right place.";
+
+  if (checkingSession) {
+    return <div className="auth-shell"><main className="auth-main"><p className="micro">Checking your session…</p></main></div>;
+  }
 
   return (
     <div className="auth-shell">

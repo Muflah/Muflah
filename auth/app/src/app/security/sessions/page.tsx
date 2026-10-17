@@ -11,8 +11,9 @@ export default async function SessionsPage() {
   if (!current) redirect("/");
   if (current.user.onboardingStatus !== "complete" || !current.user.username) redirect("/onboarding");
 
-  const sessions = await auth.api.listDeviceSessions({ headers: requestHeaders });
-  const availableAccounts = sessions.map((item) => ({
+  const allSessions = await auth.api.listDeviceSessions({ headers: requestHeaders });
+  const sessions = allSessions.filter((item) => item.user.id === current.user.id);
+  const availableAccounts = allSessions.map((item) => ({
     name: item.user.name,
     username: (item.user as typeof item.user & { username?: string | null }).username ?? "",
     email: item.user.email,

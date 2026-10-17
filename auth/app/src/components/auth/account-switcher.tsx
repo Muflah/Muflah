@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { publishSessionEvent } from "./session-sync";
 
 type StoredAccount = { name: string; username: string; email: string; onboardingComplete: boolean; sessionToken?: string };
 type AccountSwitcherProps = { name: string; username: string; email: string; onboardingComplete?: boolean; availableAccounts?: StoredAccount[] };
@@ -37,6 +38,7 @@ export default function AccountSwitcher({ name, username, email, onboardingCompl
     setOpen(false);
     const response = await fetch("/api/auth/multi-session/set-active", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionToken: account.sessionToken }) });
     if (!response.ok) { setMessage("That account session is no longer available."); return; }
+    publishSessionEvent("account-switched");
     window.location.assign(account.onboardingComplete && account.username ? `/${encodeURIComponent(account.username)}` : "/onboarding");
   }
 

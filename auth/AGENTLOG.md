@@ -188,6 +188,42 @@ Each entry contains:
 - Files: `app/src/app/page.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
 - Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
 
+# 2026-10-17T08:45:00+05:00 — Scope Logout to the Selected Account
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Ensure logout ends the selected account without ending other signed-in accounts.
+- Changes Made: The account-shell logout action now first calls Better Auth’s revoke-sessions endpoint for the currently selected identity, then clears the active session cookie through sign-out. Other account identities remain available through their separate multi-session cookies.
+- Files: `app/src/components/auth/account-actions.tsx` and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation are required after this change.
+
+# 2026-10-17T09:00:00+05:00 — Add Cross-Tab Session Synchronization
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Refresh other browser tabs when an account is switched, logged out, or its session changes.
+- Changes Made: Added a global `BroadcastChannel` listener with a `storage` event fallback. Visible tabs reload immediately after session events; hidden tabs mark themselves stale and reload when focused. Account switching and account logout now publish event type and timestamp only, never session tokens.
+- Files: `app/src/components/auth/session-sync.tsx`, `app/src/app/layout.tsx`, `app/src/components/auth/account-switcher.tsx`, `app/src/components/auth/account-actions.tsx`, and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation are required after this change.
+
+# 2026-10-17T08:15:00+05:00 — Scope Security Sessions to the Selected Account
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Make the sessions/security page show active sessions for the account currently selected in the switcher.
+- Changes Made: Kept the full multi-account session list for the switcher, but filtered the security-session list by the selected user ID. Each account now sees only its own active sessions after switching.
+- Files: `app/src/app/security/sessions/page.tsx` and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation are required after this change.
+
+# 2026-10-17T08:30:00+05:00 — Implement Web Session Routing Boundaries
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Make the root route resolve to the Hosted Auth Screen or Account Shell based on active sessions, without treating the auth screen as an in-shell redirect.
+- Changes Made: The root resolver now checks the current session, falls back to valid multi-session cookies, activates the next available session when needed, routes incomplete accounts to onboarding, and shows a retry state on session-check failure. The onboarding route now verifies that the user is authenticated and incomplete before displaying setup.
+- Files: `app/src/app/page.tsx`, `app/src/app/onboarding/page.tsx`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
+
 # 2026-10-17T06:40:00+05:00 — Add Account Switcher Dropdown and Modal UX
 
 - Agent: Codex

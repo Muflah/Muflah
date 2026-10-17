@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { publishSessionEvent } from "./session-sync";
 
 type SessionItem = {
   id: string;
@@ -21,7 +22,10 @@ export default function SessionList({ sessions, currentToken }: { sessions: Sess
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessionToken: token }),
     });
-    if (response.ok) setItems((current) => current.filter((session) => session.token !== token));
+    if (response.ok) {
+      setItems((current) => current.filter((session) => session.token !== token));
+      publishSessionEvent("session-revoked");
+    }
     setBusy(null);
   }
 

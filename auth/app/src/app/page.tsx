@@ -17,6 +17,8 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [sessionCheckError, setSessionCheckError] = useState("");
+  const [sessionCheckAttempt, setSessionCheckAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -25,26 +27,39 @@ export default function HomePage() {
       setCheckingSession(false);
       return () => { active = false; };
     }
-    fetch("/api/auth/get-session", { credentials: "include" })
-      .then((response) => response.json())
-      .then((result) => {
-        if (!active) return;
+    async function resolveSession() {
+      try {
+        const response = await fetch("/api/auth/get-session", { credentials: "include", cache: "no-store" });
+        if (!response.ok) throw new Error("Session check failed");
+        const result = await response.json();
         const user = result?.user;
-        if (user?.onboardingStatus === "complete" && user.username) {
-          window.location.replace(`/${encodeURIComponent(user.username)}`);
-          return;
-        }
         if (user) {
-          window.location.replace("/onboarding");
+          window.location.replace(user.onboardingStatus === "complete" && user.username ? `/${encodeURIComponent(user.username)}` : "/onboarding");
           return;
         }
-        setCheckingSession(false);
-      })
-      .catch(() => {
+
+        const sessionsResponse = await fetch("/api/auth/multi-session/list-device-sessions", { credentials: "include", cache: "no-store" });
+        if (!sessionsResponse.ok) throw new Error("Session list check failed");
+        const sessions = await sessionsResponse.json();
+        const nextSession = Array.isArray(sessions) ? sessions[0] : null;
+        if (nextSession?.session?.token) {
+          const activateResponse = await fetch("/api/auth/multi-session/set-active", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionToken: nextSession.session.token }) });
+          if (!activateResponse.ok) throw new Error("Unable to activate session");
+          const nextUser = nextSession.user;
+          window.location.replace(nextUser?.onboardingStatus === "complete" && nextUser.username ? `/${encodeURIComponent(nextUser.username)}` : "/onboarding");
+          return;
+        }
         if (active) setCheckingSession(false);
-      });
+      } catch {
+        if (active) {
+          setSessionCheckError("We couldn’t verify your session.");
+          setCheckingSession(false);
+        }
+      }
+    }
+    resolveSession();
     return () => { active = false; };
-  }, []);
+  }, [sessionCheckAttempt]);
 
   async function continueWithEmail(event: FormEvent) {
     event.preventDefault();
@@ -167,6 +182,10 @@ export default function HomePage() {
 
   if (checkingSession) {
     return <div className="auth-shell"><main className="auth-main"><p className="micro">Checking your session…</p></main></div>;
+  }
+
+  if (sessionCheckError) {
+    return <div className="auth-shell"><main className="auth-main"><section className="auth-card"><p className="micro">Session check</p><h1>Let’s try that again.</h1><p className="intro">{sessionCheckError} Your account has not been signed out.</p><div className="auth-actions"><button className="auth-button" type="button" onClick={() => { setSessionCheckError(""); setCheckingSession(true); setSessionCheckAttempt((attempt) => attempt + 1); }}>Retry ↗</button></div></section></main></div>;
   }
 
   return (

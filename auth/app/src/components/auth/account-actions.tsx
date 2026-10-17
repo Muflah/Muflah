@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { publishSessionEvent } from "./session-sync";
 
 export default function AccountActions() {
   const [busy, setBusy] = useState(false);
@@ -10,6 +11,14 @@ export default function AccountActions() {
     setBusy(true);
     setError("");
     try {
+      const revokeResponse = await fetch("/api/auth/revoke-sessions", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({}),
+        cache: "no-store",
+      });
+      if (!revokeResponse.ok) throw new Error("Unable to sign out this account. Please try again.");
       const response = await fetch("/api/auth/sign-out", {
         method: "POST",
         credentials: "include",
@@ -17,7 +26,8 @@ export default function AccountActions() {
         body: JSON.stringify({}),
         cache: "no-store",
       });
-      if (!response.ok) throw new Error("Unable to sign out. Please try again.");
+      if (!response.ok) throw new Error("Unable to clear the active session. Please try again.");
+      publishSessionEvent("account-logged-out");
       window.location.replace("/");
     } catch (signOutError) {
       setError(signOutError instanceof Error ? signOutError.message : "Unable to sign out. Please try again.");
@@ -25,5 +35,5 @@ export default function AccountActions() {
     }
   }
 
-  return <div className="account-logout-wrap"><button className="account-logout" type="button" disabled={busy} onClick={signOut}>{busy ? "Signing out…" : "Log out ↗"}</button>{error && <span className="account-logout-error" role="alert">{error}</span>}</div>;
+  return <div className="account-logout-wrap"><button className="account-logout" type="button" disabled={busy} onClick={signOut}>{busy ? "Signing out…" : "Log out account ↗"}</button>{error && <span className="account-logout-error" role="alert">{error}</span>}</div>;
 }

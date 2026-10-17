@@ -1,11 +1,23 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function OnboardingPage() {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/auth/get-session", { credentials: "include", cache: "no-store" })
+      .then((response) => response.json())
+      .then((result) => {
+        if (!result?.user) { window.location.replace("/"); return; }
+        if (result.user.onboardingStatus === "complete" && result.user.username) { window.location.replace(`/${encodeURIComponent(result.user.username)}`); return; }
+        setCheckingSession(false);
+      })
+      .catch(() => window.location.replace("/"));
+  }, []);
 
   async function completeOnboarding(event: FormEvent) {
     event.preventDefault();
@@ -26,6 +38,8 @@ export default function OnboardingPage() {
       setBusy(false);
     }
   }
+
+  if (checkingSession) return <div className="auth-shell"><main className="auth-main"><p className="micro">Checking your session…</p></main></div>;
 
   return (
     <div className="auth-shell">

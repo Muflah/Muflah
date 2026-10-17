@@ -150,3 +150,18 @@ AUTH_OTP_RESENT_IN_SECONDS
 ```
 
 The V1 implementation should additionally define names and ownership for application registration, trusted origins, session policy, branding, template configuration, and managed secrets. Logout signing and full key-rotation variables are deferred with back-channel logout and JWT capabilities. Secret values must never be committed or copied into this document.
+
+## Pilot web acceptance notes
+
+The pilot web experience is accepted only when:
+
+- The root route shows the Hosted Auth Screen only when no valid active session exists.
+- A valid complete account opens the Account Shell at `/<username>`.
+- An incomplete account opens `/onboarding` and cannot access the product shell.
+- The Account Shell account switcher opens login/signup inside a modal.
+- Existing-account login requires email OTP on every login.
+- Available accounts can be selected through Better Auth multi-session state.
+- Security sessions are scoped to the selected account.
+- Logging out removes the selected account while preserving other account sessions.
+- Visible browser tabs refresh after account changes, logout, or session revocation.
+- Hidden tabs refresh when they become active.

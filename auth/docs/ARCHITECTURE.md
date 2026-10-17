@@ -348,3 +348,13 @@ If the user loses access to the old email, V1 does not automatically replace the
 Key management begins before JWT support. Cookies, OTP state, reset links, authorization codes, webhook signatures, and other security values require managed secrets or signing keys.
 
 V1 requires managed secrets, ownership, purpose, access controls, basic rotation, and safe overlap during rolling deployment. Full signing-key inventory, JWKS management, and JWT key administration are deferred until independently verified JWTs are required. Key material must be stored in deployment secret management or a KMS, never in the repository or ordinary application logs.
+
+## Hosted web routing and tab coordination
+
+The hosted web app has two primary surfaces: the public **Hosted Auth Screen** and the authenticated **Account Shell** at `/<username>`. The root route resolves the server-validated session state: no valid session shows auth, an incomplete account shows `/onboarding`, and a complete account shows its canonical username route. The add-account flow is an intentional exception and opens inside a modal in the Account Shell.
+
+The resolver checks the current session and valid Better Auth multi-session cookies. If the current session is unavailable but another account remains active, it activates the next valid session. Session-check failures show retry rather than falsely treating the user as signed out. Protected account routes revalidate server-side.
+
+The switcher activates only the selected identity. The security page filters sessions by the selected account’s user ID. Logout revokes sessions for the selected identity and clears its active cookie without revoking unrelated identities. Incomplete identities are labeled and route to `/onboarding` without product access.
+
+The web layer publishes non-sensitive `account-switched`, `account-logged-out`, and `session-revoked` events through `BroadcastChannel`, with a `storage` fallback. Visible tabs reload immediately; hidden tabs reload on focus. Events contain no session tokens.

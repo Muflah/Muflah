@@ -197,6 +197,15 @@ Each entry contains:
 - Files: `app/src/components/auth/account-actions.tsx` and `AGENTLOG.md`.
 - Verification Status: Typecheck, production build, and diff validation are required after this change.
 
+# 2026-10-17T09:20:00+05:00 — Consolidate Pilot Web Documentation
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Document the day’s routing, account, OTP, logout, session, and cross-tab decisions before ending the work session.
+- Changes Made: Updated the README and architecture, requirements, implementation, and release documents with the Hosted Auth Screen versus Account Shell model, root session resolution, onboarding boundary, modal add-account UX, OTP on every existing-account login, selected-account sessions and logout, and visible/hidden tab synchronization behavior.
+- Files: `README.md`, `docs/ARCHITECTURE.md`, `docs/REQUIREMENTS.md`, `docs/IMPLEMENTATION.md`, `docs/RELEASE.md`, and `AGENTLOG.md`.
+- Verification Status: Documentation changes require final `git diff --check` validation.
+
 # 2026-10-17T09:00:00+05:00 — Add Cross-Tab Session Synchronization
 
 - Agent: Codex

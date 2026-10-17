@@ -577,3 +577,11 @@ Before production use, test:
 - Cookie behavior across supported subdomains.
 - Safari and privacy-restricted browser behavior.
 - Rolling deployment with old and new instances using the same database.
+
+## Pilot web routing implementation
+
+The root resolver checks the current session and then Better Auth multi-session cookies. It routes complete accounts to `/<username>`, incomplete accounts to `/onboarding`, and signed-out users to the Hosted Auth Screen. If the current session is absent but a valid multi-session cookie remains, it activates the next available session. Explicit add-account intent remains inside the Account Shell modal.
+
+The Account Shell validates sessions server-side. Its switcher consumes the multi-session list, its security page filters sessions to the selected user, and its logout action revokes that selected user’s sessions before clearing the active cookie.
+
+`src/components/auth/session-sync.tsx` provides cross-tab freshness using `BroadcastChannel` and a `storage` fallback. It publishes only event type, ID, and timestamp. Visible tabs reload immediately; hidden tabs reload on focus. Existing-account login uses a sign-in email OTP on every login in the current pilot policy.

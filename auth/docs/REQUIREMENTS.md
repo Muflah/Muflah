@@ -340,3 +340,18 @@ The first release is not complete until a user can:
 15. Change an email address only after the required verification and security checks.
 16. Recover an account through an approved recovery factor or controlled support path when the old email is unavailable.
 17. Rotate a configured security key during a rolling deployment without breaking valid adjacent-version sessions or flows.
+
+### Pilot web routing policy
+
+- The root route must resolve to the Hosted Auth Screen, onboarding, or Account Shell based on validated active-session state.
+- No valid active session shows the Hosted Auth Screen.
+- A complete active account opens its `/<username>` Account Shell, including in a new tab.
+- An incomplete active account opens `/onboarding` and cannot receive product access.
+- Account Shell navigation must not unnecessarily send a valid user to the public auth screen.
+- Loading, invalid-session, and session-check failure states must remain distinct.
+- A network failure must not be treated as a confirmed logout.
+- Account switching, logout, and session revocation must synchronize other tabs.
+- Visible tabs refresh immediately; hidden tabs refresh when activated.
+- Synchronization events must not contain session tokens or secrets.
+
+For the current pilot, every existing-account login requires email OTP. Trusted-device suppression and risk-based OTP selection are deferred until their persistence and revocation rules are implemented.

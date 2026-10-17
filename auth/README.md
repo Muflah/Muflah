@@ -101,4 +101,18 @@ Add the variables listed above to the Vercel project environment for the require
 
 ## Current status
 
-The pilot foundation is implemented: the modular-monolith layout is in place, Better Auth is configured against PostgreSQL, the live schema passes Better Auth's check, the Resend connector boundary is wired, the identifier-first signup/sign-in/OTP flow is available, onboarding completion and username routing are available, and the hosted pilot includes account home and active-session revocation. Reference-application SSO callbacks, real email-delivery verification, and a fully staged pre-account signup record remain follow-up work.
+The pilot foundation is implemented: the modular-monolith layout is in place, Better Auth is configured against PostgreSQL, the live schema passes Better Auth's check, the Resend connector boundary is wired, the identifier-first signup/sign-in/OTP flow is available, onboarding completion and username routing are available, and the hosted pilot includes account home, multi-account switching, selected-account session management, selected-account logout, and cross-tab synchronization. Reference-application SSO callbacks, real email-delivery verification, trusted-device persistence, and a fully staged pre-account signup record remain follow-up work.
+
+## Web routing model
+
+The root route resolves the session state:
+
+```text
+No valid active session  → Hosted Auth Screen
+Incomplete account       → /onboarding
+Complete account         → /<username> Account Shell
+```
+
+The Hosted Auth Screen is public and appears only when no active session exists, except when the user deliberately opens the add-account flow. The Account Shell contains the account switcher, account home, security sessions, and account logout. Existing active sessions are honored when the auth domain is opened in a new tab.
+
+The pilot requires an email OTP for every existing-account login. Signup uses password creation, email verification, and onboarding. Logging out revokes the selected account’s sessions only; other account identities remain available. Cross-tab account changes, logout, and session revocation refresh visible tabs immediately and refresh hidden tabs when they become active.

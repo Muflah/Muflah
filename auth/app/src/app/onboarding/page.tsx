@@ -1,19 +1,23 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { getTrustedReturnTo } from "@/lib/return-url";
 
 export default function OnboardingPage() {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
 
   useEffect(() => {
+    const requestedReturnTo = getTrustedReturnTo();
+    setReturnTo(requestedReturnTo);
     fetch("/api/auth/get-session", { credentials: "include", cache: "no-store" })
       .then((response) => response.json())
       .then((result) => {
         if (!result?.user) { window.location.replace("/"); return; }
-        if (result.user.onboardingStatus === "complete" && result.user.username) { window.location.replace(`/${encodeURIComponent(result.user.username)}`); return; }
+        if (result.user.onboardingStatus === "complete" && result.user.username) { window.location.replace(requestedReturnTo ?? `/${encodeURIComponent(result.user.username)}`); return; }
         setCheckingSession(false);
       })
       .catch(() => window.location.replace("/"));
@@ -31,7 +35,7 @@ export default function OnboardingPage() {
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error ?? "Unable to complete onboarding");
-      window.location.assign(`/${encodeURIComponent(result.username)}`);
+      window.location.assign(returnTo ?? `/${encodeURIComponent(result.username)}`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to complete onboarding");
     } finally {

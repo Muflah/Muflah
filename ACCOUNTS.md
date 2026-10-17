@@ -46,7 +46,7 @@ The intended Vercel project configuration is:
 
 The repository currently ignores `.env*` files except `.env.example`. Keep real local and Vercel values out of git.
 
-## Planned structure
+## Current structure
 
 ```text
 accounts/
@@ -55,6 +55,7 @@ accounts/
 │   ├── page.tsx
 │   ├── profile/page.tsx
 │   ├── security/page.tsx
+│   │   └── security/sessions/page.tsx
 │   └── settings/page.tsx
 ├── components/
 │   ├── account-shell/
@@ -68,7 +69,13 @@ accounts/
 └── tsconfig.json
 ```
 
-The initial pilot only establishes the project boundary and deployment contract. UI implementation comes next.
+The pilot includes the account shell, profile/settings surfaces, account switching, logout, cross-tab session refresh, and active-session management.
+
+## Authentication handoff
+
+When an unauthenticated user opens an accounts route, the accounts app sends them to `AUTH_URL` with a trusted `returnTo` URL. Auth handles the authentication flow and returns the user to the original accounts route. Adding an account uses the same full-page auth flow with `intent=login`, so an existing active account does not short-circuit the flow.
+
+Auth validates return origins against `AUTH_TRUSTED_ORIGINS`. The accounts origin must be included there.
 
 ## Account switcher
 

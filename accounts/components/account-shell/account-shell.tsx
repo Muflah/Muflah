@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import AccountSwitcher from "@/components/account-switcher/account-switcher";
 import AccountActions from "@/components/account-actions";
-import { getSession, listDeviceSessions, normalizeAccounts, type AuthUser, type SessionAccount } from "@/lib/auth-client";
+import { buildAuthUrl, getSession, listDeviceSessions, normalizeAccounts, type AuthUser, type SessionAccount } from "@/lib/auth-client";
 
 const navigation = [
   { label: "Overview", href: "/" },
@@ -47,7 +47,7 @@ export default function AccountShell({ authUrl, activePage = "Overview", childre
           <span className="eyebrow">Muflah accounts</span>
           <h1>Sign in to manage your account.</h1>
           <p>{error || "Your account session is not active on this device."}</p>
-          <a className="button button-primary" href={authUrl}>Continue to sign in ↗</a>
+          <a className="button button-primary" href={buildAuthUrl(authUrl)} onClick={(event) => { event.preventDefault(); window.location.assign(buildAuthUrl(authUrl)); }}>Continue to sign in ↗</a>
         </div>
       </main>
     );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { activateSession, type SessionAccount } from "@/lib/auth-client";
+import { activateSession, buildAuthUrl, type SessionAccount } from "@/lib/auth-client";
 import { publishSessionEvent } from "@/components/session-sync";
 
 export default function AccountSwitcher({ authUrl, currentEmail, accounts }: { authUrl: string; currentEmail: string; accounts: SessionAccount[] }) {
@@ -44,7 +44,7 @@ export default function AccountSwitcher({ authUrl, currentEmail, accounts }: { a
               <em>{account.email.toLowerCase() === currentEmail.toLowerCase() ? "Current" : account.onboardingComplete ? "Switch" : "Finish setup"}</em>
             </button>
           ))}
-          <a className="switcher-add" href={authUrl}>+ Add account ↗</a>
+          <a className="switcher-add" href={buildAuthUrl(authUrl, undefined, "login")} onClick={(event) => { event.preventDefault(); window.location.assign(buildAuthUrl(authUrl, undefined, "login")); }}>+ Add account ↗</a>
           {message && <p className="switcher-message">{message}</p>}
         </div>
       )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { destinationAfterAuth, getTrustedReturnTo, onboardingUrl } from "@/lib/return-url";
 
 type Flow = "sign-in" | "sign-up";
 type Step = "identifier" | "credentials" | "verify";
@@ -19,9 +20,12 @@ export default function HomePage() {
   const [checkingSession, setCheckingSession] = useState(true);
   const [sessionCheckError, setSessionCheckError] = useState("");
   const [sessionCheckAttempt, setSessionCheckAttempt] = useState(0);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
+    const requestedReturnTo = getTrustedReturnTo();
+    setReturnTo(requestedReturnTo);
     const intent = new URLSearchParams(window.location.search).get("intent");
     if (intent === "login" || intent === "signup") {
       setCheckingSession(false);
@@ -34,7 +38,7 @@ export default function HomePage() {
         const result = await response.json();
         const user = result?.user;
         if (user) {
-          window.location.replace(user.onboardingStatus === "complete" && user.username ? `/${encodeURIComponent(user.username)}` : "/onboarding");
+          window.location.replace(user.onboardingStatus === "complete" && user.username ? destinationAfterAuth(requestedReturnTo, `/${encodeURIComponent(user.username)}`) : onboardingUrl(requestedReturnTo));
           return;
         }
 
@@ -46,7 +50,7 @@ export default function HomePage() {
           const activateResponse = await fetch("/api/auth/multi-session/set-active", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionToken: nextSession.session.token }) });
           if (!activateResponse.ok) throw new Error("Unable to activate session");
           const nextUser = nextSession.user;
-          window.location.replace(nextUser?.onboardingStatus === "complete" && nextUser.username ? `/${encodeURIComponent(nextUser.username)}` : "/onboarding");
+          window.location.replace(nextUser?.onboardingStatus === "complete" && nextUser.username ? destinationAfterAuth(requestedReturnTo, `/${encodeURIComponent(nextUser.username)}`) : onboardingUrl(requestedReturnTo));
           return;
         }
         if (active) setCheckingSession(false);
@@ -118,8 +122,8 @@ export default function HomePage() {
         setMessage("We sent a verification code to your email.");
       } else {
         const destination = result.user?.onboardingStatus === "complete" && result.user?.username
-          ? `/${encodeURIComponent(result.user.username)}`
-          : "/onboarding";
+          ? destinationAfterAuth(returnTo, `/${encodeURIComponent(result.user.username)}`)
+          : onboardingUrl(returnTo);
         window.location.assign(destination);
       }
     } catch (error) {
@@ -143,12 +147,12 @@ export default function HomePage() {
       const result = await response.json().catch(() => ({}));
       if (!response.ok || result.status === false) throw new Error(result.message ?? "That code is not valid");
       if (verificationMode === "sign-in") {
-        const destination = result.user?.onboardingStatus === "complete" && result.user?.username ? `/${encodeURIComponent(result.user.username)}` : "/onboarding";
+        const destination = result.user?.onboardingStatus === "complete" && result.user?.username ? destinationAfterAuth(returnTo, `/${encodeURIComponent(result.user.username)}`) : onboardingUrl(returnTo);
         window.location.assign(destination);
       } else {
         setOtp("");
         setMessage("Email verified. Continue to onboarding.");
-        window.location.assign("/onboarding");
+        window.location.assign(onboardingUrl(returnTo));
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "That code is not valid");

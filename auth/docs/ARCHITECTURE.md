@@ -244,6 +244,8 @@ The account switcher must support two entry points:
 
 For the hosted pilot UI, the profile card is the switcher trigger. It opens a dropdown containing the active identity and available identities, plus an “Add account” action. “Add account” opens a modal with separate choices for logging in to an existing account or creating a new one.
 
+An account added through the switcher retains its onboarding state. If signup/password creation succeeds but onboarding is abandoned, the switcher may show that identity with an `Onboarding incomplete` state. Selecting it routes to `/onboarding`; the identity must not receive product access until onboarding is complete.
+
 Adding an account must create or select a separately authenticated session. It must not silently merge accounts, link identities, or grant access to an application account without the application's membership check.
 
 ## Identifier-first authentication

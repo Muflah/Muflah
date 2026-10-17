@@ -206,3 +206,39 @@ Each entry contains:
 - Files: `app/src/app/page.tsx` and `AGENTLOG.md`.
 - Verification Status: Typecheck, production build, and diff validation remain required after this change.
 
+# 2026-10-17T07:00:00+05:00 — Add Auth-App Favicon
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Use the project favicon in the auth app browser tab.
+- Changes Made: Added the existing Muflah favicon as the Next.js app icon and declared it in the root metadata for favicon and shortcut-icon discovery.
+- Files: `app/src/app/icon.svg`, `app/src/app/layout.tsx`, and `AGENTLOG.md`.
+- Verification Status: The favicon is wired through Next.js metadata; production build verification is required after this change.
+
+# 2026-10-17T07:10:00+05:00 — Allow Explicit Add-Account Auth Intents
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the account-switcher login/signup links being intercepted by the signed-in session redirect.
+- Changes Made: The root auth page now honors explicit `?intent=login` and `?intent=signup` navigation from the account-switcher modal instead of redirecting an already signed-in user back to the app shell.
+- Files: `app/src/app/page.tsx` and `AGENTLOG.md`.
+- Verification Status: Typecheck, production build, and diff validation are required after this change.
+
+# 2026-10-17T07:20:00+05:00 — Embed Add-Account Authentication in the Modal
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Keep login and signup inside the account-switcher modal when an active account already exists.
+- Changes Made: Replaced the modal’s navigation links with an embedded identifier-first flow covering email lookup, credentials, and email verification. The app shell remains visible behind the modal and the user is not sent to the root login screen.
+- Files: `app/src/components/auth/account-switcher.tsx` and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed. Multi-identity session activation remains a separate backend integration boundary.
+
+# 2026-10-17T07:30:00+05:00 — Define Incomplete Accounts in the Switcher
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Preserve accounts created in the modal even when onboarding is abandoned.
+- Changes Made: Documented that the switcher must retain onboarding state, visibly mark incomplete accounts, and route a selected incomplete account to `/onboarding` instead of granting product access.
+- Files: `docs/REQUIREMENTS.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, and `AGENTLOG.md`.
+- Verification Status: Documentation-only change; no runtime behavior was changed in this step.
+

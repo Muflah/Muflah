@@ -126,6 +126,8 @@ Deferred capabilities must not compromise the V1 interfaces or require product-s
 
 - Switching accounts must be deliberate and visible in the interface.
 - The active account must be shown whenever an action could affect account data.
+- An account created through the switcher may appear as `Onboarding incomplete` until its username and required setup are finished.
+- Selecting an incomplete account must open `/onboarding`; it must not expose the product or present the account as ready.
 - Switching must not grant access to an account for which the application has not confirmed membership.
 - Signing out of one account must not silently sign out unrelated accounts unless the user chooses “sign out everywhere.”
 - The switcher must offer “Add account” or “Create account.”

@@ -19,6 +19,11 @@ export default function HomePage() {
 
   useEffect(() => {
     let active = true;
+    const intent = new URLSearchParams(window.location.search).get("intent");
+    if (intent === "login" || intent === "signup") {
+      setCheckingSession(false);
+      return () => { active = false; };
+    }
     fetch("/api/auth/get-session", { credentials: "include" })
       .then((response) => response.json())
       .then((result) => {

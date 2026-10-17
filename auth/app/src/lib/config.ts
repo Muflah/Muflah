@@ -15,11 +15,12 @@ function required(name: string): string {
   return value;
 }
 
-function integer(name: string, fallback: number): number {
+function integer(name: string, fallback: number, fallbackOnInvalid = false): number {
   const value = process.env[name];
   if (!value) return fallback;
-  const parsed = Number.parseInt(value, 10);
-  if (!Number.isFinite(parsed) || parsed < 1) {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    if (fallbackOnInvalid) return fallback;
     throw new Error(`${name} must be a positive integer`);
   }
   return parsed;
@@ -32,7 +33,7 @@ export const config = {
   emailDomain: required("AUTH_EMAIL_DOMAIN"),
   emailApiKey: required("EMAIL_API_KEY"),
   cookieDomain: process.env.AUTH_COOKIE_DOMAIN?.trim() || undefined,
-  maxSessions: integer("AUTH_MAX_SESSIONS", 5),
+  maxSessions: integer("AUTH_MAX_SESSIONS", 4, true),
   otpEnabled: process.env.AUTH_OTP_ENABLED !== "false",
   otpExpiresInSeconds: integer("AUTH_OTP_EXPIRES_IN_MINUTES", 10) * 60,
   otpMaxAttempts: integer("AUTH_OTP_MAX_ATTEMPTS", 5),

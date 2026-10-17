@@ -29,7 +29,7 @@ export default async function SessionsPage() {
           <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>
           <a href="/security/sessions" aria-current="page">Sessions &amp; security</a>
         </nav>
-        <AccountActions />
+        <AccountActions currentToken={current.session.token} />
       </aside>
       <main className="account-content">
         <p className="micro">Security</p>

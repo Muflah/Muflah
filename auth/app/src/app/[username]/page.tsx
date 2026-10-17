@@ -29,7 +29,7 @@ export default async function AccountHome({ params }: { params: Promise<{ userna
           <a href={`/${encodeURIComponent(session.user.username)}`} aria-current="page">Account home</a>
           <a href="/security/sessions">Sessions &amp; security</a>
         </nav>
-        <AccountActions />
+        <AccountActions currentToken={session.session.token} />
       </aside>
       <main className="account-content">
         <p className="micro">Muflah account</p>

@@ -15,9 +15,16 @@ The pilot is a calculator. It owns only its product UI and calculator state. Aut
 5. Auth returns the user to the web app.
 6. Logout revokes the selected auth session and returns the user through auth.
 
-The web app does not import code from `auth/app` or maintain a second identity/session store.
+The web app does not import code from `auth/app` or maintain a second identity/session store. It is a product template, not a replacement for the Accounts app.
 
-The Auth-owned `auth/packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses plain browser JavaScript, HTML, and CSS, so this app and future non-React products can load the same `<account-switcher auth-url="...">` element.
+The Auth-owned `auth/packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—so this app and future products using another stack can load the same element:
+
+```html
+<script type="module" src="@muflah/account-switcher"></script>
+<account-switcher auth-url="https://auth.example.com"></account-switcher>
+```
+
+The component calls the consuming app's `/auth-api` proxy for session lookup, account listing, account activation, and selected-account revocation. Auth remains authoritative; the component owns no identity or session data.
 
 ## Deployment
 
@@ -27,6 +34,7 @@ Configure a separate Vercel project:
 - Framework preset: Next.js
 - Environment variable: `AUTH_URL`
 - Add the deployed web origin to auth's `AUTH_TRUSTED_ORIGINS`
+- Install the Auth-owned `@muflah/account-switcher` package from `auth/packages/account-switcher`
 
 Example local configuration:
 

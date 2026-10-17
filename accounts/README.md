@@ -18,6 +18,8 @@ When no active session is available, accounts redirects to `AUTH_URL` with a val
 
 Logout revokes only the selected account session and then sends the user to auth. Account switching activates an auth-owned session and preserves the current accounts page. Cross-tab session changes are refreshed through `BroadcastChannel` with a `localStorage` fallback.
 
+The reusable switcher is not owned by this app. Accounts consumes Auth's framework-neutral `@muflah/account-switcher` web component from `auth/packages/account-switcher`; other products may consume the same component without depending on Accounts.
+
 ## Configuration
 
 Set `AUTH_URL` locally in `.env` and as a Vercel environment variable:

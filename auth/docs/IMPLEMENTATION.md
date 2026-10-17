@@ -24,7 +24,7 @@ The current pilot and planned integrations are:
 
 The implementation should follow the repository boundaries defined in `ARCHITECTURE.md`:
 
-The top-level `auth/` directory is a documentation, deployment, and dependency container. The implementation lives under `auth/app/`. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
+The top-level `auth/` directory is a documentation, deployment, dependency, and reusable-client container. The hosted service implementation lives under `auth/app/`. The Auth-owned framework-neutral account switcher lives under `auth/packages/account-switcher` and is deliberately independent of React and Next.js. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
 
 | Area | Responsibility | Must not contain |
 | --- | --- | --- |
@@ -272,7 +272,7 @@ Recommended hosted routes or screens:
 /error                    safe error and expired-flow states
 ```
 
-The auth UI is a protocol companion, not the product account dashboard. Consuming applications start it with a trusted `returnTo` URL. The auth screen completes login, signup, verification, password recovery, or onboarding and then returns to that URL. The accounts app owns the account overview, profile/settings presentation, account switcher presentation, logout control, and active-session UI while auth remains authoritative for all state changes.
+The auth UI is a protocol companion, not the product account dashboard. Consuming applications start it with a trusted `returnTo` URL. The auth screen completes login, signup, verification, password recovery, or onboarding and then returns to that URL. The accounts app owns the account overview, profile/settings presentation, and active-session UI while Auth owns the reusable framework-neutral account switcher and remains authoritative for all state changes.
 
 The exact route names may change, but the responsibilities should remain separate and understandable.
 

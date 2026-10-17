@@ -74,7 +74,7 @@ Incomplete account       -> /onboarding
 Complete account         -> /<username> compatibility account route or consuming-app return target
 ```
 
-The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, account switcher presentation, active-session UI, and account-level logout. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
+The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, and product shell. Auth owns the reusable account-switcher implementation, delivered as the framework-neutral `@muflah/account-switcher` web component from `auth/packages/account-switcher`; consuming apps only mount it. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
 
 Existing active sessions are honored when the auth site is opened in a new tab. Cross-tab events use `BroadcastChannel` with a `storage` fallback. Events contain only event type, ID, and timestamp; they never contain session tokens.
 
@@ -123,6 +123,7 @@ The security page filters the visible session list by the selected user ID. Indi
 | `app/src/components/auth/account-actions.tsx` | Selected-account logout. |
 | `app/src/components/auth/session-list.tsx` | Individual session revocation UI. |
 | `app/src/components/auth/session-sync.tsx` | Cross-tab session event coordination. |
+| `packages/account-switcher/src/account-switcher.js` | Framework-neutral account switcher web component owned and published by Auth. |
 | `app/src/app/onboarding/page.tsx` | Incomplete-account onboarding UI. |
 | `app/src/app/api/onboarding/complete/route.ts` | Onboarding completion and username persistence. |
 | `app/src/app/api/identity/lookup/route.ts` | Identifier-first account lookup. |

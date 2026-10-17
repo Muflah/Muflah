@@ -59,10 +59,7 @@ accounts/
 │   └── settings/page.tsx
 ├── components/
 │   ├── account-shell/
-│   ├── account-switcher/
-│   ├── account-actions.tsx
 │   ├── session-list.tsx
-│   ├── session-sync.tsx
 │   └── sessions-page.tsx
 ├── lib/
 │   ├── auth-client.ts
@@ -74,6 +71,10 @@ accounts/
 ```
 
 The pilot includes the account shell, profile/settings surfaces, account switching, logout, cross-tab session refresh, and active-session management.
+
+## Shared account header
+
+The reusable account switcher is owned by Auth and lives in `auth/packages/account-switcher` as the framework-neutral `@muflah/account-switcher` web component. Accounts is only one consumer. It contains only HTML templates, CSS, and browser JavaScript. Any product stack can load the component and use `<account-switcher auth-url="...">`; it calls only the consuming app's `/auth-api` proxy and does not own identity or session state.
 
 ## Authentication handoff
 

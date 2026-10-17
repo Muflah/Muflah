@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import AccountSwitcher from "@/components/account-switcher/account-switcher";
-import AccountActions from "@/components/account-actions";
-import { buildAuthUrl, getSession, listDeviceSessions, normalizeAccounts, type AuthUser, type SessionAccount } from "@/lib/auth-client";
+import "@muflah/account-switcher";
+import { buildAuthUrl, getSession, type AuthUser } from "@/lib/auth-client";
 
 const navigation = [
   { label: "Overview", href: "/" },
@@ -16,20 +15,16 @@ const navigation = [
 
 export default function AccountShell({ authUrl, activePage = "Overview", children }: { authUrl: string; activePage?: string; children?: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [currentToken, setCurrentToken] = useState<string | undefined>();
-  const [accounts, setAccounts] = useState<SessionAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
-    Promise.all([getSession(), listDeviceSessions()])
-      .then(([session, deviceSessions]) => {
+    getSession()
+      .then((session) => {
         if (!active) return;
         const nextUser = session?.user ?? null;
         setUser(nextUser);
-        setCurrentToken(session?.session?.token);
-        setAccounts(normalizeAccounts(deviceSessions, nextUser ?? undefined));
       })
       .catch(() => { if (active) setError("We could not reach the auth service."); })
       .finally(() => { if (active) setLoading(false); });
@@ -61,10 +56,10 @@ export default function AccountShell({ authUrl, activePage = "Overview", childre
         <nav aria-label="Account navigation">
           {navigation.map((item) => <Link className={item.label === activePage ? "nav-link active" : "nav-link"} href={item.href} key={item.href}>{item.label}</Link>)}
         </nav>
-        <AccountActions authUrl={authUrl} currentToken={currentToken} />
+        <div className="sidebar-footer"><span className="status-dot" />Auth service connected</div>
       </aside>
       <main className="main-content">
-        <header className="topbar"><span className="breadcrumb">Account center / {activePage}</span><AccountSwitcher authUrl={authUrl} currentEmail={user.email} accounts={accounts} /></header>
+        <header className="topbar"><span className="breadcrumb">Account center / {activePage}</span><account-switcher auth-url={authUrl} /></header>
         <section className="content-wrap">
           <div className="intro"><div><span className="eyebrow">{activePage}</span><h1>{activePage === "Overview" ? `Good to see you, ${firstName}.` : activePage}</h1><p>{activePage === "Overview" ? "Manage your identity, sessions, and account preferences from one place." : "This pilot surface is connected to the authoritative auth service."}</p></div><span className="intro-mark">✦</span></div>
           {children ?? <div className="card-grid">

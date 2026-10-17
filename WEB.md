@@ -17,6 +17,8 @@ The pilot is a calculator. It owns only its product UI and calculator state. Aut
 
 The web app does not import code from `auth/app` or maintain a second identity/session store.
 
+The Auth-owned `auth/packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses plain browser JavaScript, HTML, and CSS, so this app and future non-React products can load the same `<account-switcher auth-url="...">` element.
+
 ## Deployment
 
 Configure a separate Vercel project:

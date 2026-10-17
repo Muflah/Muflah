@@ -48,6 +48,8 @@ auth/
 ├── AGENTS.md             # Repository instructions
 ├── CHANGELOG.md          # Release history
 ├── docs/                 # Architecture and product documentation
+├── packages/             # Auth-owned framework-neutral client components
+│   └── account-switcher/ # Plain JS/HTML/CSS account switcher web component
 └── app/                  # Application implementation
     ├── config/
     ├── migrations/

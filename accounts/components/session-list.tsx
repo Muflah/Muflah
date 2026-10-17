@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { publishSessionEvent } from "@/components/session-sync";
+import { publishSessionEvent } from "@muflah/account-switcher";
 import { revokeSession, type AuthSession } from "@/lib/auth-client";
 type SessionItem = AuthSession & { ipAddress?: string | null; userAgent?: string | null; updatedAt?: string };
 export default function SessionList({ sessions, currentToken }: { sessions: SessionItem[]; currentToken?: string }) {

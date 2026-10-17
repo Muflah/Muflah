@@ -8,7 +8,17 @@ export const auth = betterAuth({
   database,
   baseURL: config.authUrl,
   secret: config.secret,
-  trustedOrigins: [config.authUrl],
+  trustedOrigins: config.trustedOrigins,
+  ...(config.cookieDomain
+    ? {
+        advanced: {
+          crossSubDomainCookies: {
+            enabled: true,
+            domain: config.cookieDomain,
+          },
+        },
+      }
+    : {}),
   user: {
     additionalFields: {
       onboardingStatus: {

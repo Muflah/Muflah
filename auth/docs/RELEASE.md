@@ -1,5 +1,7 @@
 # Release Plan
 
+This is a roadmap and closure-criteria document. Its MVP/V1 sections describe target milestones, not the current pilot’s shipped capability set. See `../../AUTH.md` for current status.
+
 ## Purpose
 
 This document defines what each release must deliver, what is deliberately deferred, and what evidence is required before a release is considered complete.

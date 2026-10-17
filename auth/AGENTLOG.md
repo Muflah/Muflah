@@ -305,3 +305,66 @@ Each entry contains:
 - Files: `app/src/app/page.tsx`, `app/src/app/[username]/page.tsx`, `app/src/app/security/sessions/page.tsx`, `app/src/components/auth/account-switcher.tsx`, `app/src/app/globals.css`, and `AGENTLOG.md`.
 - Verification Status: Typecheck, production build, and diff validation are required after this change.
 
+# 2026-10-17 — Fix Per-Account Logout and Session Limit Fallback
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Prevent account-switcher logout from logging out every account and make the session capacity default to four when configuration is missing or invalid.
+- Changes Made: Replaced the account-shell logout sequence with Better Auth’s `/multi-session/revoke` endpoint using the active session token. Removed the global `/sign-out` call from this account-level action, passed the current token from both account-shell pages, and changed `AUTH_MAX_SESSIONS` to strict-fallback behavior with a default of `4`.
+- Files: `app/src/components/auth/account-actions.tsx`, `app/src/app/[username]/page.tsx`, `app/src/app/security/sessions/page.tsx`, `app/src/lib/config.ts`, `app/.env.example`, `README.md`, `docs/IMPLEMENTATION.md`, `docs/REQUIREMENTS.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` passed.
+
+# 2026-10-17 — Configure Trusted Origins and Cross-Subdomain Cookies
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Add an environment-configured trusted-origin boundary and enable shared auth sessions across explicitly configured subdomains.
+- Changes Made: Added comma-separated `AUTH_TRUSTED_ORIGINS` parsing with automatic inclusion of `BETTER_AUTH_URL`. When `AUTH_COOKIE_DOMAIN` is configured, Better Auth now enables `crossSubDomainCookies` for that parent domain. Updated the example environment and auth documentation with the origin format and security boundary.
+- Files: `app/src/lib/config.ts`, `app/src/lib/auth.ts`, `app/.env.example`, `README.md`, `docs/IMPLEMENTATION.md`, `docs/REQUIREMENTS.md`, and `AGENTLOG.md`.
+- Verification Status: `npm run typecheck`, `npm run build`, and `git diff --check` are required after this change.
+
+# 2026-10-17 — Add Auth Handoff Context Document
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Create a durable project-context document so another agent can continue the auth work safely.
+- Changes Made: Added `AUTH.md` with the current architecture, domain and cookie model, trusted-origin configuration, implemented web flows, per-account logout behavior, mobile/SSO status, known gaps, key files, and continuation checklist. Linked it from the auth README.
+- Files: `AUTH.md`, `README.md`, and `AGENTLOG.md`.
+- Verification Status: `git diff --check` passed; the existing typecheck and production build remain passing after the preceding implementation changes.
+
+# 2026-10-17 — Synchronize Auth Documentation
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Ensure the README, architecture, implementation, requirements, release, handoff, and change-log documents agree about current versus planned capabilities.
+- Changes Made: Removed the duplicate trusted-origin requirement, corrected the implementation guide’s stale claim that multi-identity activation was still pending, clarified target V1 versus current pilot language, and corrected the documented `.env` lookup locations.
+- Files: `README.md`, `AUTH.md`, `docs/IMPLEMENTATION.md`, `docs/REQUIREMENTS.md`, and `AGENTLOG.md`.
+- Verification Status: `git diff --check` passed.
+
+# 2026-10-17 — Clarify Documentation Status Boundaries
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Remove remaining ambiguity between current pilot behavior and target architecture, requirements, and release plans.
+- Changes Made: Added explicit status notices to the architecture, implementation, requirements, and release documents; clarified when trusted origins become required; and designated `AUTH.md` as the current implementation-status source of truth.
+- Files: `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION.md`, `docs/REQUIREMENTS.md`, `docs/RELEASE.md`, and `AGENTLOG.md`.
+- Verification Status: `git diff --check` passed.
+
+# 2026-10-17 — Move Auth Handoff to Repository Root
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Move the durable auth handoff document from `auth/` to the repository root.
+- Changes Made: Moved `auth/AUTH.md` to root `AUTH.md` and updated all README, architecture, implementation, requirements, release, and handoff links to the new location.
+- Files: `AUTH.md`, `auth/README.md`, `auth/docs/ARCHITECTURE.md`, `auth/docs/IMPLEMENTATION.md`, `auth/docs/REQUIREMENTS.md`, `auth/docs/RELEASE.md`, and `auth/AGENTLOG.md`.
+- Verification Status: `git diff --check` and reference checks passed.
+
+# 2026-10-17 — Set Web-First Integration Sequence
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Establish that a separate web application will be tested before mobile integration.
+- Changes Made: Documented the required order: first validate a separate web reference application, application-local sessions, SSO, redirect/origin boundaries, logout, and revalidation; then implement the separate native mobile PKCE client.
+- Files: `AUTH.md`, `auth/docs/IMPLEMENTATION.md`, and `auth/AGENTLOG.md`.
+- Verification Status: Documentation-only change; `git diff --check` required.
+

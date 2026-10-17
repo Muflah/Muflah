@@ -1,10 +1,12 @@
 # Implementation
 
+This document combines current implementation rules with the planned V1 integration boundary. Current pilot behavior and known gaps are summarized in `../../AUTH.md`; roadmap statements below are not claims that every V1 capability is already shipped.
+
 ## Better Auth usage
 
 Use Better Auth as the authentication engine and use its official capabilities where they match the requirements. Do not build parallel password hashing, session, OTP, cookie, or token implementations.
 
-The planned integrations are:
+The current pilot and planned integrations are:
 
 - Core Better Auth configuration.
 - Email and password authentication.
@@ -82,6 +84,8 @@ Do not create separate `accounts`, `otp`, `tokens`, `cookies`, or `risk` service
 
 The absence of a first reference application does not block the reusable auth core. It does postpone final callback URLs, client credentials, and an end-to-end SSO acceptance test for a real consuming product.
 
+Integration order is web first, mobile second: validate a separate web reference application and its application-local session boundary before implementing the native mobile Authorization Code + PKCE client.
+
 ## V1 implementation boundary
 
 V1 should implement the reusable identity platform needed by the first consuming applications:
@@ -108,6 +112,7 @@ The current local environment uses these names:
 BETTER_AUTH_SECRET
 BETTER_AUTH_URL
 AUTH_COOKIE_DOMAIN
+AUTH_TRUSTED_ORIGINS
 DATABASE_URL
 AUTH_EMAIL_DOMAIN
 AUTH_MAX_SESSIONS
@@ -118,6 +123,10 @@ AUTH_OTP_MAX_ATTEMPTS
 AUTH_OTP_RESENT_LIMIT
 AUTH_OTP_RESENT_IN_SECONDS
 ```
+
+`AUTH_MAX_SESSIONS` is the Better Auth multi-session limit used by the account switcher. The runtime default is `4`, and missing or invalid values fall back to `4`.
+
+`BETTER_AUTH_URL` is the canonical auth origin and is always trusted. `AUTH_TRUSTED_ORIGINS` accepts a comma-separated list of full origins, such as `https://app.example.com,https://admin.example.com`. When `AUTH_COOKIE_DOMAIN` is set to a shared parent domain, the runtime enables Better Auth `crossSubDomainCookies` for that domain.
 
 For V1, add and document these configuration names before implementing the corresponding features:
 
@@ -476,7 +485,7 @@ The account switcher should be an application-facing experience backed by auth s
 7. Add the resulting session to the switcher.
 8. Mark the selected account as active.
 
-The hosted pilot now provides the profile-card dropdown and add-account modal. The current account is displayed and the modal routes into the existing identifier-first auth screen. Persisting multiple identity sessions in the browser and activating a selected session remains the next integration step; the UI must not claim an account is switchable until that session is actually available and valid.
+The hosted pilot provides the profile-card dropdown, add-account modal, persisted Better Auth multi-session identities, and selected-session activation. The switcher only presents an account as available when its multi-session entry is present and valid. Account-level logout uses Better Auth `/multi-session/revoke` with the selected session token; the global `/sign-out` endpoint is reserved for global sign-out semantics and must not be used by the switcher.
 
 The account record retained by the switcher must include its onboarding state. After a modal signup creates an account, abandoning setup marks the entry as `Onboarding incomplete`. Selecting that entry activates its session and routes to `/onboarding`; completing the username changes the entry to ready and permits the normal `/<username>` app-shell route.
 
@@ -582,6 +591,6 @@ Before production use, test:
 
 The root resolver checks the current session and then Better Auth multi-session cookies. It routes complete accounts to `/<username>`, incomplete accounts to `/onboarding`, and signed-out users to the Hosted Auth Screen. If the current session is absent but a valid multi-session cookie remains, it activates the next available session. Explicit add-account intent remains inside the Account Shell modal.
 
-The Account Shell validates sessions server-side. Its switcher consumes the multi-session list, its security page filters sessions to the selected user, and its logout action revokes that selected user’s sessions before clearing the active cookie.
+The Account Shell validates sessions server-side. Its switcher consumes the multi-session list, its security page filters sessions to the selected user, and its logout action sends the current session token to Better Auth’s `/multi-session/revoke` endpoint. This revokes only the selected account’s device session and lets Better Auth activate another remaining account session. The global `/sign-out` endpoint is intentionally not used for account switching because it revokes all multi-session cookies on the client.
 
 `src/components/auth/session-sync.tsx` provides cross-tab freshness using `BroadcastChannel` and a `storage` fallback. It publishes only event type, ID, and timestamp. Visible tabs reload immediately; hidden tabs reload on focus. Existing-account login uses a sign-in email OTP on every login in the current pilot policy.

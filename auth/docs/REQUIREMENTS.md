@@ -1,5 +1,7 @@
 # Requirements
 
+These are the target product and security requirements. They define completion criteria rather than asserting that every item is implemented in the current pilot. See `../../AUTH.md` for the current implementation status.
+
 ## Product objective
 
 Build a reusable, standalone identity provider and single sign-on service that can be cloned and configured for multiple product platforms without duplicating identity, password, OTP, device, or session logic in every application.
@@ -277,16 +279,16 @@ The implementation must document and validate these configuration variables. Sec
 | `BETTER_AUTH_SECRET` | Core Better Auth secret material | Required |
 | `BETTER_AUTH_URL` | Canonical auth service URL and issuer base | Required |
 | `AUTH_COOKIE_DOMAIN` | Optional parent-domain cookie scope | Optional; leave host-only by default |
+| `AUTH_TRUSTED_ORIGINS` | Comma-separated full origins allowed to call the auth service | Optional for the host-only pilot; required when additional app origins or SSO are enabled |
 | `DATABASE_URL` | PostgreSQL connection | Required |
 | `AUTH_EMAIL_DOMAIN` | Verified sender domain used by code to generate sender aliases | Required |
 | `EMAIL_API_KEY` | Resend API credential for the initial connector | Required; secret |
-| `AUTH_MAX_SESSIONS` | Maximum sessions per client or configured policy | Required |
+| `AUTH_MAX_SESSIONS` | Maximum Better Auth multi-session account-switcher entries per client/device; defaults to `4` when missing or invalid | Optional; defaults to `4` |
 | `AUTH_OTP_ENABLED` | Enable OTP workflows | Required |
 | `AUTH_OTP_EXPIRES_IN_MINUTES` | OTP lifetime | Required |
 | `AUTH_OTP_MAX_ATTEMPTS` | Maximum OTP verification attempts | Required |
 | `AUTH_OTP_RESENT_LIMIT` | Maximum OTP resends | Required |
 | `AUTH_OTP_RESENT_IN_SECONDS` | Resend cooldown | Required |
-| `AUTH_TRUSTED_ORIGINS` | Allowed application origins | Required for SSO |
 | `AUTH_APPLICATIONS_FILE` | Configuration-as-code application registry | Required for SSO |
 | `AUTH_BRAND_NAME` | Hosted UI and email brand name | Required |
 | `AUTH_SUPPORT_EMAIL` | User support and recovery contact | Required |

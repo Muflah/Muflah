@@ -1,5 +1,7 @@
 # Architecture
 
+This document describes the target reusable architecture. It is intentionally broader than the current hosted pilot; use `../../AUTH.md` for the implementation-status truth and current handoff context.
+
 ## Purpose
 
 This project is a reusable, headless identity provider and single sign-on platform for current and future applications. It must be possible to clone and configure this repository for another product platform without copying product-specific authentication logic.

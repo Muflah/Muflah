@@ -26,8 +26,17 @@ function integer(name: string, fallback: number, fallbackOnInvalid = false): num
   return parsed;
 }
 
+function origins(name: string, requiredOrigin: string): string[] {
+  const configured = process.env[name]
+    ?.split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean) ?? [];
+  return [...new Set([requiredOrigin, ...configured])];
+}
+
 export const config = {
   authUrl: required("BETTER_AUTH_URL"),
+  trustedOrigins: origins("AUTH_TRUSTED_ORIGINS", required("BETTER_AUTH_URL")),
   secret: required("BETTER_AUTH_SECRET"),
   databaseUrl: required("DATABASE_URL"),
   emailDomain: required("AUTH_EMAIL_DOMAIN"),

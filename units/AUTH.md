@@ -19,8 +19,9 @@ V1 is the first usable reusable platform. It includes the smallest complete set 
 - Password recovery.
 - Managed transactional email through Resend.
 - Email and OTP verification with expiry, retry, resend, and abuse controls.
-- Risk-triggered OTP for new or untrusted clients.
-- Trusted-device recognition with expiry and revocation.
+- Email OTP after every password login in the current pilot.
+- Risk-triggered OTP for new or untrusted clients (deferred).
+- Trusted-device recognition with expiry and revocation (deferred).
 - Database-backed sessions.
 - Active-session listing and individual or global revocation.
 - Account switching, add-account, and create-account flows.
@@ -63,6 +64,16 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - Status: Requirements and the implementation handoff are consolidated in this unit document.
 - Scope: Established this file as the Auth unit’s requirements and status source.
 - Verification: Documentation links and references are being updated as part of this consolidation.
+
+### 2026-10-18T03:27:10+05:00 — Apply password-plus-OTP pilot flow
+
+- Status: Implemented the current pilot authentication flow and documented its boundaries.
+- Login: `/login` uses email → password → email OTP → session → validated consuming-app return URL.
+- Signup: `/signup` uses email → email OTP verification → password and confirmation → account creation → onboarding.
+- Recovery: `/forgot-password` starts the Better Auth password-reset email flow.
+- UX: Password fields include accessible show/hide controls; OTP fields support numeric input, one-time-code autofill, paste, resend, and changing the email.
+- Deferred: Passkeys, trusted devices, risk-based OTP, TOTP, backup codes, and new session-management behavior.
+- Verification: Auth typecheck passes after the flow change.
 
 ## Unversioned rolling-release policy
 
@@ -110,8 +121,10 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - Send the welcome email only after onboarding is complete.
 - The service must not reveal whether an email address already exists through noticeably different error messages.
 - Passwords must meet the configured minimum and maximum length requirements.
-- A known, low-risk client may sign in without OTP after satisfying the primary authentication requirement.
-- A new, unknown, or risky client must complete an OTP challenge.
+- The current pilot requires a password and email OTP for every existing-account login.
+- Signup verifies email ownership with an OTP before accepting a password and creating the account.
+- `/login`, `/signup`, and `/forgot-password` are the explicit hosted entry routes; the root route remains compatible for direct visits and consuming-app handoffs.
+- Risk-based OTP selection and trusted-device suppression are deferred.
 - OTP is also required for selected sensitive actions, such as changing email, changing password, disabling security protections, or recovering an account.
 - Failed or abusive attempts must be rate-limited by multiple signals, including email, IP, and client context.
 
@@ -366,7 +379,7 @@ The first release is not complete until a user can:
 - Visible tabs refresh immediately; hidden tabs refresh when activated.
 - Synchronization events must not contain session tokens or secrets.
 
-For the current pilot, every existing-account login requires email OTP. Trusted-device suppression and risk-based OTP selection are deferred until their persistence and revocation rules are implemented.
+For the current pilot, every existing-account login requires password verification followed by email OTP. Signup verifies email ownership before password creation. Trusted-device suppression and risk-based OTP selection are deferred until their persistence and revocation rules are implemented.
 
 ## Implementation status and handoff
 
@@ -445,15 +458,15 @@ Incomplete account       -> /onboarding
 Complete account         -> /<username> compatibility account route or consuming-app return target
 ```
 
-The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, and product shell. Auth maintains the reusable account-switcher implementation, delivered as the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package; consuming apps only mount it. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
+The Hosted Auth Screen is a thin authentication surface. Consuming applications such as `accounts/` own the account home, profile/settings UI, and product shell. Auth maintains the reusable account-switcher implementation, delivered as the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package. Accounts, Web, and Auth compatibility pages mount the same component; Auth remains authoritative for all APIs and session behavior. They start auth with a validated `returnTo` URL; auth returns to that target after login, signup, verification, or onboarding. An explicit `intent=login` is used for add-account flows so an existing active session does not short-circuit the flow.
 
 Existing active sessions are honored when the auth site is opened in a new tab. The shared account switcher uses `BroadcastChannel` with a `storage` fallback for same-origin notifications and revalidates the Auth session when a consuming-app tab becomes visible, receives focus, or returns from the browser back/forward cache. Account changes dispatch a non-sensitive `muflah:active-account-changed` event; consuming apps update their UI without a hard reload. Events contain only event type, ID, and timestamp; they never contain session tokens.
 
 ## Authentication flows
 
 - Identifier-first email lookup.
-- Existing-account login sends a sign-in OTP on every login attempt in the current pilot policy.
-- Signup creates a password, verifies email, and then routes to onboarding.
+- Existing-account login verifies the password, sends a sign-in OTP, and creates the session only after the OTP succeeds.
+- Signup verifies the email first, then creates the password-backed account and routes to onboarding.
 - Onboarding collects the username and marks the account complete.
 - Complete accounts route to `/<username>`.
 - Incomplete accounts route to `/onboarding` and must not receive product access.
@@ -490,10 +503,9 @@ The security page filters the visible session list by the selected user ID. Indi
 | `app/src/app/page.tsx` | Thin hosted auth screen, return-target handoff, and active-session/root resolver. |
 | `app/src/app/[username]/page.tsx` | Complete-account home shell. |
 | `app/src/app/security/sessions/page.tsx` | Selected-account security/session view. |
-| `app/src/components/auth/account-switcher.tsx` | Account list, switching, and add-account modal. |
 | `app/src/components/auth/account-actions.tsx` | Selected-account logout. |
 | `app/src/components/auth/session-list.tsx` | Individual session revocation UI. |
-| `app/src/components/auth/session-sync.tsx` | Cross-tab session event coordination. |
+| `app/src/components/auth/account-switcher-element.tsx` | Auth compatibility-page wrapper for the shared account switcher and active-tab session awareness. |
 | `packages/account-switcher/src/account-switcher.js` | Framework-neutral account switcher web component maintained by Auth and shared across products. |
 | `app/src/app/onboarding/page.tsx` | Incomplete-account onboarding UI. |
 | `app/src/app/api/onboarding/complete/route.ts` | Onboarding completion and username persistence. |
@@ -501,7 +513,7 @@ The security page filters the visible session list by the selected user ID. Indi
 
 ## Mobile client status
 
-The architecture and requirements call for mobile Authorization Code with PKCE, system-browser authentication, and secure OS credential storage. That flow is not complete in the current codebase.
+The architecture and requirements call for mobile Authorization Code with PKCE, system-browser authentication, and secure OS credential storage. That flow is not complete in the current codebase. The planned Expo pilot is documented in [`units/MOBILE.md`](MOBILE.md), [`mobile/docs/ARCHITECTURE.md`](../mobile/docs/ARCHITECTURE.md), and [`mobile/docs/IMPLEMENTATION.md`](../mobile/docs/IMPLEMENTATION.md).
 
 What exists today can be consumed as HTTP/JSON where the client can safely manage the required session transport, but there is no completed native mobile client contract yet. Do not make a mobile app depend on browser cookies or `AUTH_COOKIE_DOMAIN`.
 

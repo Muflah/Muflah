@@ -105,7 +105,7 @@ Unauthenticated routes use this handoff:
 
 ```text
 accounts route -> AUTH_URL?returnTo=<validated accounts URL>
-             -> auth login/signup/verification/onboarding
+             -> auth `/login` or `/signup`, OTP verification, and onboarding
              -> original accounts route
 ```
 
@@ -118,8 +118,8 @@ The auth service is a Next.js App Router application under `auth/app`. Its impor
 - `auth/app/src/app/api/auth/[...all]/route.ts` — Better Auth HTTP boundary.
 - `auth/app/src/app/api/identity/lookup/route.ts` — identifier lookup.
 - `auth/app/src/app/api/onboarding/complete/route.ts` — onboarding completion.
-- `auth/app/src/components/auth/account-switcher.tsx` — current switcher behavior reference.
-- `auth/app/src/components/auth/session-sync.tsx` — cross-tab session event reference.
+- `packages/account-switcher/src/account-switcher.js` — shared switcher behavior reference.
+- `packages/account-switcher/src/account-switcher.js` — cross-tab and active-tab session awareness reference.
 - `auth/app/src/lib/auth.ts` — single Better Auth configuration.
 - `auth/app/src/lib/config.ts` — runtime configuration and trusted origins.
 

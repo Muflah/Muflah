@@ -13,7 +13,7 @@ The current pilot and planned integrations are:
 - Email verification and password recovery.
 - Username support.
 - Multi-session support.
-- Email OTP sign-in on every login attempt in the current pilot policy.
+- Password followed by email OTP on every login attempt in the current pilot policy.
 - Two-factor or OTP support.
 - Trusted-device support.
 - Standard session listing and revocation.
@@ -24,7 +24,7 @@ The current pilot and planned integrations are:
 
 The implementation should follow the repository boundaries defined in `ARCHITECTURE.md`:
 
-The top-level `auth/` directory is a documentation and hosted-service container. The hosted service implementation lives under `auth/app/`. The Auth-maintained framework-neutral account switcher lives in the shared root package `packages/account-switcher` and is deliberately independent of React and Next.js. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
+The top-level `auth/` directory is a documentation and hosted-service container. The hosted service implementation lives under `auth/app/`. The Auth-maintained framework-neutral account switcher lives in the shared root package `packages/account-switcher` and is deliberately independent of React and Next.js. Auth compatibility pages mount it through `auth/app/src/components/auth/account-switcher-element.tsx`; the local `/auth-api` rewrite maps the component’s browser calls to Auth’s `/api/auth` endpoints. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
 
 | Area | Responsibility | Must not contain |
 | --- | --- | --- |
@@ -83,7 +83,7 @@ Do not create separate `accounts`, `otp`, `tokens`, `cookies`, or `risk` service
 
 The absence of a first reference application does not block the reusable auth core. It does postpone final callback URLs, client credentials, and an end-to-end SSO acceptance test for a real consuming product.
 
-Integration order is web first, mobile second: validate a separate web reference application and its application-local session boundary before implementing the native mobile Authorization Code + PKCE client.
+Integration order is web first, mobile second: validate a separate web reference application and its application-local session boundary before implementing the native mobile Authorization Code + PKCE client. The planned Expo pilot is documented in [`units/MOBILE.md`](../../units/MOBILE.md) and [`mobile/docs/IMPLEMENTATION.md`](../../mobile/docs/IMPLEMENTATION.md).
 
 ## V1 implementation boundary
 
@@ -258,22 +258,23 @@ For V1, Resend is the supported production provider. Provider-specific deliverab
 
 The hosted UI should be a small set of server-rendered or minimally enhanced pages that call the same auth APIs used by external clients. It should not become a second authentication implementation.
 
-Recommended hosted routes or screens:
+Current hosted routes and screens:
 
 ```text
-/                         identifier-first entry
-/verify                   email or OTP verification
-/password                 password sign-in or account creation
+/                         identifier-first compatibility entry
+/login                    email → password → email OTP login
+/signup                   email → email OTP → password and confirmation signup
 /account                  account selection and switching
 /security/sessions        active sessions and revocation
-/reset-password           password recovery
+/forgot-password          password recovery request
+/reset-password           password recovery completion
 /logout                   sign-out result
 /error                    safe error and expired-flow states
 ```
 
 The auth UI is a protocol companion, not the product account dashboard. Consuming applications start it with a trusted `returnTo` URL. The auth screen completes login, signup, verification, password recovery, or onboarding and then returns to that URL. The accounts app owns the account overview, profile/settings presentation, and active-session UI while Auth owns the reusable framework-neutral account switcher and remains authoritative for all state changes.
 
-The exact route names may change, but the responsibilities should remain separate and understandable.
+The root route remains compatible for direct visits and consuming-app handoffs. The current pilot does not implement passkeys, trusted-device suppression, risk-based OTP, TOTP, or backup codes.
 
 The hosted UI must:
 
@@ -594,4 +595,4 @@ The root resolver checks the current session and then Better Auth multi-session 
 
 The product account shell validates its session through the auth HTTP boundary. The accounts app consumes the multi-session list, activates selected sessions, renders active-session management, and sends the current session token to Better Auth’s `/multi-session/revoke` endpoint for account-specific logout. This revokes only the selected account’s device session and lets Better Auth activate another remaining account session. The global `/sign-out` endpoint is intentionally not used for account switching because it revokes all multi-session cookies on the client.
 
-`src/components/auth/session-sync.tsx` provides cross-tab freshness using `BroadcastChannel` and a `storage` fallback. It publishes only event type, ID, and timestamp. Visible tabs reload immediately; hidden tabs reload on focus. Existing-account login uses a sign-in email OTP on every login in the current pilot policy.
+The shared `packages/account-switcher` component keeps Auth compatibility pages and consuming apps fresh across same-origin tabs using `BroadcastChannel` and a `storage` fallback. It publishes only event type, ID, and timestamp, revalidates on tab activation, and emits `muflah:active-account-changed`, allowing each app to soft-refresh without a hard browser reload. Existing-account login verifies a password, sends a sign-in email OTP, and creates the session only after OTP verification. Signup verifies the email before password creation.

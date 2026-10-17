@@ -13,7 +13,7 @@ Detailed app documentation lives in `web/docs/ARCHITECTURE.md` and `web/docs/IMP
 1. A visitor opens the web app.
 2. The app calls the auth service through its `/auth-api` rewrite.
 3. If there is no active session, the app redirects to `AUTH_URL` with a `returnTo` URL.
-4. Auth handles login, signup, verification, and onboarding.
+4. Auth handles `/login`, `/signup`, email OTP verification, and onboarding.
 5. Auth returns the user to the web app.
 6. Logout revokes the selected auth session and returns the user through auth.
 

@@ -6,7 +6,7 @@ The pilot exposes one protected calculator route at `/`. Calculator state remain
 
 ## Authentication flow
 
-`web/lib/auth-client.ts` checks `/auth-api/get-session`. If no active user is returned, the app redirects to `AUTH_URL` with `returnTo`. Auth performs login, signup, verification, and onboarding, then redirects back to the Web app.
+`web/lib/auth-client.ts` checks `/auth-api/get-session`. If no active user is returned, the app redirects to `AUTH_URL/login` with `returnTo`. Auth performs password-plus-OTP login, email-OTP signup verification, and onboarding, then redirects back to the Web app.
 
 The shared `<account-switcher auth-url="...">` component handles account listing, account activation, add-account navigation, selected-account logout, and cross-tab refresh. It revalidates the Auth session when the tab becomes active and displays `You’re now using @username (full@email.com).` when another tab changed the active account. The Web app listens for `muflah:active-account-changed` and updates its current user without a hard reload, preserving calculator state.
 

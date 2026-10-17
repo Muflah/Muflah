@@ -13,6 +13,7 @@
     "db:check": "npx auth@latest check --config app/src/lib/auth.ts"
   },
   "dependencies": {
+    "@muflah/account-switcher": "file:../packages/account-switcher",
     "better-auth": "^1.7.10",
     "dotenv": "^17.2.3",
     "next": "^16.4.2",

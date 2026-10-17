@@ -11,11 +11,15 @@ loadEnvConfig(deploymentRoot);
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
+  transpilePackages: ["@muflah/account-switcher"],
   // The package manifest lives at auth/, while the Next.js source lives at auth/app/.
   // Emit the build artifact at auth/.next so Vercel can discover the routes manifest.
   distDir: "../.next",
   env: {
     NEXT_PUBLIC_AUTH_TRUSTED_ORIGINS: process.env.AUTH_TRUSTED_ORIGINS ?? "",
+  },
+  async rewrites() {
+    return [{ source: "/auth-api/:path*", destination: "/api/auth/:path*" }];
   },
 };
 

@@ -2,8 +2,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import AccountActions from "@/components/auth/account-actions";
-import AccountSwitcher from "@/components/auth/account-switcher";
+import AccountSwitcherElement from "@/components/auth/account-switcher-element";
 import SessionList from "@/components/auth/session-list";
+import { config } from "@/lib/config";
 
 export default async function SessionsPage() {
   const requestHeaders = await headers();
@@ -13,18 +14,11 @@ export default async function SessionsPage() {
 
   const allSessions = await auth.api.listDeviceSessions({ headers: requestHeaders });
   const sessions = allSessions.filter((item) => item.user.id === current.user.id);
-  const availableAccounts = allSessions.map((item) => ({
-    name: item.user.name,
-    username: (item.user as typeof item.user & { username?: string | null }).username ?? "",
-    email: item.user.email,
-    onboardingComplete: (item.user as typeof item.user & { onboardingStatus?: string }).onboardingStatus === "complete",
-    sessionToken: item.session.token,
-  }));
   return (
     <div className="account-shell">
       <aside className="account-sidebar">
         <a className="brand" href="/" aria-label="Muflah home">m</a>
-        <AccountSwitcher name={current.user.name} username={current.user.username} email={current.user.email} availableAccounts={availableAccounts} />
+        <AccountSwitcherElement authUrl={config.authUrl} />
         <nav className="account-nav" aria-label="Account navigation">
           <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>
           <a href="/security/sessions" aria-current="page">Sessions &amp; security</a>

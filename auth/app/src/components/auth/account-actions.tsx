@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { publishSessionEvent } from "./session-sync";
+import { publishSessionEvent } from "@muflah/account-switcher";
 
 export default function AccountActions({ currentToken }: { currentToken: string }) {
   const [busy, setBusy] = useState(false);

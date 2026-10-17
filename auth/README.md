@@ -25,7 +25,7 @@ The planned first release includes:
 - Email/password authentication
 - Email verification and password recovery
 - OTP verification with expiry, attempt, resend, and rate limits
-- OTP sign-in on every login attempt in the current pilot policy
+- Password followed by OTP sign-in on every login attempt in the current pilot policy
 - Trusted-device handling for reduced repeated OTP prompts
 - Multiple active sessions, including multiple accounts on one client
 - Account switching, adding an existing account, and creating a new account
@@ -102,6 +102,8 @@ The service is deployable to Vercel with the current layout. Configure the Verce
 - **Build command:** `npm run build`
 - **Output directory:** automatic
 
+The Auth app consumes the shared `../packages/account-switcher` file dependency. The repository root must remain available to the Vercel build so npm can resolve that package.
+
 Add the variables listed above to the Vercel project environment for the required environments. Do not upload the local `.env` file. `BETTER_AUTH_URL` must be the public auth origin, and the configured PostgreSQL database and Resend API key must be reachable from Vercel. The first deployment will run the application, but a consuming application's SSO callback cannot be tested until that application is registered with its real URLs.
 
 ## Documentation
@@ -117,6 +119,13 @@ The pilot foundation is implemented: the modular-monolith layout is in place, Be
 
 ## Web routing model
 
+The hosted routes are:
+
+- `/login` — email, password, then sign-in OTP
+- `/signup` — email verification OTP, password, and confirmation
+- `/forgot-password` — password-reset request
+- `/onboarding` — username setup after account creation
+
 The root route resolves the session state:
 
 ```text
@@ -127,4 +136,4 @@ Complete account         → /<username> compatibility route or consuming-app re
 
 The Hosted Auth Screen is a thin auth surface. Consuming applications such as `accounts/` start auth with a validated `returnTo` URL; auth completes login, signup, verification, or onboarding and returns the user to that application. The auth root also resolves existing sessions for direct visits, while the product-facing account shell lives in the consuming application. Existing active sessions are honored when the auth domain is opened in a new tab unless the caller supplies explicit add-account intent.
 
-The pilot requires an email OTP for every existing-account login. Signup uses password creation, email verification, and onboarding. Logging out revokes only the selected account’s Better Auth multi-session device session through `/multi-session/revoke`; it does not call the global `/sign-out` endpoint, so other account identities remain available. Cross-tab account changes, logout, and session revocation refresh visible tabs immediately and refresh hidden tabs when they become active.
+The pilot requires password verification followed by an email OTP for every existing-account login. Signup verifies email ownership before password creation and onboarding. Logging out revokes only the selected account’s Better Auth multi-session device session through `/multi-session/revoke`; it does not call the global `/sign-out` endpoint, so other account identities remain available. Cross-tab account changes, logout, and session revocation refresh visible tabs immediately and refresh hidden tabs when they become active.

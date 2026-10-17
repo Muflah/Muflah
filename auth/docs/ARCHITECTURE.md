@@ -255,13 +255,12 @@ The primary authentication journey begins by asking for the user's email address
 
 ```text
 Email address
-  ├── Existing identity → password or approved sign-in method
-  │                         → risk check → OTP if required → session
-  └── New identity      → email verification → username/password
+  ├── Existing identity → password → email OTP → session
+  └── New identity      → email OTP → username/password → session
                             → account creation → onboarding → session
 ```
 
-The same flow is used from the main sign-in screen, the account switcher, web clients, and mobile clients. The UI may differ by platform, but the underlying API states and security rules remain consistent.
+The same flow is used from the main sign-in screen, the account switcher, web clients, and mobile clients. The UI may differ by platform, but the underlying API states and security rules remain consistent. Trusted devices and adaptive risk checks are intentionally deferred in the current pilot.
 
 ## Cloneability
 
@@ -358,4 +357,4 @@ The resolver checks the current session and valid Better Auth multi-session cook
 
 The switcher activates only the selected identity. The security page filters sessions by the selected account’s user ID. Logout revokes sessions for the selected identity and clears its active cookie without revoking unrelated identities. Incomplete identities are labeled and route to `/onboarding` without product access.
 
-The web layer publishes non-sensitive `account-switched`, `account-logged-out`, and `session-revoked` events through `BroadcastChannel`, with a `storage` fallback. Visible tabs reload immediately; hidden tabs reload on focus. Events contain no session tokens.
+The shared account-switcher web component publishes non-sensitive `account-switched`, `account-logged-out`, and `session-revoked` events through `BroadcastChannel`, with a `storage` fallback. Consuming apps also revalidate the Auth session when a tab becomes visible, receives focus, or returns from browser history. A changed active account produces an accessible toast and a `muflah:active-account-changed` event; consuming apps soft-refresh their own data without a hard browser reload. Events contain no session tokens.

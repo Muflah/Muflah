@@ -2,7 +2,7 @@
 
 ## Authentication handoff
 
-The server-rendered app receives `AUTH_URL` and the client checks the Auth session through `/auth-api/get-session`. When no user is present, Accounts redirects to Auth with a validated `returnTo` URL. Auth returns the user to the original Accounts route after login, signup, verification, or onboarding.
+The server-rendered app receives `AUTH_URL` and the client checks the Auth session through `/auth-api/get-session`. When no user is present, Accounts redirects to Auth `/login` with a validated `returnTo` URL. Auth returns the user to the original Accounts route after password-plus-OTP login, email-OTP signup verification, or onboarding.
 
 The add-account action uses `intent=login` so an existing active session does not bypass the additional login flow.
 

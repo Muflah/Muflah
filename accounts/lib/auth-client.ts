@@ -40,7 +40,7 @@ async function authRequest<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export function buildAuthUrl(authUrl: string, returnTo?: string, intent?: "login" | "signup") {
-  const url = new URL(authUrl);
+  const url = new URL("/login", authUrl);
   const target = returnTo ?? (typeof window !== "undefined" ? window.location.href : undefined);
   if (target) url.searchParams.set("returnTo", target);
   if (intent) url.searchParams.set("intent", intent);

@@ -48,7 +48,7 @@ export default function HomePage() {
         const result = await response.json();
         const user = result?.user;
         if (user) {
-          window.location.replace(user.onboardingStatus === "complete" && user.username ? destinationAfterAuth(requestedReturnTo, `/${encodeURIComponent(user.username)}`) : onboardingUrl(requestedReturnTo));
+          window.location.replace(user.onboardingStatus === "complete" && user.username ? destinationAfterAuth(requestedReturnTo, `/${encodeURIComponent(user.displayUsername || user.username)}`) : onboardingUrl(requestedReturnTo));
           return;
         }
         if (active) setCheckingSession(false);
@@ -105,7 +105,7 @@ export default function HomePage() {
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error ?? "That code is not valid");
       if (flow === "sign-in") {
-        const destination = result.user?.onboardingStatus === "complete" && result.user?.username ? destinationAfterAuth(returnTo, `/${encodeURIComponent(result.user.username)}`) : onboardingUrl(returnTo);
+        const destination = result.user?.onboardingStatus === "complete" && result.user?.username ? destinationAfterAuth(returnTo, `/${encodeURIComponent(result.user.displayUsername || result.user.username)}`) : onboardingUrl(returnTo);
         window.location.assign(destination);
       } else { setOtp(""); setStep("credentials"); setMessage("Email verified. Create your password."); }
     } catch (error) { setMessage(error instanceof Error ? error.message : "That code is not valid"); }

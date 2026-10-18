@@ -3,6 +3,7 @@ import { emailOTP, multiSession, username } from "better-auth/plugins";
 import { config } from "./config";
 import { database } from "./database";
 import { otpEmail, sendTransactionalEmail } from "./email/connector";
+import { isValidUsername } from "./username";
 
 export const auth = betterAuth({
   database,
@@ -54,8 +55,10 @@ export const auth = betterAuth({
   },
   plugins: [
     username({
-      displayUsername: false,
-      immutableUsername: true,
+      displayUsername: true,
+      immutableUsername: false,
+      usernameValidator: isValidUsername,
+      displayUsernameValidator: isValidUsername,
     }),
     multiSession({ maximumSessions: config.maxSessions }),
     ...(config.otpEnabled

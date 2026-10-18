@@ -192,9 +192,11 @@ Mobile applications use Authorization Code with PKCE through the auth service an
 
 ## Identity model
 
-Email is the private login and recovery identifier. A username or handle is a separate, public, unique identifier used for display, URLs, mentions, or discovery.
+Email is the private login and recovery identifier. A username or handle is a separate, public, unique identifier used for display, URLs, mentions, or discovery. The canonical username is case-insensitive and normalized to lowercase; `displayUsername` preserves the user-selected casing for presentation.
 
 The username must not be treated as proof of email ownership and should not be permanently derived from the email address.
+
+Users may change their username. Auth remains authoritative for current username uniqueness and updates, while retired usernames are retained in `username_aliases` as URL aliases. Auth routes accept username casing without treating casing as a separate identity and redirect non-canonical paths to the current display casing.
 
 ## Onboarding state
 

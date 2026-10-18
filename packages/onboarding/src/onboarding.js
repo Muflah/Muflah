@@ -42,7 +42,7 @@ export class MuflahOnboarding extends ElementBase {
 
   render() {
     const root = this.attachShadow({ mode: "open" });
-    root.innerHTML = `<style>${styles}</style><div class="shell"><header class="header"><a class="brand" href="/" aria-label="Muflah home">m</a><span class="label">Account setup</span></header><main class="main"><section class="card" aria-live="polite"><p class="eyebrow">One last step</p><h1>Choose your username.</h1><p class="intro">Your username is your public identity across Muflah. It can use lowercase letters, numbers, and underscores.</p><form><label for="username">Username</label><input id="username" name="username" autocomplete="username" autocapitalize="none" pattern="[a-z0-9_]+" minlength="3" maxlength="30" required /><button type="submit">Finish setup ↗</button></form><p class="notice" hidden></p></section></main><footer class="footer"><span>© 2026 Muflah Ul Furqan.</span><span>Authentication service</span></footer></div>`;
+    root.innerHTML = `<style>${styles}</style><div class="shell"><header class="header"><a class="brand" href="/" aria-label="Muflah home">m</a><span class="label">Account setup</span></header><main class="main"><section class="card" aria-live="polite"><p class="eyebrow">One last step</p><h1>Choose your username.</h1><p class="intro">Your username is your public identity across Muflah. It can use letters, numbers, and underscores; capitalization is preserved.</p><form><label for="username">Username</label><input id="username" name="username" autocomplete="username" autocapitalize="none" pattern="[A-Za-z0-9_]+" minlength="3" maxlength="30" required /><button type="submit">Finish setup ↗</button></form><p class="notice" hidden></p></section></main><footer class="footer"><span>© 2026 Muflah Ul Furqan.</span><span>Authentication service</span></footer></div>`;
     this.root = root;
     this.form = root.querySelector("form");
     this.input = root.querySelector("input");
@@ -70,8 +70,8 @@ export class MuflahOnboarding extends ElementBase {
     this.button.textContent = "Saving…";
     this.notice.hidden = true;
     try {
-      const result = await request(getAttribute(this, "complete-url", "/onboarding-api/complete"), { method: "POST", body: JSON.stringify({ username: this.input.value.trim().toLowerCase() }) });
-      this.redirectAfterCompletion(result.username);
+      const result = await request(getAttribute(this, "complete-url", "/onboarding-api/complete"), { method: "POST", body: JSON.stringify({ username: this.input.value.trim() }) });
+      this.redirectAfterCompletion(result.displayUsername || result.username);
     } catch (error) {
       this.showError(error instanceof Error ? error.message : "Unable to complete onboarding.");
       this.button.disabled = false;

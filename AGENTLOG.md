@@ -368,3 +368,30 @@ Each entry contains:
 - Files: `AUTH.md`, `auth/docs/IMPLEMENTATION.md`, and `auth/AGENTLOG.md`.
 - Verification Status: Documentation-only change; `git diff --check` required.
 
+# 2026-10-19T04:02:00+05:00 — Make Usernames Mutable and Case-Preserving
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Preserve username formatting while allowing users to change usernames.
+- Changes Made: Enabled Better Auth `displayUsername`, disabled immutable usernames, added case-insensitive canonical username validation, preserved display casing, added the Auth-owned username-change endpoint, added retired username aliases for URL compatibility, and updated onboarding and account-switcher display behavior.
+- Files: `auth/app/src/lib/auth.ts`, `auth/app/src/lib/username.ts`, `auth/app/src/lib/username-history.ts`, `auth/app/src/app/api/onboarding/complete/route.ts`, `auth/app/src/app/api/profile/username/route.ts`, `auth/app/src/app/[username]/page.tsx`, `auth/app/src/app/page.tsx`, `auth/app/src/app/security/sessions/page.tsx`, `auth/app/migrations/001_username_aliases.sql`, `packages/onboarding/src/onboarding.js`, `packages/account-switcher/src/account-switcher.js`, and relevant documentation.
+- Verification Status: The live database already contained `username` and `displayUsername`; the new `username_aliases` table was applied. Auth typecheck and shared package syntax checks passed.
+
+# 2026-10-19T03:53:54+05:00 — Standardize Account Switcher API Route
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Update the shared account switcher to use one route across Auth, Accounts, and Web.
+- Changes Made: The shared component now always calls the local `/auth-api/*` route. Auth uses its existing self-rewrite to `/api/auth/*`, while Accounts and Web continue forwarding `/auth-api/*` to the configured `AUTH_URL`. Removed the temporary `api-base` distinction and updated the package and Auth documentation.
+- Files: `packages/account-switcher/src/account-switcher.js`, `packages/account-switcher/README.md`, `auth/docs/IMPLEMENTATION.md`, `units/AUTH.md`.
+- Verification Status: Auth, Accounts, and Web typechecks passed; shared component syntax check passed; `git diff --check` passed. The subsequent Auth production build was blocked by a temporary OneDrive `.next` file lock (`EPERM`), while the preceding production build passed.
+
+# 2026-10-19T04:16:27+05:00 — Repair Auth Account Switcher Remounts
+
+- Agent: Codex
+- Model: GPT-5
+- Prompt Summary: Fix the Auth account switcher when it is not functioning and ensure it uses the shared package.
+- Changes Made: Confirmed Auth mounts `@muflah/account-switcher`, fixed the shared custom element to reuse its Shadow DOM across reconnects, and made API errors visible in the switcher menu.
+- Files: `packages/account-switcher/src/account-switcher.js` and `AGENTLOG.md`.
+- Verification Status: Shared package syntax check, `git diff --check`, Auth typecheck, and Auth production build passed.
+

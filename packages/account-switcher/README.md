@@ -27,6 +27,7 @@ The package also exports `publishSessionEvent` for consumers that need to notify
 ## Supported behavior
 
 - Loads the current Auth session and available account sessions.
+- Displays the formatting-preserving `displayUsername` when Auth provides it, while treating usernames case-insensitively.
 - Activates another account through Auth.
 - Starts the add-account login flow with a validated return target.
 - Revokes only the selected account session when logging out through the switcher.

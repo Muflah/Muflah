@@ -109,7 +109,9 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 
 - Email addresses are normalized consistently before lookup and storage.
 - An email address must be verified before it is treated as a fully verified login identifier.
-- A username or handle must be unique, normalized, URL-safe, and checked against reserved names.
+- A username or handle must be unique case-insensitively, normalized to a lowercase canonical value, URL-safe, and checked against reserved names.
+- The user-facing `displayUsername` preserves the chosen casing and is maintained separately from the canonical username.
+- Users may change their username; Auth owns current-value uniqueness and records retired canonical values for URL compatibility.
 - Usernames must not reveal or expose the user's private email address.
 - Username changes require an explicit product decision about history, redirects, and impersonation risk.
 
@@ -487,7 +489,7 @@ Existing active sessions are honored when the auth site is opened in a new tab. 
 - Onboarding collects the username and marks the account complete.
 - Complete accounts route to `/<username>`.
 - Incomplete accounts route to `/onboarding` and must not receive product access.
-- Username is immutable after onboarding through the configured Better Auth username plugin.
+- Username is mutable after onboarding through the configured Better Auth username plugin; canonical casing remains lowercase while `displayUsername` preserves formatting.
 
 ## Multi-account and logout behavior
 
@@ -528,6 +530,8 @@ The security page filters the visible session list by the selected user ID. Indi
 | `packages/onboarding/src/onboarding.js` | Framework-neutral onboarding presentation maintained by Auth and shared across products. |
 | `app/src/app/onboarding/page.tsx` | Incomplete-account onboarding UI. |
 | `app/src/app/api/onboarding/complete/route.ts` | Onboarding completion and username persistence. |
+| `app/src/app/api/profile/username/route.ts` | Authenticated mutable username changes. |
+| `app/migrations/001_username_aliases.sql` | Retired username alias table for URL compatibility. |
 | `app/src/app/api/identity/lookup/route.ts` | Identifier-first account lookup. |
 
 ## Mobile client status

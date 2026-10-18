@@ -20,7 +20,7 @@ export default async function SessionsPage() {
         <a className="brand" href="/" aria-label="Muflah home">m</a>
         <AccountSwitcherElement authUrl={config.authUrl} />
         <nav className="account-nav" aria-label="Account navigation">
-          <a href={`/${encodeURIComponent(current.user.username)}`}>Account home</a>
+          <a href={`/${encodeURIComponent(current.user.displayUsername || current.user.username)}`}>Account home</a>
           <a href="/security/sessions" aria-current="page">Sessions &amp; security</a>
         </nav>
         <AccountActions currentToken={current.session.token} />

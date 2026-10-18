@@ -495,7 +495,9 @@ The account switcher should be an application-facing experience backed by auth s
 
 The `accounts/` consuming app provides the profile-card dropdown and add-account entry point while Better Auth provides the persisted multi-session identities and selected-session activation. The consuming UI only presents an account as available when its multi-session entry is present and valid. Account-level logout uses Better Auth `/multi-session/revoke` with the selected session token; the global `/sign-out` endpoint is reserved for global sign-out semantics and must not be used by the switcher.
 
-The account record retained by the switcher must include its onboarding state. After a modal signup creates an account, abandoning setup marks the entry as `Onboarding incomplete`. Selecting that entry activates its session and routes to `/onboarding`; completing the username changes the entry to ready and permits the normal `/<username>` app-shell route.
+The account record retained by the switcher must include its onboarding state. After a modal signup creates an account, abandoning setup marks the entry as `Onboarding incomplete`. Selecting that entry activates its session and routes to `/onboarding`; completing the username changes the entry to ready and permits the normal `/<username>` app-shell route. The switcher displays `displayUsername` when available and treats the canonical username as case-insensitive.
+
+Username changes use the Auth-owned `POST /api/profile/username` endpoint. The endpoint validates the display value, derives the lowercase canonical value, preserves the previous canonical username in `username_aliases`, and updates the Better Auth user record. The custom migration `app/migrations/001_username_aliases.sql` creates the alias table; it has been applied to the configured database.
 
 The service must not automatically merge two users merely because the same person controls both email addresses. Account linking requires a separate explicit design with reauthentication and clear user confirmation.
 

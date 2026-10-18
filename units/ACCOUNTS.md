@@ -83,7 +83,7 @@ The reusable account switcher is maintained by Auth and lives in the shared root
 
 ## Shared onboarding UI
 
-The reusable onboarding presentation is maintained by Auth in `packages/onboarding` as `@muflah/onboarding`. Accounts renders `<muflah-onboarding>` when the Auth session reports incomplete onboarding. Accounts proxies `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`, while Auth remains authoritative for the database state, username rules, completion mutation, and access gate. Auth's `/onboarding` route remains the fallback for direct Auth visits and clients that do not yet mount the package.
+The reusable onboarding presentation is maintained by Auth in `packages/onboarding` as `@muflah/onboarding`. Accounts renders `<muflah-onboarding>` when the Auth session reports incomplete onboarding. Accounts proxies `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`, while Auth remains authoritative for the database state, username rules, completion mutation, mutable username changes, and access gate. Auth's `/onboarding` route remains the fallback for direct Auth visits and clients that do not yet mount the package.
 
 ## Authentication handoff
 

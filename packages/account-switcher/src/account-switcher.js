@@ -54,7 +54,7 @@ function accountsFrom(value) {
     const user = entry.user && typeof entry.user === "object" ? entry.user : entry;
     if (typeof user.email !== "string" || !user.email) return [];
     const session = entry.session && typeof entry.session === "object" ? entry.session : {};
-    return [{ id: typeof entry.id === "string" ? entry.id : `${user.email}-${index}`, name: user.name || user.email, email: user.email, username: user.username || "", onboardingComplete: user.onboardingStatus === undefined || user.onboardingStatus === "complete" || user.onboardingStatus === "completed", sessionToken: session.token || entry.sessionToken }];
+    return [{ id: typeof entry.id === "string" ? entry.id : `${user.email}-${index}`, name: user.name || user.email, email: user.email, username: user.displayUsername || user.username || "", onboardingComplete: user.onboardingStatus === undefined || user.onboardingStatus === "complete" || user.onboardingStatus === "completed", sessionToken: session.token || entry.sessionToken }];
   });
 }
 
@@ -87,8 +87,10 @@ export class AccountSwitcher extends ElementBase {
   }
 
   render() {
-    this.shadowRoot?.replaceChildren();
-    const root = this.attachShadow({ mode: "open" });
+    // Client navigation can reconnect a custom element. Reuse its existing
+    // shadow root because attaching a second one throws and breaks the UI.
+    const root = this.shadowRoot ?? this.attachShadow({ mode: "open" });
+    root.replaceChildren();
     root.innerHTML = `<style>${styles}</style><div class="switcher"><button class="trigger" type="button" aria-expanded="false"><span class="avatar">?</span><span class="summary"><strong>Account</strong><small>Loading…</small></span><span class="chevron">⌄</span></button><div class="menu" hidden><p class="label">Available accounts</p><div class="accounts"></div><button class="action add" type="button">＋ Add account</button><button class="action logout" type="button">Log out account ↗</button><p class="error" hidden></p></div><div class="toast" role="status" aria-live="polite" hidden><strong>Account changed</strong><span class="toast-copy"></span><button class="toast-close" type="button" aria-label="Dismiss">×</button></div></div>`;
     this.root = root;
     root.querySelector(".trigger").addEventListener("click", () => { const menu = root.querySelector(".menu"); menu.hidden = !menu.hidden; root.querySelector(".trigger").setAttribute("aria-expanded", String(!menu.hidden)); });
@@ -105,7 +107,7 @@ export class AccountSwitcher extends ElementBase {
       this.token = session?.session?.token;
       this.accounts = accountsFrom(deviceSessions);
       if (this.user?.email && !this.accounts.some((account) => account.email.toLowerCase() === this.user.email.toLowerCase())) {
-        this.accounts.unshift({ id: this.user.id || this.user.email, name: this.user.name || this.user.email, email: this.user.email, username: this.user.username || "", onboardingComplete: this.user.onboardingStatus === undefined || this.user.onboardingStatus === "complete" || this.user.onboardingStatus === "completed", sessionToken: this.token });
+        this.accounts.unshift({ id: this.user.id || this.user.email, name: this.user.name || this.user.email, email: this.user.email, username: this.user.displayUsername || this.user.username || "", onboardingComplete: this.user.onboardingStatus === undefined || this.user.onboardingStatus === "complete" || this.user.onboardingStatus === "completed", sessionToken: this.token });
       }
       this.update();
       if (announce && previousUser && this.user && this.accountKey(previousUser) !== this.accountKey(this.user)) this.accountChanged(this.user);
@@ -156,7 +158,7 @@ export class AccountSwitcher extends ElementBase {
     publishSessionEvent("account-logged-out");
     window.location.assign(authUrl(this.getAttribute("auth-url")));
   }
-  showError(message) { const error = this.root.querySelector(".error"); error.textContent = message; error.hidden = false; }
+  showError(message) { const error = this.root.querySelector(".error"); error.textContent = message; error.hidden = false; const menu = this.root.querySelector(".menu"); menu.hidden = false; this.root.querySelector(".trigger").setAttribute("aria-expanded", "true"); }
   refreshFromEvent(event) { if (event?.id && document.visibilityState === "visible") this.checkActiveSession(); }
 }
 

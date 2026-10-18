@@ -129,6 +129,7 @@ The hosted routes are:
 - `/start` — neutral email entry that hands off to login or signup
 - `/forgot-password` — password-reset request
 - `/onboarding` — username setup after account creation
+- `/api/profile/username` — authenticated username change endpoint
 
 The root route resolves the session state:
 
@@ -139,5 +140,7 @@ Complete account         → /<username> compatibility route or consuming-app re
 ```
 
 The Hosted Auth Screen is a thin auth surface. Consuming applications such as `accounts/` start auth with a validated `returnTo` URL; auth completes login, signup, verification, or onboarding and returns the user to that application. The auth root also resolves existing sessions for direct visits, while the product-facing account shell lives in the consuming application. Existing active sessions are honored when the auth domain is opened in a new tab unless the caller supplies explicit add-account intent.
+
+Usernames are case-insensitively unique and mutable. Auth stores a canonical lowercase `username` plus a formatting-preserving `displayUsername`. Username changes are handled by Auth's authoritative API; retired canonical usernames are recorded in `username_aliases` for URL compatibility and future redirects.
 
 The pilot requires password verification followed by an email OTP for every existing-account login. Signup verifies email ownership before password creation and onboarding. Logging out revokes only the selected account’s Better Auth multi-session device session through `/multi-session/revoke`; it does not call the global `/sign-out` endpoint, so other account identities remain available. Cross-tab account changes, logout, and session revocation refresh visible tabs immediately and refresh hidden tabs when they become active.

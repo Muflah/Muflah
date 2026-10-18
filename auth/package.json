@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@muflah/account-switcher": "file:../packages/account-switcher",
+    "@muflah/onboarding": "file:../packages/onboarding",
     "better-auth": "^1.7.10",
     "dotenv": "^17.2.3",
     "next": "^16.4.2",

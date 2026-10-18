@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import "@muflah/account-switcher";
+import "@muflah/onboarding";
 import { buildAuthUrl, getSession, type AuthUser } from "@/lib/auth-client";
 
 const navigation = [
@@ -68,6 +69,10 @@ export default function AccountShell({ authUrl, activePage = "Overview", childre
         </div>
       </main>
     );
+  }
+
+  if (user.onboardingStatus !== "complete" && user.onboardingStatus !== "completed") {
+    return <muflah-onboarding auth-url={authUrl} session-url="/auth-api/get-session" complete-url="/onboarding-api/complete" />;
   }
 
   return (

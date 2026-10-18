@@ -27,6 +27,8 @@ The implementation should follow the repository boundaries defined in `ARCHITECT
 
 The top-level `auth/` directory is a documentation and hosted-service container. The hosted service implementation lives under `auth/app/`. The Auth-maintained framework-neutral account switcher lives in the shared root package `packages/account-switcher` and is deliberately independent of React and Next.js. Auth compatibility pages mount it through `auth/app/src/components/auth/account-switcher-element.tsx`; the local `/auth-api` rewrite maps the component’s browser calls to Auth’s `/api/auth` endpoints. `package.json` and its lockfile are the deliberate exceptions because they define the dependency graph and project commands. Other supporting files such as TypeScript files, framework configuration, application-registration JSON, migrations, and tests remain inside `auth/app/`.
 
+The Auth-maintained framework-neutral onboarding element lives in `packages/onboarding`. Auth, Accounts, and Web mount the same HTML/CSS/JavaScript component through configurable session and completion URLs. The component is presentation-only; `/api/onboarding/complete` remains the authoritative mutation and `/onboarding` remains the Auth-hosted fallback.
+
 | Area | Responsibility | Must not contain |
 | --- | --- | --- |
 | `src/app` | Thin hosted auth screens and stable route handlers | Product dashboards, product navigation, product permissions |

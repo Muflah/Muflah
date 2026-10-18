@@ -82,6 +82,14 @@ Requirement work is recorded here as it is completed or materially changed. Entr
 - Continuation: The link preserves the validated `returnTo` destination.
 - Verification: Auth typecheck passes.
 
+### 2026-10-18T04:31:07+05:00 — Extract reusable onboarding presentation
+
+- Status: Implemented the Auth-maintained `@muflah/onboarding` browser-native package.
+- Authority: Auth continues to own onboarding status, username validation, the completion API, and session state.
+- Consumers: Auth, Accounts, and Web can render the shared element through configurable API routes; Auth `/onboarding` remains the fallback route.
+- Security boundary: No password, OTP, session, cookie, database, or authorization behavior changed.
+- Verification: Auth, Accounts, and Web typechecks plus the shared package JavaScript syntax check pass.
+
 ## Unversioned rolling-release policy
 
 - All normal API and browser URLs are unversioned.

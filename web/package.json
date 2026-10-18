@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@muflah/account-switcher": "file:../packages/account-switcher",
+    "@muflah/onboarding": "file:../packages/onboarding",
     "next": "^16.4.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

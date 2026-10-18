@@ -1,4 +1,4 @@
-export type AuthUser = { name?: string; email: string };
+export type AuthUser = { name?: string; email: string; username?: string; onboardingStatus?: string };
 export type AuthSession = { token?: string; user?: AuthUser };
 
 async function authRequest<T>(path: string, init?: RequestInit): Promise<T> {

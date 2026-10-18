@@ -10,7 +10,7 @@
 Browser
   │
   ▼
-Accounts UI ── /auth-api/* rewrite ──► Auth API
+Accounts UI ── /auth-api/* and /onboarding-api/* rewrites ──► Auth API
   │                                      │
   └── account-switcher web component ◄───┘
 ```
@@ -34,6 +34,8 @@ Auth owns:
 ## Shared switcher
 
 The reusable `@muflah/account-switcher` web component is Auth-maintained at the shared root package `packages/account-switcher`. Accounts mounts it as `<account-switcher auth-url="...">`; it is not an Accounts implementation and can be consumed by other products.
+
+The reusable `@muflah/onboarding` web component is also Auth-maintained at `packages/onboarding`. Accounts renders it only when the Auth session reports incomplete onboarding. The component calls Auth's existing completion endpoint; Accounts does not own onboarding state or username rules.
 
 ## Routes
 

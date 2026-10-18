@@ -8,9 +8,11 @@ The add-account action uses `intent=login` so an existing active session does no
 
 ## Auth API boundary
 
-`accounts/next.config.ts` rewrites `/auth-api/:path*` to `${AUTH_URL}/api/auth/:path*`. Browser code calls only the local rewrite, which keeps the Auth origin configurable and avoids hard-coded production domains.
+`accounts/next.config.ts` rewrites `/auth-api/:path*` to `${AUTH_URL}/api/auth/:path*` and `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`. Browser code calls only local rewrites, which keeps the Auth origin configurable and avoids hard-coded production domains.
 
 The shared switcher uses Auth multi-session endpoints for device-session listing, activation, and selected-account revocation. Accounts must preserve the distinction between selected-account logout and global sign-out.
+
+When the session user has an incomplete `onboardingStatus`, Accounts mounts `<muflah-onboarding>`. The package handles the form and calls the existing Auth completion route; successful completion returns to the current Accounts URL. Auth remains the fallback onboarding host for direct Auth visits and older clients.
 
 ## Cross-tab behavior
 

@@ -10,7 +10,7 @@
 Browser
   │
   ▼
-Web product UI ── /auth-api/* rewrite ──► Auth API
+Web product UI ── /auth-api/* and /onboarding-api/* rewrites ──► Auth API
   │                                        │
   └──── account-switcher web component ◄───┘
 ```
@@ -20,6 +20,8 @@ The Web app owns calculator state and product presentation. Auth owns identity, 
 ## Framework-neutral integration
 
 Auth owns `@muflah/account-switcher` as a browser-native web component using HTML, CSS, and JavaScript. It can be mounted by this Next.js template or by a future plain HTML, mobile WebView, or other frontend stack. Native mobile apps should use Auth's mobile API flow instead of this web component.
+
+Auth also owns `@muflah/onboarding`, a browser-native onboarding element. Web renders it when the Auth session reports incomplete onboarding, while Auth remains authoritative for the status, username rules, and completion mutation.
 
 ## Deployment
 

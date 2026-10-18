@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { buildAuthUrl, getSession, type AuthUser } from "@/lib/auth-client";
 import "@muflah/account-switcher";
+import "@muflah/onboarding";
 
 const keys = ["7", "8", "9", "÷", "4", "5", "6", "×", "1", "2", "3", "−", "0", ".", "C", "+"];
 
@@ -54,6 +55,7 @@ export default function CalculatorApp({ authUrl }: { authUrl: string }) {
 
   if (loading) return <main className="state"><span className="loader" />Checking your session…</main>;
   if (!user) return <main className="state"><section className="notice-card"><span className="eyebrow">Web app template</span><h1>Sign in to use the calculator.</h1><p>{error || "This product is protected by the central auth service."}</p><a className="button" href={buildAuthUrl(authUrl)} onClick={(event) => { event.preventDefault(); window.location.assign(buildAuthUrl(authUrl)); }}>Continue to auth ↗</a></section></main>;
+  if (user.onboardingStatus !== "complete" && user.onboardingStatus !== "completed") return <muflah-onboarding auth-url={authUrl} session-url="/auth-api/get-session" complete-url="/onboarding-api/complete" />;
 
   return <main className="app"><account-switcher auth-url={authUrl} /><section className="workspace"><div className="intro"><span className="eyebrow">Protected web app</span><h1>Quick math.</h1><p>A small product surface using the same auth redirect, session, and logout contract.</p></div><section className="calculator" aria-label="Calculator"><div className="display"><small>{stored !== null ? `${stored} ${operator ?? ""}` : "Ready"}</small><strong>{value}</strong></div><div className="keypad">{keys.map((key) => <button key={key} className={key === "C" ? "clear" : ["+", "−", "×", "÷"].includes(key) ? "operator" : ""} type="button" onClick={() => press(key)}>{key}</button>)}<button className="equals" type="button" onClick={calculate}>=</button></div>{error && <p className="error" role="alert">{error}</p>}</section></section></main>;
 }

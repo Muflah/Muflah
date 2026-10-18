@@ -43,7 +43,8 @@ Applications remain responsible for their own organizations, memberships, roles,
 ```text
 repository/
 ├── packages/
-│   └── account-switcher/ # Auth-maintained plain JS/HTML/CSS web component
+│   ├── account-switcher/ # Auth-maintained plain JS/HTML/CSS web component
+│   └── onboarding/       # Auth-maintained plain JS/HTML/CSS onboarding UI
 ├── auth/
 │   ├── .env              # Local deployment secrets; never commit
 │   ├── README.md         # This overview
@@ -61,6 +62,8 @@ The repository-level [AGENTLOG.md](../AGENTLOG.md) contains chronological implem
 `package.json` and `package-lock.json` will live directly under `auth/` because they define the dependency graph and project commands. Other implementation files remain under `auth/app/`.
 
 The shared [account-switcher package](../packages/account-switcher/README.md) is maintained by Auth but lives at the repository root so Accounts, Web, and future products can consume it without depending on the Accounts application.
+
+The shared [onboarding package](../packages/onboarding/README.md) follows the same boundary: it owns reusable presentation only, while Auth owns onboarding status, username validation, completion, and access authority. Auth's `/onboarding` route remains the direct-visit and compatibility fallback.
 
 ## Configuration
 
@@ -102,7 +105,7 @@ The service is deployable to Vercel with the current layout. Configure the Verce
 - **Build command:** `npm run build`
 - **Output directory:** automatic
 
-The Auth app consumes the shared `../packages/account-switcher` file dependency. The repository root must remain available to the Vercel build so npm can resolve that package.
+The Auth app consumes the shared `../packages/account-switcher` and `../packages/onboarding` file dependencies. The repository root must remain available to the Vercel build so npm can resolve those packages.
 
 Add the variables listed above to the Vercel project environment for the required environments. Do not upload the local `.env` file. `BETTER_AUTH_URL` must be the public auth origin, and the configured PostgreSQL database and Resend API key must be reachable from Vercel. The first deployment will run the application, but a consuming application's SSO callback cannot be tested until that application is registered with its real URLs.
 

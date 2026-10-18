@@ -11,7 +11,8 @@ loadEnvConfig(deploymentRoot);
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
-  transpilePackages: ["@muflah/account-switcher"],
+  turbopack: { root: path.resolve(process.cwd(), "..") },
+  transpilePackages: ["@muflah/account-switcher", "@muflah/onboarding"],
   // The package manifest lives at auth/, while the Next.js source lives at auth/app/.
   // Emit the build artifact at auth/.next so Vercel can discover the routes manifest.
   distDir: "../.next",

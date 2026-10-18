@@ -12,7 +12,9 @@ The shared `<account-switcher auth-url="...">` component handles account listing
 
 ## API proxy and configuration
 
-`web/next.config.ts` rewrites `/auth-api/:path*` to `${AUTH_URL}/api/auth/:path*`.
+`web/next.config.ts` rewrites `/auth-api/:path*` to `${AUTH_URL}/api/auth/:path*` and `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`.
+
+If the returned user has an incomplete `onboardingStatus`, the calculator mounts `<muflah-onboarding>` and returns to the calculator after Auth completes the existing onboarding API call. This is a presentation gate only; Auth remains authoritative and its `/onboarding` route remains available as a fallback.
 
 ```env
 AUTH_URL=https://auth.example.com

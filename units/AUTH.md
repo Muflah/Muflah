@@ -522,7 +522,7 @@ The security page filters the visible session list by the selected user ID. Indi
 | `app/src/app/security/sessions/page.tsx` | Selected-account security/session view. |
 | `app/src/components/auth/account-actions.tsx` | Selected-account logout. |
 | `app/src/components/auth/session-list.tsx` | Individual session revocation UI. |
-| `app/src/components/auth/account-switcher-element.tsx` | Auth compatibility-page wrapper for the shared account switcher and active-tab session awareness. |
+| `app/src/components/auth/account-switcher-element.tsx` | Auth compatibility-page wrapper for the shared account switcher. |
 | `packages/account-switcher/src/account-switcher.js` | Framework-neutral account switcher web component maintained by Auth and shared across products. |
 | `app/src/components/auth/onboarding-element.tsx` | Auth compatibility-page wrapper for the shared onboarding element and validated return target. |
 | `packages/onboarding/src/onboarding.js` | Framework-neutral onboarding presentation maintained by Auth and shared across products. |

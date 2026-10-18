@@ -12,7 +12,7 @@ The component uses browser-native HTML, CSS, and JavaScript. It has no React, Ne
 <account-switcher auth-url="https://auth.example.com"></account-switcher>
 ```
 
-The `auth-url` attribute is the configured Auth origin. Applications should normally call the component through their local `/auth-api` proxy so the Auth origin remains deployment-configurable.
+The `auth-url` attribute is the configured Auth origin. The component always calls the consuming app's local `/auth-api` proxy. Auth maps that route to its native `/api/auth` boundary; Accounts and Web map it to the configured `AUTH_URL`. This keeps the component integration identical across all web apps.
 
 ## JavaScript usage
 

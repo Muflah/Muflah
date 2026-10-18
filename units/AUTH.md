@@ -524,6 +524,8 @@ The security page filters the visible session list by the selected user ID. Indi
 | `app/src/components/auth/session-list.tsx` | Individual session revocation UI. |
 | `app/src/components/auth/account-switcher-element.tsx` | Auth compatibility-page wrapper for the shared account switcher and active-tab session awareness. |
 | `packages/account-switcher/src/account-switcher.js` | Framework-neutral account switcher web component maintained by Auth and shared across products. |
+| `app/src/components/auth/onboarding-element.tsx` | Auth compatibility-page wrapper for the shared onboarding element and validated return target. |
+| `packages/onboarding/src/onboarding.js` | Framework-neutral onboarding presentation maintained by Auth and shared across products. |
 | `app/src/app/onboarding/page.tsx` | Incomplete-account onboarding UI. |
 | `app/src/app/api/onboarding/complete/route.ts` | Onboarding completion and username persistence. |
 | `app/src/app/api/identity/lookup/route.ts` | Identifier-first account lookup. |

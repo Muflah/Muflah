@@ -15,8 +15,11 @@ The app sends unauthenticated visitors to `AUTH_URL/login` with a `returnTo` URL
 
 The account switcher is provided by the Auth-owned, framework-neutral `@muflah/account-switcher` web component. It uses plain browser JavaScript, HTML, and CSS and calls the local `/auth-api` proxy.
 
+If the Auth session reports incomplete onboarding, the calculator mounts the Auth-maintained `@muflah/onboarding` web component. It calls the local `/onboarding-api` proxy and returns to the calculator after Auth completes onboarding. The Web app does not own onboarding state or username rules.
+
 Detailed documentation:
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Implementation](docs/IMPLEMENTATION.md)
 - [Shared account-switcher package](../packages/account-switcher/README.md)
+- [Shared onboarding package](../packages/onboarding/README.md)

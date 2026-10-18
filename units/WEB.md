@@ -19,6 +19,8 @@ Detailed app documentation lives in `web/docs/ARCHITECTURE.md` and `web/docs/IMP
 
 The web app does not import code from `auth/app` or maintain a second identity/session store. It is a product template, not a replacement for the Accounts app.
 
+When the session user has an incomplete `onboardingStatus`, Web renders the shared Auth-maintained `@muflah/onboarding` element from `packages/onboarding`. The app proxies `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`; Auth remains authoritative and its `/onboarding` route remains the fallback.
+
 The Auth-maintained shared `packages/account-switcher` package provides the framework-neutral `@muflah/account-switcher` web component. It uses browser-native HTML, CSS, and JavaScript only—no React or Next.js runtime dependency—revalidates the session when the tab becomes active, and dispatches an account-change event so each product can update without a hard reload. This app and future products using another stack can load the same element:
 
 ```html
@@ -27,6 +29,8 @@ The Auth-maintained shared `packages/account-switcher` package provides the fram
 ```
 
 The component calls the consuming app's `/auth-api` proxy for session lookup, account listing, account activation, and selected-account revocation. Auth remains authoritative; the component owns no identity or session data.
+
+The onboarding component follows the same framework-neutral model. It uses configurable `session-url` and `complete-url` attributes and contains no Auth database or security logic.
 
 ## Deployment
 
@@ -37,6 +41,7 @@ Configure a separate Vercel project:
 - Environment variable: `AUTH_URL`
 - Add the deployed web origin to auth's `AUTH_TRUSTED_ORIGINS`
 - Install the shared `@muflah/account-switcher` package from `packages/account-switcher`; Auth maintains its API and behavior.
+- Install the shared `@muflah/onboarding` package from `packages/onboarding`; Auth maintains its presentation contract and completion API.
 
 Example local configuration:
 

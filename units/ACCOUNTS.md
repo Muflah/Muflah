@@ -81,6 +81,10 @@ The pilot includes the account shell, profile/settings surfaces, account switchi
 
 The reusable account switcher is maintained by Auth and lives in the shared root `packages/account-switcher` package as the framework-neutral `@muflah/account-switcher` web component. Accounts is only one consumer. It contains only HTML templates, CSS, and browser JavaScript. Any product stack can load the component and use `<account-switcher auth-url="...">`; it calls only the consuming app's `/auth-api` proxy and does not own identity or session state.
 
+## Shared onboarding UI
+
+The reusable onboarding presentation is maintained by Auth in `packages/onboarding` as `@muflah/onboarding`. Accounts renders `<muflah-onboarding>` when the Auth session reports incomplete onboarding. Accounts proxies `/onboarding-api/:path*` to `${AUTH_URL}/api/onboarding/:path*`, while Auth remains authoritative for the database state, username rules, completion mutation, and access gate. Auth's `/onboarding` route remains the fallback for direct Auth visits and clients that do not yet mount the package.
+
 ## Authentication handoff
 
 When an unauthenticated user opens an accounts route, the accounts app sends them to `AUTH_URL` with a trusted `returnTo` URL. Auth handles the authentication flow and returns the user to the original accounts route. Adding an account uses the same full-page auth flow with `intent=login`, so an existing active account does not short-circuit the flow.
@@ -120,6 +124,7 @@ The auth service is a Next.js App Router application under `auth/app`. Its impor
 - `auth/app/src/app/api/onboarding/complete/route.ts` — onboarding completion.
 - `packages/account-switcher/src/account-switcher.js` — shared switcher behavior reference.
 - `packages/account-switcher/src/account-switcher.js` — cross-tab and active-tab session awareness reference.
+- `packages/onboarding/src/onboarding.js` — shared onboarding presentation and API-call behavior.
 - `auth/app/src/lib/auth.ts` — single Better Auth configuration.
 - `auth/app/src/lib/config.ts` — runtime configuration and trusted origins.
 

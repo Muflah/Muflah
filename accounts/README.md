@@ -20,6 +20,8 @@ Logout revokes only the selected account session and then sends the user to auth
 
 The reusable switcher is not owned by this app. Accounts consumes the framework-neutral `@muflah/account-switcher` web component from the shared root `packages/account-switcher` package, maintained by Auth; other products may consume the same component without depending on Accounts.
 
+When Auth reports an incomplete `onboardingStatus`, Accounts mounts the Auth-maintained `@muflah/onboarding` web component from `packages/onboarding`. The component is UI-only; onboarding status, username validation, and completion remain Auth-owned.
+
 ## Configuration
 
 Set `AUTH_URL` locally in `.env` and as a Vercel environment variable:
@@ -37,4 +39,5 @@ Detailed documentation:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Implementation](docs/IMPLEMENTATION.md)
 - [Shared account-switcher package](../packages/account-switcher/README.md)
+- [Shared onboarding package](../packages/onboarding/README.md)
 
